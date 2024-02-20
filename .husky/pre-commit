@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Checking ESlint errors ..."
+
+echo "Front ..."
+
+cd projects/front && npm run lint

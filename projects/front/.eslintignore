@@ -1,0 +1,9 @@
+**/__tests__/**
+**/__mocks__/**
+android/
+ios/
+node_modules/
+babel.config.js
+metro.config.js
+index.js
+App.tsx

@@ -8,7 +8,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "react-native start",
     "test": "jest",
-    "prettier": "prettier --write ."
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.10",

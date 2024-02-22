@@ -16,6 +16,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         title='Go to Profile'
         onPress={() => navigation.navigate('Profile')}
       />
+      <Button
+        title='Go to Login'
+        onPress={() => navigation.navigate('Login')}
+      />
     </View>
   )
 }

@@ -1,11 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+} from 'react-native'
 import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import CheckBox from '@react-native-community/checkbox'
 import { useTheme } from '../../theme/theme-provider'
 import LoginInput from '../../components/common/login-input'
-import LottieView from 'lottie-react-native'
+import SubmitButton from '../../components/common/submit-button'
 
 type LoginScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Login'>
@@ -13,7 +19,6 @@ type LoginScreenProps = {
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const { theme } = useTheme()
-  const animationRef = useRef<LottieView>(null)
   const [rememberPass, setRememberPass] = useState(false)
   const [emailConfirm, setEmailConfirm] = useState(false)
   const [email, setEmail] = useState('')
@@ -33,44 +38,27 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       setPassError('Нууц үгээ оруулна уу')
       return
     }
-    //email incorrect
     if (email != 'Zedude') {
       setEmailError('Нэвтрэх нэр буруу байна')
       return
     }
-    //email confirm
-    setEmailConfirm(true)
-    //password incorrect
     if (pass != '123') {
+      setEmailConfirm(true)
       setPassError('Нууц үг буруу байна')
       return
     }
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-      navigation.navigate('Home')
     }, 3000)
   }
   const handleCheckbox = () => {
     setRememberPass(prev => !prev)
   }
 
-  useEffect(() => {
-    if (animationRef.current != null) {
-      if (loading) {
-        // Start the loading animation when isLoading is true
-        animationRef.current.play()
-      } else {
-        // Reset the animation when isLoading is false
-        navigation.navigate('Home')
-        animationRef.current.reset()
-      }
-    }
-  }, [loading])
-
   const styles = StyleSheet.create({
     body: {
-      backgroundColor: theme.background,
+      backgroundColor: theme.bg,
       height: '100%',
       justifyContent: 'center',
     },
@@ -79,6 +67,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       display: 'flex',
       flexDirection: 'row',
       height: 20,
+    },
+    checkboxContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
     },
     checkboxText: {
       color: theme.text,
@@ -99,29 +91,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     formAndLogo: {
       gap: 58,
     },
-    loginButton: {
-      alignItems: 'center',
-      backgroundColor: theme.primary,
-      borderRadius: 24,
-      padding: 15,
-    },
-    loginText: {
-      color: theme.background,
-      fontSize: 18,
-      fontWeight: '600',
-    },
     logo: {
-      backgroundColor: theme.gray,
+      backgroundColor: theme.grey500,
       height: 82,
       width: 161,
     },
     logoContainer: {
       alignItems: 'center',
       width: '100%',
-    },
-    lottieLoading: {
-      height: 22,
-      width: 22,
     },
     moreAboutPassword: {
       alignItems: 'center',
@@ -170,23 +147,27 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             />
             {/* More Buttons */}
             <View style={styles.moreAboutPassword}>
-              <TouchableOpacity
-                disabled={loading}
-                onPress={handleCheckbox}
-                style={styles.checkbox}
-              >
-                <CheckBox
+              <View style={styles.checkboxContainer}>
+                <TouchableOpacity
+                  disabled={loading}
+                  onPress={handleCheckbox}
                   style={styles.checkbox}
-                  value={rememberPass}
-                  boxType='square'
-                  onCheckColor='white'
-                  tintColor={theme.gray}
-                  animationDuration={0.2}
-                  onFillColor='#34C759'
-                  onTintColor='transparent'
-                />
-                <Text style={styles.checkboxText}>Сануулах</Text>
-              </TouchableOpacity>
+                >
+                  <CheckBox
+                    style={styles.checkbox}
+                    value={rememberPass}
+                    boxType='square'
+                    onCheckColor='white'
+                    tintColor={theme.grey500}
+                    animationDuration={0.2}
+                    onFillColor='#34C759'
+                    onTintColor='transparent'
+                  />
+                </TouchableOpacity>
+                <Pressable onPress={handleCheckbox}>
+                  <Text style={styles.checkboxText}>Сануулах</Text>
+                </Pressable>
+              </View>
               <TouchableOpacity disabled={loading}>
                 <Text style={styles.passwordButton}>Нууц үг сэргээх</Text>
               </TouchableOpacity>
@@ -194,21 +175,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </View>
         </View>
         {/* Login button */}
-        <TouchableOpacity disabled={loading} onPress={submitInfo}>
-          <View style={styles.loginButton}>
-            {loading ? (
-              <LottieView
-                style={styles.lottieLoading}
-                ref={animationRef}
-                source={require('../../assets/lotties/loading-animation.json')}
-                autoPlay={false}
-                loop={true}
-              />
-            ) : (
-              <Text style={styles.loginText}>Нэвтрэх</Text>
-            )}
-          </View>
-        </TouchableOpacity>
+        <SubmitButton
+          onSubmit={() => navigation.goBack()}
+          onPress={submitInfo}
+          loading={loading}
+          title='Нэвтрэх'
+        />
       </View>
     </View>
   )

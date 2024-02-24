@@ -1,5 +1,11 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { TextInput } from 'react-native-gesture-handler'
 import { ShowIcon } from '../../assets/icons/show-icon'
@@ -13,13 +19,14 @@ type LoginInputType = {
   password?: boolean
   placeholder?: string
   setConfirmActive?: (_v: boolean) => void
-  error: string
+  error?: string
   value: string
-  setError: (_v: string) => void
+  setError?: (_v: string) => void
   setValue: (_v: string) => void
+  style?: object
 }
 
-const LoginInput: React.FC<LoginInputType> = ({
+const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
   confirmActive,
   setConfirmActive,
   error = '',
@@ -29,15 +36,16 @@ const LoginInput: React.FC<LoginInputType> = ({
   setError,
   setValue,
   value,
-  editable,
+  editable = true,
+  style,
   ...other
 }) => {
-  const { theme } = useTheme()
+  const { theme, isDarkMode } = useTheme()
   const [showPass, setShowPass] = useState(false)
   const [focus, setFocus] = useState(false)
 
   const handlePasswordChange = (text: string) => {
-    setError('')
+    setError && setError('')
     if (setConfirmActive != null) {
       setConfirmActive(false)
     }
@@ -58,17 +66,16 @@ const LoginInput: React.FC<LoginInputType> = ({
       alignItems: 'center',
       backgroundColor: theme.green,
       borderRadius: 10,
-      color: theme.background,
       height: 20,
       justifyContent: 'center',
       margin: 15,
       width: 20,
     },
     confirmIcon: {
-      color: theme.background,
+      color: theme.white,
     },
     container: {
-      gap: 7,
+      gap: 8,
     },
     errorContainer: {
       flexDirection: 'row',
@@ -76,13 +83,15 @@ const LoginInput: React.FC<LoginInputType> = ({
       paddingHorizontal: 16,
     },
     errorIcon: {
+      alignItems: 'center',
       backgroundColor: theme.red,
       borderRadius: 8,
       height: 16,
+      justifyContent: 'center',
       width: 16,
     },
     errorIconText: {
-      color: theme.background,
+      color: theme.white,
       textAlign: 'center',
     },
     errorText: {
@@ -91,13 +100,20 @@ const LoginInput: React.FC<LoginInputType> = ({
       fontWeight: '500',
     },
     input: {
+      color: theme.text,
       flex: 1,
       fontSize: 16,
       padding: 15,
     },
     inputContainer: {
-      backgroundColor: theme.highlight,
-      borderColor: error ? theme.red : focus ? theme.focus : theme.gray,
+      backgroundColor: theme.lightBg,
+      borderColor: error
+        ? theme.red
+        : isDarkMode
+          ? theme.lightBg
+          : focus
+            ? theme.grey500
+            : theme.text,
       borderRadius: 10,
       borderWidth: 1,
       flexDirection: 'row',
@@ -105,14 +121,16 @@ const LoginInput: React.FC<LoginInputType> = ({
     label: {
       color: theme.text,
       fontSize: 15,
-      fontWeight: '500',
+      fontWeight: 'bold',
+      marginBottom: 2,
+      paddingHorizontal: 5,
     },
     showButton: {
       justifyContent: 'center',
       padding: 15,
     },
     showHideIcon: {
-      color: theme.gray,
+      color: theme.iconBg,
     },
   })
 
@@ -124,7 +142,7 @@ const LoginInput: React.FC<LoginInputType> = ({
           value={value}
           onChangeText={handlePasswordChange}
           secureTextEntry={password && !showPass}
-          style={styles.input}
+          style={{ ...styles.input, ...style }}
           placeholder={placeholder}
           autoCapitalize='none'
           onFocus={handleFocus}

@@ -4,12 +4,11 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { getHeaderTitle } from '@react-navigation/elements'
 import { useTheme } from '../../theme/theme-provider'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { LeftArrowIcon } from '../../assets/icons/left-arrow-icon'
+import { LeftArrowIcon } from '../../assets/icons/'
 import { ParamListBase, Route } from '@react-navigation/native'
 
 type CustomHeaderProps = {
@@ -19,7 +18,7 @@ type CustomHeaderProps = {
   back?: { title: string }
 }
 
-const CustomHeader: React.FC<CustomHeaderProps> = ({
+export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
   navigation,
   route,
   options,
@@ -36,7 +35,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
     if (route) {
       setTitle(getHeaderTitle(options, route.name))
     }
-  }, [route])
+  }, [route.name])
 
   const styles = StyleSheet.create({
     backButtonIcon: {
@@ -47,10 +46,12 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
     header: {
       alignItems: 'center',
       backgroundColor: theme.bg,
+      borderBottomColor: theme.border,
+      borderBottomWidth: 1,
       flexDirection: 'row',
       justifyContent: back ? 'space-between' : 'center',
       paddingHorizontal: 20,
-      paddingTop: 16,
+      paddingVertical: 16,
     },
     headerText: {
       color: theme.text,
@@ -65,16 +66,18 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
   })
 
   return (
-    <SafeAreaView style={styles.header}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.header}>
       {back && (
         <TouchableOpacity onPress={handlePress}>
           <LeftArrowIcon style={styles.backButtonIcon} />
         </TouchableOpacity>
       )}
       <Text style={styles.headerText}>{title}</Text>
-      <LeftArrowIcon style={styles.hiddenIcon} />
+      {options.headerRight ? (
+        options.headerRight({})
+      ) : (
+        <LeftArrowIcon style={styles.hiddenIcon} />
+      )}
     </SafeAreaView>
   )
 }
-
-export default CustomHeader

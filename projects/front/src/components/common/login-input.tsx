@@ -8,9 +8,7 @@ import {
 } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { TextInput } from 'react-native-gesture-handler'
-import { ShowIcon } from '../../assets/icons/show-icon'
-import { HideIcon } from '../../assets/icons/hide-icon'
-import { ConfirmIcon } from '../../assets/icons/confirm-icon'
+import { ShowIcon, HideIcon, ConfirmIcon } from '../../assets/icons/'
 
 type LoginInputType = {
   confirmActive?: boolean
@@ -26,7 +24,7 @@ type LoginInputType = {
   style?: object
 }
 
-const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
+export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
   confirmActive,
   setConfirmActive,
   error = '',
@@ -102,7 +100,8 @@ const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     input: {
       color: theme.text,
       flex: 1,
-      fontSize: 16,
+      fontSize: 15,
+      fontWeight: 'bold',
       padding: 15,
     },
     inputContainer: {
@@ -120,8 +119,8 @@ const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     },
     label: {
       color: theme.text,
-      fontSize: 15,
-      fontWeight: 'bold',
+      fontSize: 14,
+      fontWeight: '800',
       marginBottom: 2,
       paddingHorizontal: 5,
     },
@@ -182,5 +181,3 @@ const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     </View>
   )
 }
-
-export default LoginInput

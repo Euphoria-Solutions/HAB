@@ -1,9 +1,6 @@
 import React from 'react'
 import { Path, Svg } from 'react-native-svg'
-
-type IconType = {
-  style?: object
-}
+import { IconType } from '../../utils/interface'
 
 export const ShowIcon: React.FC<IconType> = ({ style }) => {
   return (
@@ -15,5 +12,3 @@ export const ShowIcon: React.FC<IconType> = ({ style }) => {
     </Svg>
   )
 }
-
-// export default ShowIcon

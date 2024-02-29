@@ -1,9 +1,6 @@
 import React from 'react'
 import { Path, Svg } from 'react-native-svg'
-
-type IconType = {
-  style?: object
-}
+import { IconType } from '../../utils/interface'
 
 export const RightArrowIcon: React.FC<IconType> = ({ style }) => {
   return (

@@ -19,7 +19,7 @@ interface ButtonProps {
   onSubmit: () => void
 }
 
-const SubmitButton: React.FC<ButtonProps> = ({
+export const SubmitButton: React.FC<ButtonProps> = ({
   title,
   onPress,
   style,
@@ -55,7 +55,7 @@ const SubmitButton: React.FC<ButtonProps> = ({
       color: theme.white,
       display: !loading ? 'flex' : 'none',
       fontSize: 18,
-      fontWeight: '600',
+      fontWeight: '800',
     },
     lottieLoading: {
       display: loading ? 'flex' : 'none',
@@ -81,5 +81,3 @@ const SubmitButton: React.FC<ButtonProps> = ({
     </TouchableOpacity>
   )
 }
-
-export default SubmitButton

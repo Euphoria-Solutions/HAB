@@ -8,13 +8,17 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import HomeScreen from './src/screens/home/homescreen'
-import ProfileScreen from './src/screens/profile/profile'
-import LoginScreen from './src/screens/login/loginscreen'
 import { ThemeProvider } from './src/theme/theme-provider'
-import CustomHeader from './src/components/custom/custom-header'
-import ChangePasswordScreen from './src/screens/profile/change-password-screen'
-import RequestScreen from './src/screens/profile/request-screen'
+import { CustomStackHeader } from './src/components/custom'
+import {
+  AccountInfo,
+  ChangePasswordScreen,
+  HomeScreen,
+  LoginScreen,
+  // MechanicEngineer,
+  ProfileScreen,
+  RequestScreen,
+} from './src/screens'
 
 const Stack = createStackNavigator()
 
@@ -27,7 +31,7 @@ const App = () => {
           screenOptions={{
             header: ({ navigation, route, options, back }) => {
               return (
-                <CustomHeader
+                <CustomStackHeader
                   navigation={navigation}
                   route={route}
                   options={options}
@@ -39,7 +43,7 @@ const App = () => {
         >
           <Stack.Screen name='Home' component={HomeScreen} />
           <Stack.Screen
-            options={{ title: 'Settings & Profile ' }}
+            options={{ title: 'Профайл' }}
             name='Profile'
             component={ProfileScreen}
           />
@@ -54,10 +58,22 @@ const App = () => {
             component={RequestScreen}
           />
           <Stack.Screen
+            options={{
+              title: 'Миний мэдээлэл',
+            }}
+            name='AccountInfo'
+            component={AccountInfo}
+          />
+          <Stack.Screen
             options={{ headerShown: false }}
             name='Login'
             component={LoginScreen}
           />
+          {/* <Stack.Screen
+            options={{ headerShown: false }}
+            name='MechanicEngineer'
+            component={MechanicEngineer}
+          /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>

@@ -10,14 +10,13 @@ import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import CheckBox from '@react-native-community/checkbox'
 import { useTheme } from '../../theme/theme-provider'
-import LoginInput from '../../components/common/login-input'
-import SubmitButton from '../../components/common/submit-button'
+import { LoginInput, SubmitButton } from '../../components/common'
 
 type LoginScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Login'>
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const { theme } = useTheme()
   const [rememberPass, setRememberPass] = useState(false)
   const [emailConfirm, setEmailConfirm] = useState(false)
@@ -185,5 +184,3 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     </View>
   )
 }
-
-export default LoginScreen

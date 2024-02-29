@@ -1,18 +1,24 @@
 import React from 'react'
 import { Path, Svg } from 'react-native-svg'
-
-type IconType = {
-  style?: object
-}
+import { IconType } from '../../utils/interface'
 
 export const EditIcon: React.FC<IconType> = ({ style }) => {
   return (
-    <Svg width={16} height={17} viewBox='0 0 16 17' fill='none' style={style}>
+    <Svg width={20} height={20} viewBox='0 0 20 20' fill='none' {...style}>
       <Path
-        d='M8.11 10.504l4.808-4.807a6.688 6.688 0 01-2.162-1.452 6.688 6.688 0 01-1.453-2.163L4.496 6.89c-.375.375-.563.562-.724.77-.19.243-.354.507-.487.786-.112.237-.196.49-.364.992l-.885 2.654a.689.689 0 00.872.872l2.654-.885c.504-.168.755-.252.992-.364.28-.133.543-.296.787-.487.207-.161.394-.349.77-.724zm6.141-6.14A2.556 2.556 0 0010.637.748l-.577.576.025.072a5.69 5.69 0 001.36 2.158 5.69 5.69 0 002.23 1.385l.576-.577z'
-        fill='currentColor'
+        d='M16.898 12.375v4.32A2.306 2.306 0 0114.593 19H3.305A2.306 2.306 0 011 16.681V5.406a2.292 2.292 0 012.306-2.305h4.32'
+        stroke='currentColor'
+        strokeWidth={1.5}
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
-      <Path d='M1 16h14' stroke='currentColor' strokeLinecap='round' />
+      <Path
+        d='M16.898 7.076l-3.975-3.975m-7.95 10.6v-2.107c.003-.348.14-.681.385-.928l9.274-9.274a1.325 1.325 0 011.882 0l2.093 2.093a1.322 1.322 0 010 1.882L9.333 14.64c-.247.245-.58.383-.928.384H6.3A1.325 1.325 0 014.974 13.7z'
+        stroke='currentColor'
+        strokeWidth={1.5}
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
     </Svg>
   )
 }

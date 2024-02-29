@@ -3,14 +3,13 @@ import { View, StyleSheet, SafeAreaView, Text } from 'react-native'
 import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
-import LoginInput from '../../components/common/login-input'
-import SubmitButton from '../../components/common/submit-button'
+import { LoginInput, SubmitButton } from '../../components/common'
 
 type RequestProps = {
   navigation: NavigationProp<RootStackParamList, 'Request'>
 }
 
-const RequestScreen: React.FC<RequestProps> = ({ navigation }) => {
+export const RequestScreen: React.FC<RequestProps> = ({ navigation }) => {
   const { theme } = useTheme()
   const [username, setUsername] = useState('')
   const [position, setPosition] = useState('')
@@ -32,7 +31,7 @@ const RequestScreen: React.FC<RequestProps> = ({ navigation }) => {
       backgroundColor: theme.bg,
       height: '100%',
       justifyContent: 'space-between',
-      paddingTop: 0,
+      paddingTop: 16,
       padding: 20,
     },
     formContainer: {
@@ -95,5 +94,3 @@ const RequestScreen: React.FC<RequestProps> = ({ navigation }) => {
     </SafeAreaView>
   )
 }
-
-export default RequestScreen

@@ -3,15 +3,14 @@ import { View, StyleSheet, Text, SafeAreaView } from 'react-native'
 import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
-import LoginInput from '../../components/common/login-input'
-import { ConfirmIcon } from '../../assets/icons/confirm-icon'
-import SubmitButton from '../../components/common/submit-button'
+import { ConfirmIcon } from '../../assets/icons/'
+import { LoginInput, SubmitButton } from '../../components/common'
 
 type ChangeProps = {
   navigation: NavigationProp<RootStackParamList, 'ChangePassword'>
 }
 
-const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
+export const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
   const { theme } = useTheme()
   const [oldPass, setOldPass] = useState('')
   const [oldPassError, setOldPassError] = useState('')
@@ -76,11 +75,11 @@ const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
       backgroundColor: theme.bg,
       height: '100%',
       justifyContent: 'space-between',
-      paddingTop: 0,
+      paddingTop: 16,
       padding: 20,
     },
     formContainer: {
-      gap: 22,
+      gap: 18,
     },
     indicator: {
       alignItems: 'center',
@@ -97,6 +96,7 @@ const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
     },
     indicatorContainer: {
       gap: 8,
+      marginTop: 10,
     },
     indicatorIcon: {
       color: theme.text,
@@ -189,5 +189,3 @@ const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
     </SafeAreaView>
   )
 }
-
-export default ChangePasswordScreen

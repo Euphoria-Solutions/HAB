@@ -1,14 +1,13 @@
 import React from 'react'
 import { View, Text, Button } from 'react-native'
 import { NavigationProp } from '@react-navigation/native'
-import { RootStackParamList } from '../../navigation/types' // Adjust the import path as necessary
+import { RootStackParamList } from '../../navigation/types'
 
-// Define the type for the HomeScreen's props
 type HomeScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Home'>
 }
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <View>
       <Text>Home Screen</Text>
@@ -20,8 +19,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         title='Go to Login'
         onPress={() => navigation.navigate('Login')}
       />
+      {/* <Button
+        title='Go to Mechanic Engineer'
+        onPress={() => navigation.navigate('MechanicEngineer')}
+      /> */}
     </View>
   )
 }
-
-export default HomeScreen

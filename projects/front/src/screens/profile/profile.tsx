@@ -1,105 +1,70 @@
 // ProfileScreen.tsx
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
-import { EditIcon } from '../../assets/icons/edit-icon'
-import { RightArrowIcon } from '../../assets/icons/right-arrow-icon'
-import CustomSwitch from '../../components/custom/custom-switch'
+import {
+  BellIcon,
+  BookIcon,
+  HeadPhoneIcon,
+  MoonIcon,
+  PhoneIcon,
+  ProfileIcon,
+  RightArrowIcon,
+} from '../../assets/icons/'
+import { ListContainer, ListItem } from '../../components/common'
+import { CustomSwitch } from '../../components/custom'
 
 type ProfileScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Profile'>
 }
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-  const { theme } = useTheme()
+export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
+  const { theme, isDarkMode, toggleTheme } = useTheme()
   const [notifications, setNotifications] = useState(false)
 
-  const navigateToChangePassword = () => {
-    navigation.navigate('ChangePassword')
-  }
   const navigateToRequest = () => {
     navigation.navigate('Request')
+  }
+  const navigateToAccountInfo = () => {
+    navigation.navigate('AccountInfo')
   }
 
   const styles = StyleSheet.create({
     container: {
       backgroundColor: theme.bg,
+      gap: 25,
       height: '100%',
       paddingHorizontal: 20,
-    },
-    divider: {
-      backgroundColor: theme.border,
-      height: 1,
-      marginHorizontal: 12,
-    },
-    editIconStyle: {
-      color: theme.text,
-      marginTop: 14,
-    },
-    iconContainer: {
-      alignItems: 'center',
-      height: 24,
-      justifyContent: 'center',
-      width: 24,
+      paddingTop: 16,
     },
     profilePictureStyle: {
       backgroundColor: theme.text,
-      borderRadius: 30,
-      height: 60,
-      width: 60,
+      borderRadius: 35,
+      height: 70,
+      width: 70,
     },
     righArrowIconStyle: {
       color: theme.iconBg,
     },
-    roleStyle: {
-      alignSelf: 'flex-start',
-      borderColor: theme.green,
-      borderRadius: 100,
-      borderWidth: 2,
-      flexGrow: 0,
-      padding: 4,
-      paddingHorizontal: 22,
-    },
     roleText: {
-      color: theme.green,
-      fontSize: 10,
-      fontWeight: 'bold',
-    },
-    settingsContainer: {
-      backgroundColor: theme.lightBg,
-      borderColor: theme.border,
-      borderRadius: 10,
-      borderWidth: 1,
+      color: theme.darktext,
+      fontSize: 12,
+      fontWeight: '800',
     },
     settingsIcon: {
-      backgroundColor: theme.iconBg,
+      backgroundColor: theme.lightBg,
       borderRadius: 11,
-      height: 22,
-      width: 22,
-    },
-    settingsName: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      gap: 12,
-    },
-    settingsStyle: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 12,
-    },
-    settingsText: {
       color: theme.darktext,
-      fontSize: 14,
-      fontWeight: 'bold',
+      height: 20,
+      width: 20,
     },
     settingsTitle: {
       color: theme.text,
       fontSize: 18,
       fontWeight: 'bold',
-      marginVertical: 16,
+      marginBottom: 10,
     },
     userInfoContainer: {
       flexDirection: 'row',
@@ -107,15 +72,14 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
       marginBottom: 8,
     },
     userNameContainer: {
-      alignItems: 'flex-end',
+      alignItems: 'center',
       flexDirection: 'row',
-      gap: 8,
+      gap: 18,
     },
     userNameStyle: {
       color: theme.text,
       fontSize: 18,
-      fontWeight: 'bold',
-      margin: 5,
+      fontWeight: '800',
     },
   })
 
@@ -126,75 +90,56 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
           <View style={styles.profilePictureStyle}></View>
           <View>
             <Text style={styles.userNameStyle}>Мөрөнгуа Насанбаяр</Text>
-            <View style={styles.roleStyle}>
-              <Text style={styles.roleText}>Тээвэр зохицуулагч</Text>
-            </View>
+            <Text style={styles.roleText}>Тээвэр зохицуулагч</Text>
           </View>
         </View>
-        <TouchableOpacity>
-          <EditIcon style={styles.editIconStyle} />
-        </TouchableOpacity>
       </View>
-      <Text style={styles.settingsTitle}>Тохиргоо</Text>
-      <View style={styles.settingsContainer}>
-        <TouchableOpacity
-          onPress={navigateToChangePassword}
-          style={styles.settingsStyle}
-        >
-          <View style={styles.settingsName}>
-            <View style={styles.settingsIcon}></View>
-            <Text style={styles.settingsText}>Нууц үг солих</Text>
-          </View>
-          <View style={styles.iconContainer}>
-            <RightArrowIcon style={styles.righArrowIconStyle} />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.divider}></View>
-        <View style={styles.settingsStyle}>
-          <View style={styles.settingsName}>
-            <View style={styles.settingsIcon}></View>
-            <Text style={styles.settingsText}>Апп мэдэгдэл</Text>
-          </View>
-          <CustomSwitch value={notifications} setValue={setNotifications} />
-        </View>
+      <View>
+        <Text style={styles.settingsTitle}>Тохиргоо</Text>
+        <ListContainer>
+          <ListItem
+            titleIcon={<ProfileIcon style={styles.settingsIcon} />}
+            title='Миний мэдээлэл'
+            content='default'
+            onPress={navigateToAccountInfo}
+          />
+          <ListItem
+            disabled
+            titleIcon={<MoonIcon style={styles.settingsIcon} />}
+            title='Шөнийн горим'
+            content={<CustomSwitch value={isDarkMode} setValue={toggleTheme} />}
+          />
+          <ListItem
+            disabled
+            titleIcon={<BellIcon style={styles.settingsIcon} />}
+            title='Апп мэдэгдэл'
+            content={
+              <CustomSwitch value={notifications} setValue={setNotifications} />
+            }
+          />
+        </ListContainer>
       </View>
-      <Text style={styles.settingsTitle}>Тусламж</Text>
-      <View style={styles.settingsContainer}>
-        <TouchableOpacity style={styles.settingsStyle}>
-          <View style={styles.settingsName}>
-            <View style={styles.settingsIcon}></View>
-            <Text style={styles.settingsText}>Заавар</Text>
-          </View>
-          <View style={styles.iconContainer}>
-            <RightArrowIcon style={styles.righArrowIconStyle} />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.divider}></View>
-        <TouchableOpacity
-          onPress={navigateToRequest}
-          style={styles.settingsStyle}
-        >
-          <View style={styles.settingsName}>
-            <View style={styles.settingsIcon}></View>
-            <Text style={styles.settingsText}>Санал хүсэлт</Text>
-          </View>
-          <View style={styles.iconContainer}>
-            <RightArrowIcon style={styles.righArrowIconStyle} />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.divider}></View>
-        <TouchableOpacity style={styles.settingsStyle}>
-          <View style={styles.settingsName}>
-            <View style={styles.settingsIcon}></View>
-            <Text style={styles.settingsText}>Холбоо барих</Text>
-          </View>
-          <View style={styles.iconContainer}>
-            <RightArrowIcon style={styles.righArrowIconStyle} />
-          </View>
-        </TouchableOpacity>
+      <View>
+        <Text style={styles.settingsTitle}>Тусламж</Text>
+        <ListContainer>
+          <ListItem
+            titleIcon={<BookIcon style={styles.settingsIcon} />}
+            title='Заавар'
+            content={<RightArrowIcon style={styles.righArrowIconStyle} />}
+          />
+          <ListItem
+            titleIcon={<HeadPhoneIcon style={styles.settingsIcon} />}
+            title='Санал хүсэлт'
+            content={<RightArrowIcon style={styles.righArrowIconStyle} />}
+            onPress={navigateToRequest}
+          />
+          <ListItem
+            titleIcon={<PhoneIcon style={styles.settingsIcon} />}
+            title='Холбоо барих'
+            content={<RightArrowIcon style={styles.righArrowIconStyle} />}
+          />
+        </ListContainer>
       </View>
     </View>
   )
 }
-
-export default ProfileScreen

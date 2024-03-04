@@ -8,13 +8,12 @@ interface CustomSwitchProps {
   onToggle?: () => void
 }
 
-const CustomSwitch: React.FC<CustomSwitchProps> = ({
+export const CustomSwitch: React.FC<CustomSwitchProps> = ({
   value,
   setValue,
   onToggle,
 }) => {
   const { theme } = useTheme()
-  const [internalValue, setInternalValue] = useState(value)
   const [animatedValue] = useState(new Animated.Value(value ? 1 : 0))
 
   useEffect(() => {
@@ -23,21 +22,20 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({
       duration: 200,
       useNativeDriver: false,
     }).start()
-  }, [internalValue])
+  }, [value])
 
   const translateX = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 15], // Adjust the distance of the switch head
   })
   const handleToggle = () => {
-    setInternalValue(prev => !prev)
     setValue(!value)
     onToggle && onToggle()
   }
 
   const styles = StyleSheet.create({
     switchContainer: {
-      backgroundColor: internalValue ? theme.primary : theme.blue700,
+      backgroundColor: value ? theme.primary : theme.blue700,
       borderRadius: 23,
       padding: 2,
       width: 41,
@@ -59,5 +57,3 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({
     </TouchableOpacity>
   )
 }
-
-export default CustomSwitch

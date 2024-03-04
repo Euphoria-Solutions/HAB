@@ -19,10 +19,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         title='Go to Login'
         onPress={() => navigation.navigate('Login')}
       />
-      {/* <Button
+      <Button
         title='Go to Mechanic Engineer'
         onPress={() => navigation.navigate('MechanicEngineer')}
-      /> */}
+      />
     </View>
   )
 }

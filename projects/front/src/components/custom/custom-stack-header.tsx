@@ -3,8 +3,8 @@ import {
   StackNavigationOptions,
   StackNavigationProp,
 } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
-import { Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useLayoutEffect, useState } from 'react'
+import { Text, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { getHeaderTitle } from '@react-navigation/elements'
 import { useTheme } from '../../theme/theme-provider'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -16,6 +16,7 @@ type CustomHeaderProps = {
   navigation: StackNavigationProp<ParamListBase>
   options: StackNavigationOptions
   back?: { title: string }
+  centerTitle?: boolean
 }
 
 export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
@@ -23,6 +24,7 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
   route,
   options,
   back,
+  centerTitle = true,
 }) => {
   const { theme } = useTheme()
   const [title, setTitle] = useState('')
@@ -31,7 +33,21 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
     navigation.goBack()
   }
 
-  useEffect(() => {
+  const backIcon = (statement: boolean | undefined) => {
+    return statement ? (
+      options.headerLeft ? (
+        options.headerLeft({})
+      ) : (
+        <TouchableOpacity onPress={handlePress}>
+          <LeftArrowIcon style={styles.backButtonIcon} />
+        </TouchableOpacity>
+      )
+    ) : (
+      <></>
+    )
+  }
+
+  useLayoutEffect(() => {
     if (route) {
       setTitle(getHeaderTitle(options, route.name))
     }
@@ -46,17 +62,26 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
     header: {
       alignItems: 'center',
       backgroundColor: theme.bg,
-      borderBottomColor: theme.border,
+      borderBottomColor: theme.stroke,
       borderBottomWidth: 1,
       flexDirection: 'row',
-      justifyContent: back ? 'space-between' : 'center',
+      justifyContent: !centerTitle
+        ? 'space-between'
+        : back
+          ? 'space-between'
+          : 'center',
       paddingHorizontal: 20,
       paddingVertical: 16,
+    },
+    headerAndIcon: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      gap: 14,
     },
     headerText: {
       color: theme.text,
       fontSize: 15,
-      fontWeight: 'bold',
+      fontWeight: '800',
     },
     hiddenIcon: {
       display: back ? 'flex' : 'none',
@@ -67,12 +92,11 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.header}>
-      {back && (
-        <TouchableOpacity onPress={handlePress}>
-          <LeftArrowIcon style={styles.backButtonIcon} />
-        </TouchableOpacity>
-      )}
-      <Text style={styles.headerText}>{title}</Text>
+      {backIcon(back && centerTitle)}
+      <View style={styles.headerAndIcon}>
+        {backIcon(back && !centerTitle)}
+        <Text style={styles.headerText}>{title}</Text>
+      </View>
       {options.headerRight ? (
         options.headerRight({})
       ) : (

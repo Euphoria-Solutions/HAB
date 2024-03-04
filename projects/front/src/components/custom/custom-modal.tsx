@@ -75,7 +75,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({
       visible={visible}
     >
       <View style={styles.modalContainer}>
-        <View style={styles.transparentModal} />
+        <Pressable onPress={handleCloseModal} style={styles.transparentModal} />
         <SafeAreaView style={styles.modalSafeContainer}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>{title}</Text>

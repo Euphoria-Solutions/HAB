@@ -38,7 +38,7 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
   style,
   ...other
 }) => {
-  const { theme, isDarkMode } = useTheme()
+  const { theme } = useTheme()
   const [showPass, setShowPass] = useState(false)
   const [focus, setFocus] = useState(false)
 
@@ -51,6 +51,7 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
   }
   const handleFocus = () => {
     setFocus(true)
+    setError && setError('')
   }
   const handleBlur = () => {
     setFocus(false)
@@ -106,23 +107,16 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     },
     inputContainer: {
       backgroundColor: theme.lightBg,
-      borderColor: error
-        ? theme.red
-        : isDarkMode
-          ? theme.lightBg
-          : focus
-            ? theme.grey500
-            : theme.text,
+      borderColor: error ? theme.red : focus ? theme.text : theme.lightBg,
       borderRadius: 10,
       borderWidth: 1,
       flexDirection: 'row',
     },
     label: {
-      color: theme.text,
+      color: theme.darktext,
       fontSize: 14,
       fontWeight: '800',
       marginBottom: 2,
-      paddingHorizontal: 5,
     },
     showButton: {
       justifyContent: 'center',
@@ -143,6 +137,7 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
           secureTextEntry={password && !showPass}
           style={{ ...styles.input, ...style }}
           placeholder={placeholder}
+          placeholderTextColor={theme.iconBg}
           autoCapitalize='none'
           onFocus={handleFocus}
           onBlur={handleBlur}

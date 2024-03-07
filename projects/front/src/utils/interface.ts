@@ -15,3 +15,7 @@ export type DataType = {
 export type IconType = {
   style?: object
 }
+export type TagType = {
+  search: string
+  timeFrame: string
+}

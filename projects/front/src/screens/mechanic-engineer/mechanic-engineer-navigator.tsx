@@ -11,10 +11,7 @@ import {
   SOSIcon,
 } from '../../assets/icons/'
 import { CustomBottomTabBar, CustomTabHeader } from '../../components/custom'
-import {
-  SOSStack,
-  // WorkScreen,
-} from '../'
+import { SOSStack, WorkScreen } from '../'
 
 const Tab = createBottomTabNavigator()
 
@@ -38,7 +35,7 @@ export const MechanicEngineer: React.FC = () => {
       >
         <Tab.Screen
           name='Home'
-          component={SOSStack}
+          component={WorkScreen}
           options={{
             title: 'Нүүр',
             tabBarIcon: ({ focused, color, size }) =>
@@ -53,7 +50,7 @@ export const MechanicEngineer: React.FC = () => {
         />
         <Tab.Screen
           name='Work'
-          component={SOSStack}
+          component={WorkScreen}
           options={{
             title: 'Ажил',
             tabBarIcon: ({ focused, color, size }) =>
@@ -68,7 +65,7 @@ export const MechanicEngineer: React.FC = () => {
         />
         <Tab.Screen
           name='Chat'
-          component={SOSStack}
+          component={WorkScreen}
           options={{
             title: 'Чат',
             tabBarIcon: ({ focused, color, size }) =>

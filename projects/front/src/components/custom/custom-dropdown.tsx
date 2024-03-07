@@ -19,6 +19,7 @@ interface DropdownProps {
   options: DropdownOption[]
   value: DropdownOption
   placeholder?: string
+  label?: string
   onSelect: (_v: DropdownOption) => void
 }
 
@@ -26,6 +27,7 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
   options,
   value = { value: '', label: 'Мэдээлэл оруулах' },
   placeholder,
+  label,
   onSelect,
 }) => {
   const { theme } = useTheme()
@@ -35,7 +37,6 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
   const arrowRotation = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
-    console.log(rotate)
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: isVisible ? 1 : 0,
@@ -103,6 +104,12 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
     iconStyle: {
       color: theme.text,
     },
+    label: {
+      color: theme.darktext,
+      fontSize: 14,
+      fontWeight: '800',
+      marginBottom: 10,
+    },
     optionItem: {
       marginTop: -1,
       padding: 16,
@@ -116,13 +123,14 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       left: 0,
       position: 'absolute',
       right: 0,
-      top: 56,
+      top: 86,
       zIndex: 2,
     },
   })
 
   return (
     <View style={styles.dropdownContainer}>
+      {label && <Text style={styles.label}>{label}</Text>}
       <TouchableOpacity onPress={toggleDropdown} style={styles.dropdownHeader}>
         {value == null || value.value == '' ? (
           <Text style={styles.dropdownPlaceholder}>{placeholder}</Text>

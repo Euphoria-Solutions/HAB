@@ -19,6 +19,10 @@ export const ListContainer: React.FC<ListContainerProps> = ({
       borderColor: theme.border,
       borderRadius: 10,
       borderWidth: 1,
+      display:
+        Array.isArray(children) && children.length > 0 && children
+          ? 'flex'
+          : 'none',
       width: '100%',
     },
     divider: {

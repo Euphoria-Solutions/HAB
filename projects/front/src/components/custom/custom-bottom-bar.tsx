@@ -16,6 +16,7 @@ export const CustomBottomTabBar: React.FC<BottomTabBarProps> = ({
       alignItems: 'center',
       backgroundColor: theme.lightBg,
       flexDirection: 'row',
+      height: 100,
       justifyContent: 'space-evenly',
     },
     tabButton: {
@@ -61,7 +62,7 @@ export const CustomBottomTabBar: React.FC<BottomTabBarProps> = ({
               options.tabBarIcon({
                 focused: isFocused,
                 color: isFocused ? theme.text : theme.iconBg,
-                size: 24,
+                size: 20,
               })}
             <Text
               style={[

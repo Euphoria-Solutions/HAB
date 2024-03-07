@@ -107,7 +107,7 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     },
     inputContainer: {
       backgroundColor: theme.lightBg,
-      borderColor: error ? theme.red : focus ? theme.text : theme.lightBg,
+      borderColor: error ? theme.red : focus ? theme.primary : theme.lightBg,
       borderRadius: 10,
       borderWidth: 1,
       flexDirection: 'row',
@@ -142,6 +142,7 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           editable={editable}
+          selectionColor={theme.primary}
           {...other}
         />
         {/* Button with icon */}

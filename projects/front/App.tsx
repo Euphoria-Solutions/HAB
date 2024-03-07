@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -15,7 +16,7 @@ import {
   ChangePasswordScreen,
   HomeScreen,
   LoginScreen,
-  // MechanicEngineer,
+  MechanicEngineer,
   ProfileScreen,
   RequestScreen,
 } from './src/screens'
@@ -69,11 +70,11 @@ const App = () => {
             name='Login'
             component={LoginScreen}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             options={{ headerShown: false }}
             name='MechanicEngineer'
             component={MechanicEngineer}
-          /> */}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>

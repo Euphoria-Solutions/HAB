@@ -40,7 +40,6 @@ export const WorkReason: React.FC<ReasonProps> = ({ navigation }) => {
     })
   })
   useEffect(() => {
-    console.log(route)
     if (route && route.params) {
       setShowFinal(true)
       const { data: temp } = route.params as { data: CarProblemType[] }

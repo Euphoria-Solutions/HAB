@@ -39,7 +39,7 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
       type='all'
       key={5}
     />,
-    <CarConfirm setPage={setPage} key={6} data={data} />,
+    <CarConfirm key={6} data={data} />,
   ]
 
   useEffect(() => {

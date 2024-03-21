@@ -1,15 +1,24 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  View,
+  DimensionValue,
+} from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { RightArrowIcon } from '../../assets/icons'
 
-interface ListProps {
-  title: string
+export interface ListProps {
+  title: string | React.ReactNode
   titleIcon?: React.ReactNode
   titleStyle?: object
   onPress?: () => void
   disabled?: boolean
-  content: React.ReactNode | 'default' | 'none'
+  content: React.ReactNode | 'default' | 'none' | string
+  contentStyle?: object
+  contentMaxWidth?: DimensionValue
+  contentMinWidth?: DimensionValue
 }
 
 export const ListItem: React.FC<ListProps> = ({
@@ -19,6 +28,8 @@ export const ListItem: React.FC<ListProps> = ({
   onPress,
   disabled = false,
   content = 'default',
+  contentStyle,
+  contentMaxWidth = '50%',
 }) => {
   const { theme } = useTheme()
 
@@ -29,11 +40,17 @@ export const ListItem: React.FC<ListProps> = ({
       justifyContent: 'space-between',
       padding: 16,
       paddingRight: 20,
+      zIndex: 0,
     },
     content: {
       alignItems: 'flex-end',
       flex: 1,
       justifyContent: 'center',
+    },
+    contentStyle: {
+      color: theme.text,
+      fontSize: 12,
+      fontWeight: '700',
     },
     righArrowIconStyle: {
       color: theme.iconBg,
@@ -42,12 +59,12 @@ export const ListItem: React.FC<ListProps> = ({
       alignItems: 'center',
       flexDirection: 'row',
       gap: 12,
-      minWidth: '40%',
+      width: contentMaxWidth,
     },
     titleStyle: {
       color: theme.darktext,
-      fontSize: 14,
-      fontWeight: '800',
+      fontSize: 12,
+      fontWeight: '700',
     },
   })
 
@@ -59,12 +76,20 @@ export const ListItem: React.FC<ListProps> = ({
     >
       <View style={styles.titleContainer}>
         {titleIcon && titleIcon}
-        <Text style={[styles.titleStyle, titleStyle]}>{title}</Text>
+        {typeof title == 'string' ? (
+          <Text style={[styles.titleStyle, titleStyle]}>{title}</Text>
+        ) : (
+          title
+        )}
       </View>
       <View style={styles.content}>
         {content != 'none' &&
           (content == 'default' ? (
             <RightArrowIcon style={styles.righArrowIconStyle} />
+          ) : typeof content == 'string' ? (
+            <Text style={contentStyle ? contentStyle : styles.contentStyle}>
+              {content}
+            </Text>
           ) : (
             content
           ))}

@@ -1,3 +1,5 @@
+import { CarProblemType } from '../utils/interface'
+
 export type RootStackParamList = {
   Home: undefined
   Profile: undefined
@@ -19,4 +21,11 @@ export type RootSOSStackParamList = {
   Main: undefined
   Contact: undefined
   FixInfo: undefined
+}
+
+export type RootWorkStackParamList = {
+  Main: undefined
+  Info: undefined | { id: string }
+  Reason: undefined | { data: CarProblemType[] }
+  DetailedInfo: undefined | { id: number }
 }

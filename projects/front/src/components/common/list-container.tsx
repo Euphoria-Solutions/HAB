@@ -1,15 +1,25 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { DimensionValue, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
+import { ListItem, ListProps } from './list-item'
+
+type ItemOptions = {
+  maxWidth?: DimensionValue
+  allDisabled?: boolean
+  allTitleStyle?: object
+  allContentStyle?: object
+}
 
 type ListContainerProps = {
-  children: React.ReactNode[] | React.ReactNode
+  items: ListProps[]
+  itemOptions?: ItemOptions
   style?: object
 }
 
 export const ListContainer: React.FC<ListContainerProps> = ({
-  children,
+  items,
   style,
+  itemOptions,
 }) => {
   const { theme } = useTheme()
 
@@ -19,10 +29,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({
       borderColor: theme.border,
       borderRadius: 10,
       borderWidth: 1,
-      display:
-        Array.isArray(children) && children.length > 0 && children
-          ? 'flex'
-          : 'none',
+      display: items && items.length > 0 ? 'flex' : 'none',
       width: '100%',
     },
     divider: {
@@ -32,18 +39,44 @@ export const ListContainer: React.FC<ListContainerProps> = ({
     },
   })
 
+  if (!items) {
+    return null
+  }
+
   return (
     <View style={[styles.container, style]}>
-      {Array.isArray(children)
-        ? children?.map((e, i) => {
-            return (
-              <View key={i}>
-                {e}
-                {i + 1 < children.length && <View style={styles.divider} />}
-              </View>
-            )
-          })
-        : children}
+      {items &&
+        items.map((e, i) => {
+          return (
+            <>
+              <ListItem
+                key={i}
+                content={e.content}
+                title={e.title}
+                disabled={
+                  typeof e.disabled == 'boolean'
+                    ? e.disabled
+                    : itemOptions?.allDisabled && true
+                }
+                onPress={e.onPress}
+                titleIcon={e.titleIcon}
+                titleStyle={
+                  e.titleStyle
+                    ? e.titleStyle
+                    : itemOptions?.allTitleStyle && itemOptions.allTitleStyle
+                }
+                contentStyle={
+                  e.contentStyle
+                    ? e.contentStyle
+                    : itemOptions?.allContentStyle &&
+                      itemOptions.allContentStyle
+                }
+                contentMaxWidth={itemOptions?.maxWidth && itemOptions.maxWidth}
+              />
+              {items && i + 1 < items.length && <View style={styles.divider} />}
+            </>
+          )
+        })}
     </View>
   )
 }

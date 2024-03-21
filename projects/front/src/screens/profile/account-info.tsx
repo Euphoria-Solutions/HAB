@@ -1,15 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react'
-import { View, StyleSheet, SafeAreaView, Text } from 'react-native'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
 import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
-import {
-  ListContainer,
-  ListItem,
-  LoginInput,
-  SubmitButton,
-} from '../../components/common'
-import { CustomModal } from '../../components/custom'
+import { ListContainer, ProfileFixInfo } from '../../components/common'
 import { CameraIcon, EditIcon, KeyIcon } from '../../assets/icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
@@ -23,9 +17,14 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
   const [surname, setSurname] = useState('')
   const [name, setName] = useState('')
   const [number, setNumber] = useState('')
-  const [job, setJob] = useState('')
+  const [job, setJob] = useState({ value: '', label: '' })
   const [reason, setReason] = useState('')
-  const [loading, setLoading] = useState(false)
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: headerEditButton,
+    })
+  })
 
   const headerEditButton = () => {
     return (
@@ -37,21 +36,8 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
   const navigateToPassword = () => {
     navigation.navigate('ChangePassword')
   }
-  const handleSubmit = () => {
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 3000)
-  }
 
   const styles = StyleSheet.create({
-    buttonContainer: {
-      alignItems: 'center',
-      width: '100%',
-    },
-    buttonStyle: {
-      width: '50%',
-    },
     changeProfileIcon: {
       backgroundColor: theme.primary,
       color: theme.text,
@@ -80,10 +66,6 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
     iconStyle: {
       color: theme.iconBg,
     },
-    inputContainer: {
-      gap: 20,
-      paddingBottom: 20,
-    },
     listText: {
       color: theme.text,
       fontSize: 14,
@@ -101,21 +83,6 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
       alignItems: 'center',
       marginBottom: 6,
     },
-    reasonCount: {
-      color: theme.text,
-      fontSize: 12,
-      fontWeight: '500',
-      textAlign: 'right',
-    },
-    titleStyle: {
-      fontSize: 11,
-    },
-  })
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: headerEditButton,
-    })
   })
 
   return (
@@ -130,73 +97,39 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
             </View>
           </View>
         </View>
-        <ListContainer>
-          <ListItem
-            title='Таны овог'
-            titleStyle={styles.titleStyle}
-            content={<Text style={styles.listText}>Насанжаргал</Text>}
-            disabled
-          />
-          <ListItem
-            title='Таны нэр'
-            titleStyle={styles.titleStyle}
-            content={<Text style={styles.listText}>Төмөрцог</Text>}
-            disabled
-          />
-          <ListItem
-            title='Утасны дугаар'
-            titleStyle={styles.titleStyle}
-            content={<Text style={styles.listText}>+965 88889999</Text>}
-            disabled
-          />
-          <ListItem
-            title='Албан тушаал'
-            titleStyle={styles.titleStyle}
-            content={<Text style={styles.listText}>Жолооч</Text>}
-            disabled
-          />
-        </ListContainer>
-        <ListContainer>
-          <ListItem
-            titleIcon={<KeyIcon style={styles.iconStyle} />}
-            onPress={navigateToPassword}
-            title='Нууц үг солих'
-            content='default'
-          />
-        </ListContainer>
+        <ListContainer
+          itemOptions={{ allDisabled: true, allContentStyle: styles.listText }}
+          items={[
+            { title: 'Таны овог', content: 'Насанжаргал' },
+            { title: 'Утасны дугаар', content: '+965 88889999' },
+            { title: 'Албан тушаал', content: 'Жолооч' },
+          ]}
+        />
+        <ListContainer
+          items={[
+            {
+              titleIcon: <KeyIcon style={styles.iconStyle} />,
+              title: 'Нууц үг солих',
+              content: 'default',
+              onPress: navigateToPassword,
+            },
+          ]}
+        />
       </View>
-      <CustomModal
-        title='Хэрэглэгчийн мэдээлэл засах хүсэлт'
-        visible={modalVisible}
-        setVisible={setModalVisible}
-      >
-        <View style={styles.inputContainer}>
-          <LoginInput label='Таны овог' value={surname} setValue={setSurname} />
-          <LoginInput label='Таны нэр' value={name} setValue={setName} />
-          <LoginInput
-            label='Утасны дугаар'
-            value={number}
-            setValue={setNumber}
-          />
-          <LoginInput label='Албан тушаал' value={job} setValue={setJob} />
-          <LoginInput
-            maxLength={300}
-            label='Шалтгаан/Заавал бөглөнө үү/'
-            value={reason}
-            setValue={setReason}
-          />
-          <Text style={styles.reasonCount}>{reason.length}/300</Text>
-          <View style={styles.buttonContainer}>
-            <SubmitButton
-              onSubmit={() => setModalVisible(false)}
-              loading={loading}
-              onPress={handleSubmit}
-              style={styles.buttonStyle}
-              title='Илгээх'
-            />
-          </View>
-        </View>
-      </CustomModal>
+      <ProfileFixInfo
+        reason={reason}
+        setReason={setReason}
+        job={job}
+        setJob={setJob}
+        number={number}
+        setNumber={setNumber}
+        setName={setName}
+        name={name}
+        surname={surname}
+        setSurname={setSurname}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </SafeAreaView>
   )
 }

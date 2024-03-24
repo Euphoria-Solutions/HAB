@@ -11,9 +11,8 @@ import {
   MoonIcon,
   PhoneIcon,
   ProfileIcon,
-  RightArrowIcon,
 } from '../../assets/icons/'
-import { ListContainer, ListItem } from '../../components/common'
+import { ListContainer } from '../../components/common'
 import { CustomSwitch } from '../../components/custom'
 
 type ProfileScreenProps = {
@@ -45,9 +44,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
       height: 70,
       width: 70,
     },
-    righArrowIconStyle: {
-      color: theme.iconBg,
-    },
     roleText: {
       color: theme.darktext,
       fontSize: 12,
@@ -65,6 +61,10 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
       fontSize: 18,
       fontWeight: 'bold',
       marginBottom: 10,
+    },
+    titleStyle: {
+      fontSize: 14,
+      fontWeight: '800',
     },
     userInfoContainer: {
       flexDirection: 'row',
@@ -96,49 +96,59 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
       </View>
       <View>
         <Text style={styles.settingsTitle}>Тохиргоо</Text>
-        <ListContainer>
-          <ListItem
-            titleIcon={<ProfileIcon style={styles.settingsIcon} />}
-            title='Миний мэдээлэл'
-            content='default'
-            onPress={navigateToAccountInfo}
-          />
-          <ListItem
-            disabled
-            titleIcon={<MoonIcon style={styles.settingsIcon} />}
-            title='Шөнийн горим'
-            content={<CustomSwitch value={isDarkMode} setValue={toggleTheme} />}
-          />
-          <ListItem
-            disabled
-            titleIcon={<BellIcon style={styles.settingsIcon} />}
-            title='Апп мэдэгдэл'
-            content={
-              <CustomSwitch value={notifications} setValue={setNotifications} />
-            }
-          />
-        </ListContainer>
+        <ListContainer
+          itemOptions={{ allTitleStyle: styles.titleStyle, allDisabled: true }}
+          items={[
+            {
+              title: 'Миний мэдээлэл',
+              content: 'default',
+              titleIcon: <ProfileIcon style={styles.settingsIcon} />,
+              onPress: navigateToAccountInfo,
+              disabled: false,
+            },
+            {
+              title: 'Шөнийн горим',
+              content: (
+                <CustomSwitch value={isDarkMode} setValue={toggleTheme} />
+              ),
+              titleIcon: <MoonIcon style={styles.settingsIcon} />,
+            },
+            {
+              title: 'Апп мэдэгдэл',
+              content: (
+                <CustomSwitch
+                  value={notifications}
+                  setValue={setNotifications}
+                />
+              ),
+              titleIcon: <BellIcon style={styles.settingsIcon} />,
+            },
+          ]}
+        />
       </View>
       <View>
         <Text style={styles.settingsTitle}>Тусламж</Text>
-        <ListContainer>
-          <ListItem
-            titleIcon={<BookIcon style={styles.settingsIcon} />}
-            title='Заавар'
-            content={<RightArrowIcon style={styles.righArrowIconStyle} />}
-          />
-          <ListItem
-            titleIcon={<HeadPhoneIcon style={styles.settingsIcon} />}
-            title='Санал хүсэлт'
-            content={<RightArrowIcon style={styles.righArrowIconStyle} />}
-            onPress={navigateToRequest}
-          />
-          <ListItem
-            titleIcon={<PhoneIcon style={styles.settingsIcon} />}
-            title='Холбоо барих'
-            content={<RightArrowIcon style={styles.righArrowIconStyle} />}
-          />
-        </ListContainer>
+        <ListContainer
+          itemOptions={{ allTitleStyle: styles.titleStyle }}
+          items={[
+            {
+              title: 'Заавар',
+              content: 'default',
+              titleIcon: <BookIcon style={styles.settingsIcon} />,
+            },
+            {
+              title: 'Санал хүсэлт',
+              content: 'default',
+              titleIcon: <HeadPhoneIcon style={styles.settingsIcon} />,
+              onPress: navigateToRequest,
+            },
+            {
+              title: 'Холбоо барих',
+              content: 'default',
+              titleIcon: <PhoneIcon style={styles.settingsIcon} />,
+            },
+          ]}
+        />
       </View>
     </View>
   )

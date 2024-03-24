@@ -21,6 +21,7 @@ interface DropdownProps {
   placeholder?: string
   label?: string
   onSelect: (_v: DropdownOption) => void
+  position?: 'above' | 'below'
 }
 
 export const CustomDropdown: React.FC<DropdownProps> = ({
@@ -29,11 +30,14 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
   placeholder,
   label,
   onSelect,
+  position = 'below',
 }) => {
   const { theme } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const fadeAnim = useRef(new Animated.Value(0)).current
-  const translateYAnim = useRef(new Animated.Value(-10)).current
+  const translateYAnim = useRef(
+    new Animated.Value(position == 'below' ? -10 : 10)
+  ).current
   const arrowRotation = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -45,13 +49,13 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
         useNativeDriver: true,
       }),
       Animated.timing(translateYAnim, {
-        toValue: isVisible ? 0 : -10,
+        toValue: isVisible ? 0 : position == 'below' ? -10 : 10,
         duration: 300,
         easing: Easing.ease,
         useNativeDriver: true,
       }),
       Animated.timing(arrowRotation, {
-        toValue: isVisible ? 1 : 0,
+        toValue: isVisible ? (position == 'below' ? 1 : -1) : 0,
         duration: 300,
         useNativeDriver: true,
       }),
@@ -67,8 +71,8 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
   }
 
   const rotate = arrowRotation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '90deg'],
+    inputRange: [-1, 1],
+    outputRange: ['-90deg', '90deg'],
   })
 
   const styles = StyleSheet.create({
@@ -79,13 +83,8 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
     },
     dropDownText: {
       color: theme.text,
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: 'bold',
-    },
-    dropdownContainer: {
-      flex: 1,
-      position: 'relative',
-      zIndex: 10,
     },
     dropdownHeader: {
       backgroundColor: theme.lightBg,
@@ -108,6 +107,7 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       color: theme.darktext,
       fontSize: 14,
       fontWeight: '800',
+      height: 20,
       marginBottom: 10,
     },
     optionItem: {
@@ -119,17 +119,18 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       borderColor: theme.border,
       borderRadius: 10,
       borderWidth: 1,
+      bottom: position != 'below' ? 60 : null,
       flex: 1,
       left: 0,
       position: 'absolute',
       right: 0,
-      top: 86,
-      zIndex: 2,
+      top: position == 'below' ? 86 : null,
+      zIndex: 10,
     },
   })
 
   return (
-    <View style={styles.dropdownContainer}>
+    <View>
       {label && <Text style={styles.label}>{label}</Text>}
       <TouchableOpacity onPress={toggleDropdown} style={styles.dropdownHeader}>
         {value == null || value.value == '' ? (
@@ -142,14 +143,14 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
         </Animated.View>
       </TouchableOpacity>
 
-      <Animated.View
-        style={[
-          styles.optionsContainer,
-          { opacity: fadeAnim, transform: [{ translateY: translateYAnim }] },
-        ]}
-      >
-        {isVisible &&
-          options.map((item, i) => (
+      {isVisible && (
+        <Animated.View
+          style={[
+            styles.optionsContainer,
+            { opacity: fadeAnim, transform: [{ translateY: translateYAnim }] },
+          ]}
+        >
+          {options.map((item, i) => (
             <>
               <TouchableOpacity
                 key={item.value}
@@ -163,7 +164,8 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
               )}
             </>
           ))}
-      </Animated.View>
+        </Animated.View>
+      )}
     </View>
   )
 }

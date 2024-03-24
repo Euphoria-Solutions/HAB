@@ -2,6 +2,7 @@
 import React, { createContext, useState, useContext } from 'react'
 
 type ConstantThemeType = {
+  blue950: string
   blue900: string
   blue850: string
   blue800: string
@@ -25,6 +26,7 @@ type ConstantThemeType = {
 type VariableThemeType = {
   bg: string
   lightBg: string
+  darkBg: string
   text: string
   darktext: string
   border: string
@@ -48,6 +50,7 @@ type ThemeContextType = {
 }
 
 const constantTheme: ConstantThemeType = {
+  blue950: '#2B2F52',
   blue900: '#242746',
   blue850: '#2C2C4D',
   blue800: '#343563',
@@ -71,6 +74,7 @@ const constantTheme: ConstantThemeType = {
 const lightTheme: VariableThemeType & ConstantThemeType = {
   bg: constantTheme.blue900,
   lightBg: constantTheme.blue800,
+  darkBg: constantTheme.blue950,
   text: constantTheme.grey100,
   darktext: constantTheme.grey300,
   border: constantTheme.grey500,
@@ -87,6 +91,7 @@ const lightTheme: VariableThemeType & ConstantThemeType = {
 const darkTheme: VariableThemeType & ConstantThemeType = {
   bg: constantTheme.blue900,
   lightBg: constantTheme.blue800,
+  darkBg: constantTheme.blue950,
   text: constantTheme.grey100,
   darktext: constantTheme.grey300,
   border: constantTheme.blue500,

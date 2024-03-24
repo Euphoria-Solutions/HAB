@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
-import { CloseIcon, RightArrowIcon } from '../../assets/icons/'
+import { CloseIcon } from '../../assets/icons/'
 import {
   DataType,
   QueryNameType,
@@ -9,7 +9,7 @@ import {
   TagType,
 } from '../../utils/interface'
 import DatePicker from 'react-native-date-picker'
-import { ListContainer, ListItem } from './'
+import { ListContainer } from './'
 
 type WorkSearchProps = {
   searchInputValue: string
@@ -21,6 +21,11 @@ type WorkSearchProps = {
   tags: TagType
   setTags: (_v: TagType) => void
   focused: boolean
+}
+type ListItemType = {
+  content: string
+  title: string
+  onPress: () => void
 }
 
 export const WorkSearch: React.FC<WorkSearchProps> = ({
@@ -111,6 +116,29 @@ export const WorkSearch: React.FC<WorkSearchProps> = ({
     })
     return result
   }
+  const returnQueries = (): ListItemType[] => {
+    const things: ListItemType[] = []
+
+    if (query == '') {
+      visibleData.map(e => {
+        things.push({
+          content: 'default',
+          title: typeof e.title == 'string' ? e.title : '',
+          onPress: () => handleQueryChange(e),
+        })
+      })
+    } else if (query != 'date') {
+      uniqueStrings.map(e => {
+        things.push({
+          content: 'default',
+          title: e,
+          onPress: () => handleSearch(e),
+        })
+      })
+    }
+
+    return things
+  }
 
   const styles = StyleSheet.create({
     iconStyle: {
@@ -175,28 +203,7 @@ export const WorkSearch: React.FC<WorkSearchProps> = ({
             )}
           </View>
         </View>
-        {!hideList && (
-          <ListContainer>
-            {query == ''
-              ? visibleData.map((e, i) => (
-                  <ListItem
-                    content={<RightArrowIcon style={styles.iconStyle} />}
-                    key={i}
-                    title={typeof e.title == 'string' ? e.title : ''}
-                    onPress={() => handleQueryChange(e)}
-                  />
-                ))
-              : query != 'date' &&
-                uniqueStrings.map((e, i) => (
-                  <ListItem
-                    content={<RightArrowIcon style={styles.iconStyle} />}
-                    key={i}
-                    title={e}
-                    onPress={() => handleSearch(e)}
-                  />
-                ))}
-          </ListContainer>
-        )}
+        {!hideList && <ListContainer items={returnQueries()} />}
         <DatePicker
           modal
           open={open}

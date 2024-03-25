@@ -27,8 +27,8 @@ export const CustomBottomTabBar: React.FC<BottomTabBarProps> = ({
       paddingTop: 14,
     },
     tabText: {
+      fontFamily: theme.commi500,
       fontSize: 12,
-      fontWeight: '600',
     },
   })
 

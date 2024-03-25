@@ -46,8 +46,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     },
     roleText: {
       color: theme.darktext,
+      fontFamily: theme.nunito800,
       fontSize: 12,
-      fontWeight: '800',
     },
     settingsIcon: {
       backgroundColor: theme.lightBg,
@@ -58,13 +58,13 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     },
     settingsTitle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 18,
-      fontWeight: 'bold',
       marginBottom: 10,
     },
     titleStyle: {
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
     },
     userInfoContainer: {
       flexDirection: 'row',
@@ -78,8 +78,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     },
     userNameStyle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 18,
-      fontWeight: '800',
     },
   })
 

@@ -128,8 +128,8 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
     },
     countText: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '700',
     },
     fixButtonText: {
       color: theme.text,
@@ -159,8 +159,8 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
     },
     title: {
       color: theme.text,
+      fontFamily: theme.nunito700,
       fontSize: 18,
-      fontWeight: '800',
     },
     titleContainer: {
       alignItems: 'center',

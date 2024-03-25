@@ -32,8 +32,8 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
     },
     cardName: {
       color: theme.text,
+      fontFamily: theme.commi800,
       fontSize: 14,
-      fontWeight: '800',
     },
     cardSignature: {
       backgroundColor: theme.text,
@@ -43,8 +43,8 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
     },
     cardSubtitle: {
       color: theme.darktext,
+      fontFamily: theme.commi700,
       fontSize: 12,
-      fontWeight: '700',
     },
     cardTitleContainer: {
       gap: 4,
@@ -65,18 +65,18 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
     },
     signatureName: {
       color: theme.text,
+      fontFamily: theme.commi600,
       fontSize: 13,
-      fontWeight: '600',
     },
     signatureSubTitle: {
       color: theme.darktext,
+      fontFamily: theme.commi600,
       fontSize: 12,
-      fontWeight: '600',
     },
     signatureTitle: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 16,
-      fontWeight: '700',
     },
   })
 

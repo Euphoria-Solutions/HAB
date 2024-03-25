@@ -64,8 +64,8 @@ export const ProfileFixInfo: React.FC<ProfileFixInfoProps> = ({
     },
     reasonCount: {
       color: theme.text,
+      fontFamily: theme.commi500,
       fontSize: 12,
-      fontWeight: '500',
       textAlign: 'right',
     },
   })

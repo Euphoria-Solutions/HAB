@@ -96,8 +96,8 @@ export const WorkReason: React.FC<ReasonProps> = ({ navigation }) => {
     },
     listTitleStyle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 12,
-      fontWeight: '800',
     },
     multilineInputStyle: {
       height: 152,
@@ -109,13 +109,13 @@ export const WorkReason: React.FC<ReasonProps> = ({ navigation }) => {
     },
     titleGrayStyle: {
       color: theme.darktext,
+      fontFamily: theme.nunito800,
       fontSize: 15,
-      fontWeight: '800',
     },
     titleStyle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 15,
-      fontWeight: '800',
     },
   })
 

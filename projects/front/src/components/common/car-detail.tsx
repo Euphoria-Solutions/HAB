@@ -21,7 +21,6 @@ export const CarDetail: React.FC<CarDetailType> = ({
   state: preState,
   date,
   progress,
-  id,
   location,
   driver,
   onPress,
@@ -58,13 +57,13 @@ export const CarDetail: React.FC<CarDetailType> = ({
   const styles = StyleSheet.create({
     carNumberStyle: {
       color: theme.text,
+      fontFamily: theme.commi800,
       fontSize: 13,
-      fontWeight: '900',
     },
     carTextStyle: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 13,
-      fontWeight: 'bold',
     },
     container: {
       borderRadius: 10,
@@ -92,13 +91,13 @@ export const CarDetail: React.FC<CarDetailType> = ({
     },
     driverText: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 12,
-      fontWeight: 'bold',
     },
     icon: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 10,
-      fontWeight: 'bold',
       textAlign: 'center',
       width: '100%',
     },
@@ -110,12 +109,6 @@ export const CarDetail: React.FC<CarDetailType> = ({
       justifyContent: 'center',
       width: 14,
     },
-    idStyle: {
-      color: theme.text,
-      fontSize: 12,
-      fontWeight: 'bold',
-      width: '100%',
-    },
     infoContainer: {
       alignItems: 'center',
       backgroundColor: theme.lightBg,
@@ -124,8 +117,8 @@ export const CarDetail: React.FC<CarDetailType> = ({
     },
     progressStyle: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 10,
-      fontWeight: 'bold',
     },
     stateAndProgress: {
       alignItems: 'flex-end',
@@ -144,8 +137,8 @@ export const CarDetail: React.FC<CarDetailType> = ({
     },
     stateText: {
       color: theme.white,
+      fontFamily: theme.commi700,
       fontSize: 10,
-      fontWeight: 'bold',
       justifyContent: 'center',
       textAlign: 'center',
     },
@@ -158,8 +151,8 @@ export const CarDetail: React.FC<CarDetailType> = ({
     },
     textStyles: {
       color: theme.darktext,
+      fontFamily: theme.commi700,
       fontSize: 10,
-      fontWeight: 'bold',
       maxWidth: '75%',
     },
     topSectionStyle: {
@@ -191,7 +184,6 @@ export const CarDetail: React.FC<CarDetailType> = ({
           </View>
           <Text style={styles.textStyles}>{dateString}</Text>
         </View>
-        <Text style={styles.idStyle}>Гэрээний дугаар: {id}</Text>
         <View style={styles.textContainer}>
           <View style={styles.iconContainer}>
             <LocationIcon style={styles.icon} />

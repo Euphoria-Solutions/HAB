@@ -76,8 +76,8 @@ export const SearchInput: React.FC<SearchInputType & TextInputProps> = ({
     input: {
       color: theme.darktext,
       flexGrow: 1,
+      fontFamily: theme.nunito800,
       fontSize: 12,
-      fontWeight: '800',
       padding: 12,
     },
     inputContainer: {

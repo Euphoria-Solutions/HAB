@@ -66,8 +66,8 @@ export const SOSContact: React.FC<SOSContactProps> = ({ navigation }) => {
     },
     emergencySubText: {
       color: theme.darktext,
+      fontFamily: theme.nunito700,
       fontSize: 12,
-      fontWeight: 'bold',
     },
     emergencySubTitle: {
       color: theme.darktext,
@@ -76,16 +76,16 @@ export const SOSContact: React.FC<SOSContactProps> = ({ navigation }) => {
     },
     emergencyText: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 13,
-      fontWeight: '800',
     },
     emergencyTextContainer: {
       flexDirection: 'column',
     },
     emergencyTitle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 16,
-      fontWeight: '800',
     },
     headerIconStyle: {
       color: theme.iconBg,

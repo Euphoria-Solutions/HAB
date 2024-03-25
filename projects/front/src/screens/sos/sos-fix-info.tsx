@@ -63,15 +63,15 @@ export const SOSFixInfo: React.FC<SOSFixInfoProps> = ({ navigation }) => {
     },
     textAreaCounter: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 12,
-      fontWeight: 'bold',
       marginTop: 10,
       textAlign: 'right',
     },
     title: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 18,
-      fontWeight: '800',
     },
   })
 

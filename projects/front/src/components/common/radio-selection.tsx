@@ -54,8 +54,8 @@ export const RadioSelection: React.FC<RadioSelectionTypes> = ({
     },
     title: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 16,
-      fontWeight: '800',
     },
     titleContainer: {
       alignItems: 'center',

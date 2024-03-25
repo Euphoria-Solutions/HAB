@@ -68,8 +68,8 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
     },
     listText: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
       width: '100%',
     },
     profilePicture: {

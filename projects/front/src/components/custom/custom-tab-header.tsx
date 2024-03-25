@@ -56,8 +56,8 @@ export const CustomTabHeader: React.FC<CustomHeaderProps> = ({
     },
     headerText: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 15,
-      fontWeight: '800',
     },
     profile: {
       backgroundColor: theme.text,

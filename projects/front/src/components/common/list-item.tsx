@@ -63,8 +63,8 @@ export const ListItem: React.FC<ListProps> = ({
     },
     titleStyle: {
       color: theme.darktext,
-      fontSize: 12,
-      fontWeight: '700',
+      fontFamily: theme.commi700,
+      fontSize: 14,
     },
   })
 

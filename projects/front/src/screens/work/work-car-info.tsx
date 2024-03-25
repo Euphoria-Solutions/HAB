@@ -151,8 +151,8 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
     },
     buttonText: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 13,
-      fontWeight: '700',
     },
     container: {
       backgroundColor: theme.bg,
@@ -176,8 +176,8 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
     },
     headerText: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 8,
-      fontWeight: '700',
     },
   })
 

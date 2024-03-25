@@ -69,8 +69,8 @@ export const CustomModal: React.FC<CustomModalProps> = ({
     },
     modalTitle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
     },
     transparentModal: {
       backgroundColor: theme.lightBg,

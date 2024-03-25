@@ -52,8 +52,8 @@ export const SOSScreen: React.FC<SOSScreenProps> = ({ navigation }) => {
     },
     sosDetailText: {
       color: theme.darktext,
+      fontFamily: theme.nunito700,
       fontSize: 12,
-      fontWeight: 'bold',
     },
     sosNavButton: {
       flex: 1,
@@ -82,8 +82,8 @@ export const SOSScreen: React.FC<SOSScreenProps> = ({ navigation }) => {
     },
     sosPhoneNumberText: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
     },
     sosSpecialIconContainer: {
       alignItems: 'center',

@@ -160,13 +160,13 @@ export const WorkSearch: React.FC<WorkSearchProps> = ({
     },
     searchInfoButtonText: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 10,
-      fontWeight: 'bold',
     },
     searchInfoText: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 14,
-      fontWeight: 'bold',
     },
     tagContainer: {
       alignItems: 'flex-end',

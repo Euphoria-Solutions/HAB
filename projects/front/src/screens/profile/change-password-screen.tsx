@@ -114,8 +114,8 @@ export const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
     },
     indicatorText: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 12,
-      fontWeight: '600',
     },
   })
   const charMinIndicatorStyle = charMinMet

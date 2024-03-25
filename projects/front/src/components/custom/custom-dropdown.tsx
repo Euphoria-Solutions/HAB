@@ -83,8 +83,8 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
     },
     dropDownText: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 14,
-      fontWeight: 'bold',
     },
     dropdownHeader: {
       backgroundColor: theme.lightBg,
@@ -97,16 +97,16 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
     },
     dropdownPlaceholder: {
       color: theme.iconBg,
+      fontFamily: theme.commi700,
       fontSize: 15,
-      fontWeight: 'bold',
     },
     iconStyle: {
       color: theme.text,
     },
     label: {
       color: theme.darktext,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
       height: 20,
       marginBottom: 10,
     },

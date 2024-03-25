@@ -33,21 +33,21 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
     driverInfoName: {
       color: theme.text,
       flexWrap: 'wrap',
+      fontFamily: theme.nunito800,
       fontSize: 12,
-      fontWeight: '800',
     },
     driverInfoText: {
       color: theme.darktext,
+      fontFamily: theme.nunito800,
       fontSize: 11,
-      fontWeight: '800',
     },
     listContainer: {
       gap: 6,
     },
     listTitle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
     },
     profilePicture: {
       backgroundColor: theme.text,
@@ -57,8 +57,8 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
     },
     sectionTitle: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 16,
-      fontWeight: '700',
     },
     tabContainer: {
       gap: 20,
@@ -136,7 +136,7 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
                   <Text style={styles.driverInfoName}>{data?.driver}</Text>
                 </Text>
                 <Text style={styles.driverInfoText}>
-                  Холбогдох дугаар:: {'  '}
+                  Холбогдох дугаар: {'  '}
                   <Text style={styles.driverInfoName}>+965 88889999</Text>
                 </Text>
               </View>

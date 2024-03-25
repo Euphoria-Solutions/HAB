@@ -32,7 +32,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -47,5 +47,25 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Commissioner-Black.ttf</string>
+		<string>Commissioner-Bold.ttf</string>
+		<string>Commissioner-ExtraBold.ttf</string>
+		<string>Commissioner-ExtraLight.ttf</string>
+		<string>Commissioner-Light.ttf</string>
+		<string>Commissioner-Medium.ttf</string>
+		<string>Commissioner-Regular.ttf</string>
+		<string>Commissioner-SemiBold.ttf</string>
+		<string>Commissioner-Thin.ttf</string>
+		<string>Nunito-Black.ttf</string>
+		<string>Nunito-Bold.ttf</string>
+		<string>Nunito-ExtraBold.ttf</string>
+		<string>Nunito-ExtraLight.ttf</string>
+		<string>Nunito-Light.ttf</string>
+		<string>Nunito-Medium.ttf</string>
+		<string>Nunito-Regular.ttf</string>
+		<string>Nunito-SemiBold.ttf</string>
+	</array>
 </dict>
 </plist>

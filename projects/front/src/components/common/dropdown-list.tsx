@@ -90,8 +90,8 @@ export const DropdownList: React.FC<DropdownListProps> = ({
     },
     addOptionText: {
       color: theme.darktext,
+      fontFamily: theme.commi700,
       fontSize: 13,
-      fontWeight: '800',
     },
     container: {
       backgroundColor: theme.lightBg,
@@ -111,8 +111,8 @@ export const DropdownList: React.FC<DropdownListProps> = ({
     },
     dropdownText: {
       color: theme.text,
+      fontFamily: theme.commi700,
       fontSize: 13,
-      fontWeight: '800',
     },
     optionItem: {
       marginTop: -1,

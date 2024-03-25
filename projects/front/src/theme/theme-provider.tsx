@@ -1,5 +1,4 @@
-// ThemeContext.js
-import React, { createContext, useState, useContext } from 'react'
+import React, { createContext, useState, useContext, useEffect } from 'react'
 
 type ConstantThemeType = {
   blue950: string
@@ -39,12 +38,34 @@ type VariableThemeType = {
   loginText: string
 }
 
+type FontType = {
+  commi: string
+  commi100: string
+  commi200: string
+  commi300: string
+  commi400: string
+  commi500: string
+  commi600: string
+  commi700: string
+  commi800: string
+  commi900: string
+  nunito: string
+  nunito200: string
+  nunito300: string
+  nunito400: string
+  nunito500: string
+  nunito600: string
+  nunito700: string
+  nunito800: string
+  nunito900: string
+}
+
 type ThemeProviderProps = {
   children: React.ReactNode
 }
 
 type ThemeContextType = {
-  theme: VariableThemeType & ConstantThemeType
+  theme: VariableThemeType & ConstantThemeType & FontType
   toggleTheme: () => void
   isDarkMode: boolean
 }
@@ -71,7 +92,7 @@ const constantTheme: ConstantThemeType = {
   white: '#fff',
 }
 
-const lightTheme: VariableThemeType & ConstantThemeType = {
+const lightTheme: VariableThemeType = {
   bg: constantTheme.blue900,
   lightBg: constantTheme.blue800,
   darkBg: constantTheme.blue950,
@@ -85,10 +106,9 @@ const lightTheme: VariableThemeType & ConstantThemeType = {
   iconBg: constantTheme.grey400,
   loginBg: constantTheme.grey200,
   loginText: constantTheme.grey500,
-  ...constantTheme,
 }
 
-const darkTheme: VariableThemeType & ConstantThemeType = {
+const darkTheme: VariableThemeType = {
   bg: constantTheme.blue900,
   lightBg: constantTheme.blue800,
   darkBg: constantTheme.blue950,
@@ -102,16 +122,44 @@ const darkTheme: VariableThemeType & ConstantThemeType = {
   iconBg: constantTheme.grey400,
   loginBg: constantTheme.grey200,
   loginText: constantTheme.grey500,
-  ...constantTheme,
+}
+
+const font: FontType = {
+  commi: 'Commissioner-Regular',
+  commi100: 'Commissioner-Thin',
+  commi200: 'Commissioner-ExtraLight',
+  commi300: 'Commissioner-Light',
+  commi400: 'Commissioner-Regular',
+  commi500: 'Commissioner-Medium',
+  commi600: 'Commissioner-SemiBold',
+  commi700: 'Commissioner-Bold',
+  commi800: 'Commissioner-ExtraBold',
+  commi900: 'Commissioner-Black',
+  nunito: 'Nunito-Regular',
+  nunito200: 'Nunito-ExtraLight',
+  nunito300: 'Nunito-Light',
+  nunito400: 'Nunito-Regular',
+  nunito500: 'Nunito-Medium',
+  nunito600: 'Nunito-SemiBold',
+  nunito700: 'Nunito-Bold',
+  nunito800: 'Nunito-ExtraBold',
+  nunito900: 'Nunito-Black',
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-// Create the ThemeProvider component
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(true)
+  const [theme, setTheme] = useState<
+    VariableThemeType & ConstantThemeType & FontType
+  >(isDarkMode ? darkTheme : lightTheme)
 
-  const theme = isDarkMode ? darkTheme : lightTheme
+  useEffect(() => {
+    setTheme(() => {
+      const temp = isDarkMode ? darkTheme : lightTheme
+      return { ...temp, ...constantTheme, ...font }
+    })
+  }, [isDarkMode])
 
   const toggleTheme = () => {
     setIsDarkMode(prevMode => !prevMode)
@@ -124,7 +172,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   )
 }
 
-// Create a custom hook to use the theme
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext)
   if (!context) {

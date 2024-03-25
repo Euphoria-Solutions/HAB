@@ -70,8 +70,8 @@ export const CarFixInfo: React.FC<CarFixInfoProps> = ({
     },
     listTitleStyle: {
       color: theme.darktext,
+      fontFamily: theme.commi600,
       fontSize: 13,
-      fontWeight: '600',
     },
   })
 

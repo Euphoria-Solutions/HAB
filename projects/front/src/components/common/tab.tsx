@@ -35,7 +35,8 @@ export const Tab: React.FC<TabTypes> = ({
     },
     tabButtonText: {
       color: theme.text,
-      fontWeight: 'bold',
+      fontFamily: theme.commi700,
+      fontSize: 12,
     },
     tabButtonTouchable: {
       alignItems: 'center',

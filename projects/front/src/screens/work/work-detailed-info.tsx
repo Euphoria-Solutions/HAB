@@ -51,8 +51,8 @@ export const WorkDetailedInfo: React.FC = () => {
     },
     inputStyle: {
       color: theme.darktext,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
       paddingTop: 16,
     },
     listStyle: {
@@ -60,8 +60,8 @@ export const WorkDetailedInfo: React.FC = () => {
     },
     listTitleStyle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
     },
     titleContainer: {
       flexDirection: 'row',
@@ -69,13 +69,13 @@ export const WorkDetailedInfo: React.FC = () => {
     },
     titleGrayStyle: {
       color: theme.darktext,
+      fontFamily: theme.nunito800,
       fontSize: 15,
-      fontWeight: '800',
     },
     titleStyle: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 15,
-      fontWeight: '800',
     },
   })
 

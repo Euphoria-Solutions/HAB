@@ -95,14 +95,14 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     },
     errorText: {
       color: theme.red,
+      fontFamily: theme.commi600,
       fontSize: 12,
-      fontWeight: '500',
     },
     input: {
       color: theme.text,
       flex: 1,
+      fontFamily: theme.nunito800,
       fontSize: 15,
-      fontWeight: 'bold',
       padding: 15,
     },
     inputContainer: {
@@ -114,8 +114,8 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     },
     label: {
       color: theme.darktext,
+      fontFamily: theme.nunito800,
       fontSize: 14,
-      fontWeight: '800',
       marginBottom: 2,
     },
     showButton: {

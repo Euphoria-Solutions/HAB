@@ -54,8 +54,8 @@ export const SubmitButton: React.FC<ButtonProps> = ({
     buttonText: {
       color: theme.white,
       display: !loading ? 'flex' : 'none',
+      fontFamily: theme.nunito800,
       fontSize: 18,
-      fontWeight: '800',
     },
     lottieLoading: {
       display: loading ? 'flex' : 'none',

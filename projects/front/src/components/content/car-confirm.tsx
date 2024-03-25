@@ -56,8 +56,8 @@ export const CarConfirm: React.FC<CarConfirmProps> = ({ data }) => {
     },
     title: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 18,
-      fontWeight: '800',
       paddingHorizontal: 8,
     },
   })

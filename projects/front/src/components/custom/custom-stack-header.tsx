@@ -80,8 +80,8 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
     },
     headerText: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 15,
-      fontWeight: '800',
     },
     hiddenIcon: {
       display: back ? 'flex' : 'none',

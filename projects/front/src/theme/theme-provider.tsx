@@ -152,7 +152,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(true)
   const [theme, setTheme] = useState<
     VariableThemeType & ConstantThemeType & FontType
-  >(isDarkMode ? darkTheme : lightTheme)
+  >(
+    isDarkMode
+      ? { ...darkTheme, ...font, ...constantTheme }
+      : { ...lightTheme, ...font, ...constantTheme }
+  )
 
   useEffect(() => {
     setTheme(() => {

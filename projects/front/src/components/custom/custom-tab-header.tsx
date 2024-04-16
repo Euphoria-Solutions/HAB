@@ -16,6 +16,7 @@ type CustomHeaderProps = {
   options: BottomTabNavigationOptions
   back?: boolean
   rightElement?: React.ReactNode
+  showBorder?: boolean
 }
 
 export const CustomTabHeader: React.FC<CustomHeaderProps> = ({
@@ -24,6 +25,7 @@ export const CustomTabHeader: React.FC<CustomHeaderProps> = ({
   options,
   back,
   rightElement,
+  showBorder = true,
 }) => {
   const { theme } = useTheme()
   const [title, setTitle] = useState('')
@@ -48,7 +50,7 @@ export const CustomTabHeader: React.FC<CustomHeaderProps> = ({
       alignItems: 'center',
       backgroundColor: theme.bg,
       borderBottomColor: theme.stroke,
-      borderBottomWidth: 1,
+      borderBottomWidth: showBorder ? 1 : 0,
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingHorizontal: 20,

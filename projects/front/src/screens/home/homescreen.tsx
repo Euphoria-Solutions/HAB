@@ -23,6 +23,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         title='Go to Mechanic Engineer'
         onPress={() => navigation.navigate('MechanicEngineer')}
       />
+      <Button
+        title='Go to Transport Manager'
+        onPress={() => navigation.navigate('TransportManager')}
+      />
     </View>
   )
 }

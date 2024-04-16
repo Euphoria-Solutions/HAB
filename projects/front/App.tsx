@@ -19,6 +19,7 @@ import {
   MechanicEngineer,
   ProfileScreen,
   RequestScreen,
+  TransportManager,
 } from './src/screens'
 
 const Stack = createStackNavigator()
@@ -74,6 +75,11 @@ const App = () => {
             options={{ headerShown: false }}
             name='MechanicEngineer'
             component={MechanicEngineer}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name='TransportManager'
+            component={TransportManager}
           />
         </Stack.Navigator>
       </NavigationContainer>

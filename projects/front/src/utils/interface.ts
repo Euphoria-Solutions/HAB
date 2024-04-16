@@ -33,3 +33,11 @@ export type CarProblemType = {
 }
 export type EngineType = 'engine' | 'disk' | 'transmission' | 'other'
 export type QualityType = 'normal' | 'repair' | 'swap' | 'charge' | 'clean' | ''
+export type NewsType = {
+  name: string
+  photo?: string
+  job: string
+  time: Date
+  text?: string
+  imageLinks?: string[]
+}

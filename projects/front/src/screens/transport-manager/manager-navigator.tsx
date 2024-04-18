@@ -12,16 +12,17 @@ import {
   HomeFilledIcon,
 } from '../../assets/icons/'
 import { CustomBottomTabBar, CustomTabHeader } from '../../components/custom'
-import { SOSStack, WorkScreen, WorkStack } from '../'
+import { NewsScreen } from '../news/news'
+import { WorkStack } from '../work/work-stack'
 
 const Tab = createBottomTabNavigator()
 
-export const MechanicEngineer: React.FC = () => {
+export const TransportManager: React.FC = () => {
   return (
     <NavigationContainer independent>
       <Tab.Navigator
         tabBar={props => <CustomBottomTabBar {...props} />}
-        initialRouteName='Work'
+        initialRouteName='News'
         screenOptions={{
           header: ({ navigation, route, options }) => {
             return (
@@ -29,6 +30,7 @@ export const MechanicEngineer: React.FC = () => {
                 navigation={navigation}
                 route={route}
                 options={options}
+                showBorder={false}
               />
             )
           },
@@ -36,8 +38,9 @@ export const MechanicEngineer: React.FC = () => {
       >
         <Tab.Screen
           name='Home'
-          component={WorkScreen}
+          component={NewsScreen}
           options={{
+            headerTitle: 'Өглөөний мэнд, Алдарсүх!',
             title: 'Нүүр',
             tabBarIcon: ({ focused, color, size }) =>
               focused ? (
@@ -66,8 +69,26 @@ export const MechanicEngineer: React.FC = () => {
           }}
         />
         <Tab.Screen
+          name='AddPost'
+          component={NewsScreen}
+          options={{
+            title: 'Пост',
+            tabBarStyle: {
+              display: 'none',
+            },
+            tabBarIcon: ({ focused, color, size }) =>
+              focused ? (
+                <WorkFilledIcon
+                  style={{ height: size, width: size, color: color }}
+                />
+              ) : (
+                <WorkIcon style={{ height: size, width: size, color: color }} />
+              ),
+          }}
+        />
+        <Tab.Screen
           name='Chat'
-          component={WorkScreen}
+          component={NewsScreen}
           options={{
             title: 'Чат',
             tabBarIcon: ({ focused, color, size }) =>
@@ -81,11 +102,11 @@ export const MechanicEngineer: React.FC = () => {
           }}
         />
         <Tab.Screen
-          name='SOS'
-          component={SOSStack}
+          name='Admin'
+          component={NewsScreen}
           options={{
             headerShown: false,
-            title: 'SOS',
+            title: 'Админ',
             tabBarIcon: ({ focused, color, size }) =>
               focused ? (
                 <SOSFilledIcon

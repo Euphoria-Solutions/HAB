@@ -1,4 +1,4 @@
-import { CarInfoType, CarProblemType, DataType } from './interface'
+import { CarInfoType, CarProblemType, DataType, NewsType } from './interface'
 
 export const carTempData: DataType[] = [
   {
@@ -173,6 +173,7 @@ export const carInfoTempData: CarInfoType[] = [
     quality: '',
   },
 ]
+
 export const carProblemData: CarProblemType[] = [
   {
     title: 'Дээвэр болон түүний',
@@ -188,6 +189,78 @@ export const carProblemData: CarProblemType[] = [
     parts: [
       { label: 'Temp data dont mind me', value: 'gloves' },
       { label: 'Бээлий', value: 'gloves' },
+    ],
+  },
+]
+
+export const newsData: NewsType[] = [
+  {
+    text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
+    name: 'Temporary',
+    job: 'Тээвэр зохицуулагч',
+    time: new Date('2024-04-15T00:00:00'),
+    imageLinks: [
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+    ],
+  },
+  {
+    text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
+    name: 'Энхжин Алтансүх',
+    job: 'Тээвэр зохицуулагч',
+    time: new Date('2024-04-15T00:00:00'),
+    imageLinks: [
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+    ],
+  },
+  {
+    text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
+    name: 'Энхжин Алтансүх',
+    job: 'Тээвэр зохицуулагч',
+    time: new Date('2024-04-15T00:00:00'),
+    imageLinks: [
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+    ],
+  },
+  {
+    text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
+    name: 'Энхжин Алтансүх',
+    job: 'Тээвэр зохицуулагч',
+    time: new Date('2024-04-15T00:00:00'),
+    imageLinks: [
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+    ],
+  },
+  {
+    text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
+    name: 'Энхжин Алтансүх',
+    job: 'Тээвэр зохицуулагч',
+    time: new Date('2024-04-15T00:00:00'),
+    imageLinks: [
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
+    ],
+  },
+  {
+    text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
+    name: 'Энхжин Алтансүх',
+    job: 'Тээвэр зохицуулагч',
+    time: new Date('2024-04-15T00:00:00'),
+  },
+  {
+    name: 'Энхжин Алтансүх',
+    job: 'Тээвэр зохицуулагч',
+    time: new Date('2024-04-15T00:00:00'),
+    imageLinks: [
+      'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
     ],
   },
 ]

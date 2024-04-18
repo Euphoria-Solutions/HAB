@@ -49,9 +49,9 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
 
   useLayoutEffect(() => {
     if (route) {
-      setTitle(getHeaderTitle(options, route.name))
+      setTitle(options.title ?? getHeaderTitle(options, route.name))
     }
-  }, [route.name])
+  }, [route.name, options])
 
   const styles = StyleSheet.create({
     backButtonIcon: {
@@ -59,19 +59,21 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
       color: theme.iconBg,
       padding: 10,
     },
-    header: {
+    center: {
       alignItems: 'center',
+      bottom: 0,
+      flexDirection: 'row',
+      height: '100%',
+      justifyContent: centerTitle ? 'center' : 'flex-start',
+      paddingHorizontal: 20,
+      position: 'absolute',
+      width: '100%',
+    },
+    header: {
       backgroundColor: theme.bg,
       borderBottomColor: theme.stroke,
       borderBottomWidth: 1,
-      flexDirection: 'row',
-      justifyContent: !centerTitle
-        ? 'space-between'
-        : back
-          ? 'space-between'
-          : 'center',
-      paddingHorizontal: 20,
-      paddingVertical: 16,
+      width: '100%',
     },
     headerAndIcon: {
       alignItems: 'center',
@@ -88,20 +90,31 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
       opacity: 0,
       padding: 10,
     },
+    subContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingHorizontal: 20,
+      paddingVertical: 16,
+      width: '100%',
+    },
   })
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.header}>
-      {backIcon(back && centerTitle)}
-      <View style={styles.headerAndIcon}>
-        {backIcon(back && !centerTitle)}
-        <Text style={styles.headerText}>{title}</Text>
+      <View style={styles.center}>
+        <View style={styles.headerAndIcon}>
+          {backIcon(back && !centerTitle)}
+          <Text style={styles.headerText}>{title}</Text>
+        </View>
       </View>
-      {options.headerRight ? (
-        options.headerRight({})
-      ) : (
-        <LeftArrowIcon style={styles.hiddenIcon} />
-      )}
+      <View style={styles.subContainer}>
+        {backIcon(back && centerTitle)}
+        {options.headerRight ? (
+          options.headerRight({})
+        ) : (
+          <LeftArrowIcon style={styles.hiddenIcon} />
+        )}
+      </View>
     </SafeAreaView>
   )
 }

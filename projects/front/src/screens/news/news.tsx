@@ -12,7 +12,7 @@ type NewsScreenProps = {
   navigation: BottomTabNavigationProp<RootManagerStackParamList, 'Home'>
 }
 
-export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
+export const NewsScreen: React.FC<NewsScreenProps> = () => {
   const { theme } = useTheme()
   const [searchValue, setSearchValue] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
@@ -110,16 +110,7 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
         </View>
         {dataToShow &&
           dataToShow.map((e, i) => (
-            <NewsCard
-              deleteData={() => deleteData(i)}
-              key={i}
-              navigation={navigation}
-              name={e.name}
-              job={e.job}
-              time={e.time}
-              imageLinks={e.imageLinks}
-              text={e.text}
-            />
+            <NewsCard deleteData={() => deleteData(i)} key={i} data={e} />
           ))}
       </ScrollView>
     </View>

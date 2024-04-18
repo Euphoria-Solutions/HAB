@@ -124,7 +124,7 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       left: 0,
       position: 'absolute',
       right: 0,
-      top: position == 'below' ? 86 : null,
+      top: position == 'below' ? 60 : null,
       zIndex: 10,
     },
   })

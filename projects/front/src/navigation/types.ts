@@ -9,6 +9,7 @@ export type RootStackParamList = {
   AccountInfo: undefined
   MechanicEngineer: undefined
   TransportManager: undefined
+  AddPost: undefined | { postId: string | null }
 }
 
 export type RootBottomTabParamList = {
@@ -34,6 +35,7 @@ export type RootWorkStackParamList = {
 export type RootManagerStackParamList = {
   Home: undefined
   Admin: undefined
-  AddPost: undefined | { editId?: string | number }
+  AddPost: undefined
   Work: undefined
+  Chat: undefined
 }

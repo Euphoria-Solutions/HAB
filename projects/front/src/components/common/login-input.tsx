@@ -75,6 +75,7 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
     },
     container: {
       gap: 8,
+      zIndex: -1,
     },
     errorContainer: {
       flexDirection: 'row',

@@ -1,4 +1,3 @@
-// CustomBottomTabBar.tsx
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, SafeAreaView } from 'react-native'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'

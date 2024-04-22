@@ -40,4 +40,6 @@ export type NewsType = {
   time: Date
   text?: string
   imageLinks?: string[]
+  id: string
+  viewer: 'everyone' | 'worker' | 'driver' | 'engineer'
 }

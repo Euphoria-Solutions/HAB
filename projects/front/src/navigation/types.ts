@@ -39,3 +39,14 @@ export type RootManagerStackParamList = {
   Work: undefined
   Chat: undefined
 }
+
+export type RootAdminStackParamList = {
+  Home: undefined
+  Workers: undefined
+  AddWorker: undefined
+  Cars: undefined
+  AddCar: undefined
+  Schedule: undefined
+  AddSchedule: undefined
+  Problems: undefined
+}

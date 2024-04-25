@@ -17,7 +17,7 @@ interface DropdownOption {
 
 interface DropdownProps {
   options: DropdownOption[]
-  value: DropdownOption
+  value: DropdownOption | string
   placeholder?: string
   label?: string
   onSelect: (_v: DropdownOption) => void
@@ -26,7 +26,7 @@ interface DropdownProps {
 
 export const CustomDropdown: React.FC<DropdownProps> = ({
   options,
-  value = { value: '', label: 'Мэдээлэл оруулах' },
+  value: defaultValue,
   placeholder,
   label,
   onSelect,
@@ -39,6 +39,7 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
     new Animated.Value(position == 'below' ? -10 : 10)
   ).current
   const arrowRotation = useRef(new Animated.Value(0)).current
+  const [value, setValue] = useState<DropdownOption | undefined>()
 
   useEffect(() => {
     Animated.parallel([
@@ -61,6 +62,20 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       }),
     ]).start()
   }, [isVisible, fadeAnim, translateYAnim, arrowRotation])
+  useEffect(() => {
+    if (defaultValue) {
+      if (typeof defaultValue == 'string') {
+        setValue(options.find(e => e.value == defaultValue))
+      } else {
+        setValue(defaultValue)
+      }
+    } else {
+      setValue({
+        value: '',
+        label: 'Мэдээлэл оруулах',
+      })
+    }
+  }, [defaultValue])
 
   const toggleDropdown = () => {
     setIsVisible(prev => !prev)
@@ -124,8 +139,8 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       left: 0,
       position: 'absolute',
       right: 0,
-      top: position == 'below' ? 60 : null,
-      zIndex: 10,
+      top: position == 'below' ? (label ? 86 : 60) : null,
+      zIndex: 100,
     },
   })
 

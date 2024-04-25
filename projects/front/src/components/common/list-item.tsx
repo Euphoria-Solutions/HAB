@@ -19,6 +19,7 @@ export interface ListProps {
   contentStyle?: object
   contentMaxWidth?: DimensionValue
   contentMinWidth?: DimensionValue
+  index?: number
 }
 
 export const ListItem: React.FC<ListProps> = ({
@@ -30,6 +31,7 @@ export const ListItem: React.FC<ListProps> = ({
   content = 'default',
   contentStyle,
   contentMaxWidth = '50%',
+  index,
 }) => {
   const { theme } = useTheme()
 
@@ -40,12 +42,13 @@ export const ListItem: React.FC<ListProps> = ({
       justifyContent: 'space-between',
       padding: 16,
       paddingRight: 20,
-      zIndex: 0,
+      zIndex: index ? 10 - index : 10,
     },
     content: {
       alignItems: 'flex-end',
       flex: 1,
       justifyContent: 'center',
+      zIndex: -1,
     },
     contentStyle: {
       color: theme.text,

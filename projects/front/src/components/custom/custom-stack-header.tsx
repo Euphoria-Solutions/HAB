@@ -1,4 +1,3 @@
-// CustomHeader.tsx
 import {
   StackNavigationOptions,
   StackNavigationProp,
@@ -63,22 +62,19 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
       alignItems: 'center',
       bottom: 0,
       flexDirection: 'row',
+      gap: 14,
       height: '100%',
       justifyContent: centerTitle ? 'center' : 'flex-start',
       paddingHorizontal: 20,
       position: 'absolute',
       width: '100%',
+      zIndex: !centerTitle ? 100 : 20,
     },
     header: {
       backgroundColor: theme.bg,
       borderBottomColor: theme.stroke,
       borderBottomWidth: 1,
       width: '100%',
-    },
-    headerAndIcon: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      gap: 14,
     },
     headerText: {
       color: theme.text,
@@ -92,20 +88,19 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
     },
     subContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: centerTitle ? 'space-between' : 'flex-end',
       paddingHorizontal: 20,
       paddingVertical: 16,
       width: '100%',
+      zIndex: centerTitle ? 100 : 20,
     },
   })
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.header}>
       <View style={styles.center}>
-        <View style={styles.headerAndIcon}>
-          {backIcon(back && !centerTitle)}
-          <Text style={styles.headerText}>{title}</Text>
-        </View>
+        {backIcon(back && !centerTitle)}
+        <Text style={styles.headerText}>{title}</Text>
       </View>
       <View style={styles.subContainer}>
         {backIcon(back && centerTitle)}

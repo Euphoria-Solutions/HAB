@@ -36,6 +36,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({
       backgroundColor: theme.border,
       height: 1,
       marginHorizontal: 16,
+      zIndex: -100,
     },
   })
 
@@ -50,6 +51,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({
           return (
             <>
               <ListItem
+                index={i}
                 key={i}
                 content={e.content}
                 title={e.title}

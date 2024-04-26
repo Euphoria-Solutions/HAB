@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { View, StyleSheet, Text, Animated, Easing } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import OutsidePressHandler from 'react-native-outside-press'
 
 type ListItem = {
   label?: string
@@ -51,11 +52,9 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
   const styles = StyleSheet.create({
     activatorContainer: {
       alignSelf: 'flex-end',
+      elevation: -1,
       justifyContent: 'center',
-    },
-    container: {
-      flex: 1,
-      position: 'relative',
+      zIndex: -110,
     },
     divider: {
       backgroundColor: theme.border,
@@ -68,6 +67,7 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
       height: 48,
       justifyContent: 'space-between',
       padding: 16,
+      zIndex: -1,
     },
     dropdownText: {
       color: theme.text,
@@ -84,18 +84,50 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
       alignSelf: 'flex-start',
       backgroundColor: theme.darkBg,
       borderRadius: 10,
+      elevation: 10,
       opacity: fadeAnim,
       position: 'absolute',
       right: 10,
       top: 36,
       transform: [{ translateY: translateYAnim }],
-      zIndex: 50,
+      zIndex: 60,
     },
   })
 
   return (
-    <View style={styles.container}>
+    <>
       <View style={styles.activatorContainer}>
+        {visible && (
+          <Animated.View style={styles.optionsContainer}>
+            <OutsidePressHandler
+              onOutsidePress={() => setTimeout(() => setVisible(false), 100)}
+            >
+              {options.map((item, i) => (
+                <View key={i}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      item.function()
+                      setTimeout(() => {
+                        toggleDropdown()
+                      }, 50)
+                    }}
+                    style={styles.optionItem}
+                  >
+                    {item.icon && item.icon}
+                    {item.label && (
+                      <Text style={[styles.dropdownText, item.style]}>
+                        {item.label}
+                      </Text>
+                    )}
+                    {item.element && item.element}
+                  </TouchableOpacity>
+                  {i < options.length - 1 && <View style={styles.divider} />}
+                </View>
+              ))}
+            </OutsidePressHandler>
+          </Animated.View>
+        )}
+
         <TouchableOpacity
           onPress={() => toggleDropdown()}
           style={styles.dropdownHeader}
@@ -103,33 +135,6 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
           {activator}
         </TouchableOpacity>
       </View>
-
-      {visible && (
-        <Animated.View style={styles.optionsContainer}>
-          {options.map((item, i) => (
-            <View key={i}>
-              <TouchableOpacity
-                onPress={() => {
-                  item.function()
-                  setTimeout(() => {
-                    toggleDropdown()
-                  }, 50)
-                }}
-                style={styles.optionItem}
-              >
-                {item.icon && item.icon}
-                {item.label && (
-                  <Text style={[styles.dropdownText, item.style]}>
-                    {item.label}
-                  </Text>
-                )}
-                {item.element && item.element}
-              </TouchableOpacity>
-              {i < options.length - 1 && <View style={styles.divider} />}
-            </View>
-          ))}
-        </Animated.View>
-      )}
-    </View>
+    </>
   )
 }

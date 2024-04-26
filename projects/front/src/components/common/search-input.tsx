@@ -44,11 +44,12 @@ export const SearchInput: React.FC<SearchInputType & TextInputProps> = ({
 
   const handleFocus = () => {
     setFocused && setFocused(true)
-    Animated.timing(animatedWidth, {
-      toValue: screenWidth - amountToRemove,
-      duration: 200,
-      useNativeDriver: false,
-    }).start()
+    setFocused &&
+      Animated.timing(animatedWidth, {
+        toValue: screenWidth - amountToRemove,
+        duration: 200,
+        useNativeDriver: false,
+      }).start()
   }
 
   const handleClear = () => {
@@ -71,6 +72,7 @@ export const SearchInput: React.FC<SearchInputType & TextInputProps> = ({
       width: '100%',
     },
     container: {
+      flex: !setFocused ? 1 : 0,
       flexDirection: 'row',
     },
     input: {
@@ -82,25 +84,20 @@ export const SearchInput: React.FC<SearchInputType & TextInputProps> = ({
     },
     inputContainer: {
       alignItems: 'center',
+      alignSelf: 'flex-start',
       backgroundColor: theme.lightBg,
       borderColor: theme.lightBg,
       borderRadius: 10,
       borderWidth: 1,
       flexDirection: 'row',
       paddingLeft: 14,
+      width: setFocused && animatedWidth,
     },
   })
 
   return (
     <View style={styles.container}>
-      <Animated.View
-        style={[
-          {
-            width: animatedWidth,
-          },
-          styles.inputContainer,
-        ]}
-      >
+      <Animated.View style={styles.inputContainer}>
         <SearchIcon />
         <TextInput
           ref={inputRef}

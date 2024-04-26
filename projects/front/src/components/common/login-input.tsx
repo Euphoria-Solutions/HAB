@@ -8,7 +8,12 @@ import {
 } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { TextInput } from 'react-native-gesture-handler'
-import { ShowIcon, HideIcon, ConfirmIcon } from '../../assets/icons/'
+import {
+  ShowIcon,
+  HideIcon,
+  ConfirmIcon,
+  CloseFilledIcon,
+} from '../../assets/icons/'
 
 type LoginInputType = {
   confirmActive?: boolean
@@ -22,6 +27,7 @@ type LoginInputType = {
   setError?: (_v: string) => void
   setValue: (_v: string) => void
   style?: object
+  clearButton?: boolean
 }
 
 export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
@@ -36,6 +42,7 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
   value,
   editable = true,
   style,
+  clearButton = false,
   ...other
 }) => {
   const { theme } = useTheme()
@@ -58,6 +65,9 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
   }
   const showPassChange = () => {
     setShowPass(prev => !prev)
+  }
+  const handleClear = () => {
+    setValue('')
   }
 
   const styles = StyleSheet.create({
@@ -98,6 +108,9 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
       color: theme.red,
       fontFamily: theme.commi600,
       fontSize: 12,
+    },
+    iconStyle: {
+      color: theme.iconBg,
     },
     input: {
       color: theme.text,
@@ -146,7 +159,11 @@ export const LoginInput: React.FC<LoginInputType & TextInputProps> = ({
           selectionColor={theme.primary}
           {...other}
         />
-        {/* Button with icon */}
+        {clearButton && value && (
+          <TouchableOpacity onPress={handleClear} style={styles.showButton}>
+            <CloseFilledIcon style={styles.iconStyle} />
+          </TouchableOpacity>
+        )}
         {password ? (
           <TouchableOpacity
             disabled={!editable}

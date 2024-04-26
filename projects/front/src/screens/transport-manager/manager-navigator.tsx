@@ -7,10 +7,10 @@ import {
   ChatFilledIcon,
   ChatIcon,
   HomeIcon,
-  SOSFilledIcon,
-  SOSIcon,
   HomeFilledIcon,
   AddIcon,
+  AdminFilledIcon,
+  AdminIcon,
 } from '../../assets/icons/'
 import { CustomBottomTabBar, CustomTabHeader } from '../../components/custom'
 import { NewsScreen } from '../news/news'
@@ -21,6 +21,7 @@ import {
 } from '../../navigation/types'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useNav } from '../../navigation'
+import { AdminStack } from '../admin/admin-stack'
 
 const Tab = createBottomTabNavigator<RootManagerStackParamList>()
 
@@ -115,17 +116,17 @@ export const TransportManager: React.FC = () => {
       />
       <Tab.Screen
         name='Admin'
-        component={NewsScreen}
+        component={AdminStack}
         options={{
           headerShown: false,
           title: 'Админ',
           tabBarIcon: ({ focused, color, size }) =>
             focused ? (
-              <SOSFilledIcon
+              <AdminFilledIcon
                 style={{ height: size, width: size, color: color }}
               />
             ) : (
-              <SOSIcon style={{ height: size, width: size, color: color }} />
+              <AdminIcon style={{ height: size, width: size, color: color }} />
             ),
         }}
       />

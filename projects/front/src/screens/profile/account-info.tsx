@@ -3,8 +3,12 @@ import { View, StyleSheet, SafeAreaView } from 'react-native'
 import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
-import { ListContainer, ProfileFixInfo } from '../../components/common'
-import { CameraIcon, EditIcon, KeyIcon } from '../../assets/icons'
+import {
+  ChangeProfilePicture,
+  ListContainer,
+  ProfileFixInfo,
+} from '../../components/common'
+import { EditIcon, KeyIcon } from '../../assets/icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type AccountInfoProps = {
@@ -38,21 +42,6 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
   }
 
   const styles = StyleSheet.create({
-    changeProfileIcon: {
-      backgroundColor: theme.primary,
-      color: theme.text,
-      marginHorizontal: 7,
-      marginVertical: 8,
-    },
-    changeProfilePicture: {
-      backgroundColor: theme.primary,
-      borderColor: theme.bg,
-      borderRadius: 100,
-      borderWidth: 4,
-      bottom: -4,
-      position: 'absolute',
-      right: -4,
-    },
     container: {
       backgroundColor: theme.bg,
       gap: 20,
@@ -72,31 +61,12 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
       fontSize: 14,
       width: '100%',
     },
-    profilePicture: {
-      backgroundColor: theme.text,
-      borderRadius: 35,
-      height: 70,
-      position: 'relative',
-      width: 70,
-    },
-    profilePictureContainer: {
-      alignItems: 'center',
-      marginBottom: 6,
-    },
   })
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <View style={styles.profilePictureContainer}>
-          <View style={styles.profilePicture}>
-            <View style={styles.changeProfilePicture}>
-              <TouchableOpacity>
-                <CameraIcon style={styles.changeProfileIcon} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+        <ChangeProfilePicture />
         <ListContainer
           itemOptions={{ allDisabled: true, allContentStyle: styles.listText }}
           items={[

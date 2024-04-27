@@ -43,3 +43,11 @@ export type NewsType = {
   id: string
   viewer: 'everyone' | 'worker' | 'driver' | 'engineer'
 }
+export type WorkerType = {
+  name: string
+  surname: string
+  job: 'driver' | 'engineer' | 'manager' | 'mechanic'
+  mobileNumber: number
+  username: string
+  id: number | string
+}

@@ -1,4 +1,10 @@
-import { CarInfoType, CarProblemType, DataType, NewsType } from './interface'
+import {
+  CarInfoType,
+  CarProblemType,
+  DataType,
+  NewsType,
+  WorkerType,
+} from './interface'
 
 export const carTempData: DataType[] = [
   {
@@ -276,5 +282,65 @@ export const newsData: NewsType[] = [
     imageLinks: [
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
     ],
+  },
+]
+
+export const workerData: WorkerType[] = [
+  {
+    name: 'Энхжин',
+    surname: 'Алтансүх',
+    job: 'driver',
+    mobileNumber: 99999999,
+    username: 'kellokitty',
+    id: 0,
+  },
+  {
+    name: 'Энхжин1',
+    surname: 'Алтансүх',
+    job: 'engineer',
+    mobileNumber: 99999999,
+    username: 'kellokitty',
+    id: 1,
+  },
+  {
+    name: 'Энхжи2',
+    surname: 'Алтансүх',
+    job: 'driver',
+    mobileNumber: 99999999,
+    username: 'kellokitty',
+    id: 2,
+  },
+  {
+    name: 'Энхжи3',
+    surname: 'Алтансүх',
+    job: 'driver',
+    mobileNumber: 99999999,
+    username: 'kellokitty',
+    id: 3,
+  },
+  {
+    name: 'Энхжин4',
+    surname: 'Алтансүх',
+    job: 'mechanic',
+    mobileNumber: 99999999,
+    username: 'kellokitty',
+    id: 4,
+  },
+  {
+    name: 'Энхжин5',
+    surname: 'Алтансүх',
+    job: 'mechanic',
+    mobileNumber: 99999999,
+    username: 'kellokitty',
+    id: 5,
+  },
+
+  {
+    name: 'Энхжин6',
+    surname: 'Алтансүх',
+    job: 'driver',
+    mobileNumber: 99999999,
+    username: 'kellokitty',
+    id: 6,
   },
 ]

@@ -5,6 +5,8 @@ import { RootAdminStackParamList } from '../../navigation/types'
 import { AdminHome } from './admin-home'
 import { AdminWorkers } from './admin-workers'
 import { AdminAddWorkers } from './admin-add-worker'
+import { AdminCars } from './admin-cars'
+import { AdminAddCar } from './admin-add-car'
 
 const Stack = createStackNavigator<RootAdminStackParamList>()
 
@@ -47,12 +49,12 @@ export const AdminStack = () => {
       <Stack.Screen
         options={{ headerTitle: 'Админ' }}
         name='Cars'
-        component={AdminHome}
+        component={AdminCars}
       />
       <Stack.Screen
         options={{ headerTitle: 'Машин нэмэх' }}
         name='AddCar'
-        component={AdminHome}
+        component={AdminAddCar}
       />
       <Stack.Screen
         options={{ headerTitle: 'Админ' }}

@@ -12,6 +12,8 @@ export type DataType = {
   id: string
   location: string
   driver: string
+  trailerNumber: string
+  trailerNumber2?: string
 }
 export type IconType = {
   style?: object

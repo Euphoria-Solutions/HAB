@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { WorkerType } from '../../utils'
 import { StyleSheet, View } from 'react-native'
 import { MiniDropdown } from '../common'
 import { useTheme } from '../../theme/theme-provider'
@@ -8,10 +7,14 @@ import { RootAdminStackParamList, useNav } from '../../navigation'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 type AdminListDropdownType = {
-  data: WorkerType
+  data: { id: string | number }
   deleteData: (_i: number | string) => void
-  navigation: StackNavigationProp<RootAdminStackParamList, 'Workers'>
+  navigation: StackNavigationProp<
+    RootAdminStackParamList,
+    'Workers' | 'Cars' | 'Schedule'
+  >
   index: number
+  navigateScreen: 'AddWorker' | 'AddCar' | 'AddSchedule'
 }
 
 export const AdminListDropdown: React.FC<AdminListDropdownType> = ({
@@ -19,6 +22,7 @@ export const AdminListDropdown: React.FC<AdminListDropdownType> = ({
   deleteData,
   navigation,
   index,
+  navigateScreen,
 }) => {
   const { theme } = useTheme()
   const { setId } = useNav()
@@ -55,8 +59,8 @@ export const AdminListDropdown: React.FC<AdminListDropdownType> = ({
             icon: <PenIcon style={styles.editIcon} />,
             label: 'Засах',
             function: () => {
-              setId(data.id.toString())
-              navigation.navigate('AddWorker')
+              setId(typeof data.id == 'string' ? data.id : data.id.toString())
+              navigation.navigate(navigateScreen)
             },
           },
         ]}

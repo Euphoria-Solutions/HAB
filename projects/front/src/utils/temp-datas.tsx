@@ -15,6 +15,8 @@ export const carTempData: DataType[] = [
     id: '45379876',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
+    trailerNumber: '2230 УНА',
+    trailerNumber2: '3349 ХАБ',
   },
   {
     carNumber: '4327 УНА',
@@ -24,6 +26,8 @@ export const carTempData: DataType[] = [
     id: '45379875',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
+    trailerNumber: '2230 УНА',
+    trailerNumber2: '3349 ХАБ',
   },
   {
     carNumber: '5050 УНА',
@@ -33,6 +37,8 @@ export const carTempData: DataType[] = [
     id: '45379874',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
+    trailerNumber: '2230 УНА',
+    trailerNumber2: '3349 ХАБ',
   },
   {
     carNumber: '3030 УБА',
@@ -42,6 +48,8 @@ export const carTempData: DataType[] = [
     id: '45379873',
     driver: 'Эрдэнэ Нэхий',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
+    trailerNumber: '2230 УНА',
+    trailerNumber2: '3349 ХАБ',
   },
   {
     carNumber: '5050 УНА',
@@ -51,6 +59,8 @@ export const carTempData: DataType[] = [
     id: '45379872',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
+    trailerNumber: '2230 УНА',
+    trailerNumber2: '3349 ХАБ',
   },
   {
     carNumber: '4444 УНА',
@@ -60,6 +70,8 @@ export const carTempData: DataType[] = [
     id: '45379871',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
+    trailerNumber: '2230 УНА',
+    trailerNumber2: '3349 ХАБ',
   },
 ]
 

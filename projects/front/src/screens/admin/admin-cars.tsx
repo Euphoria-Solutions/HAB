@@ -2,64 +2,45 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { RootAdminStackParamList } from '../../navigation/types'
-import { ListContainer, SearchInput, Tab } from '../../components/common'
+import { ListContainer, SearchInput } from '../../components/common'
 import { useTheme } from '../../theme/theme-provider'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { WorkerType, workerData } from '../../utils'
+import { DataType, carTempData } from '../../utils'
 import { AdminListDropdown } from '../../components/content'
 import { EventProvider } from 'react-native-outside-press'
 
-interface IAdminWorkers {
-  navigation: StackNavigationProp<RootAdminStackParamList, 'Workers'>
+interface IAdminCars {
+  navigation: StackNavigationProp<RootAdminStackParamList, 'Cars'>
 }
 
-export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
+export const AdminCars: React.FC<IAdminCars> = ({ navigation }) => {
   const { theme } = useTheme()
   const [searchValue, setSearchValue] = useState('')
-  const [tab, setTab] = useState(0)
-  const [data, setData] = useState<WorkerType[]>([])
+  const [data, setData] = useState<DataType[]>([])
 
   useEffect(() => {
-    if (workerData) {
+    if (carTempData) {
       if (searchValue) {
         const tempVal = searchValue.toLowerCase()
         setData(
-          workerData.filter(e => {
-            if ((e.name + ' ' + e.surname).toLowerCase().includes(tempVal)) {
+          carTempData.filter(e => {
+            if (e.carNumber.toLowerCase().includes(tempVal)) {
+              return true
+            }
+            if (e.trailerNumber.toLowerCase().includes(tempVal)) {
+              return true
+            }
+            if (e.trailerNumber2?.toLowerCase().includes(tempVal)) {
               return true
             }
             return false
           })
         )
       } else {
-        setData(workerData)
+        setData(carTempData)
       }
-      setData(prev =>
-        prev.filter(e => {
-          if (tab == 0 && e.job == 'driver') {
-            return true
-          }
-          if (tab == 1 && e.job == 'engineer') {
-            return true
-          }
-          if (tab == 2 && e.job == 'mechanic') {
-            return true
-          }
-        })
-      )
     }
-  }, [workerData, searchValue, tab])
-
-  const getJobTitle = (job: 'driver' | 'mechanic' | 'engineer' | 'manager') => {
-    switch (job) {
-      case 'driver':
-        return 'Жолооч'
-      case 'mechanic':
-        return 'Механикч'
-      case 'engineer':
-        return 'ХАБЭА'
-    }
-  }
+  }, [carTempData, searchValue])
 
   const deleteData = (id: number | string) => {
     setData(prev => prev.filter(e => e.id != id))
@@ -70,12 +51,11 @@ export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
       return {
         title: (
           <View style={styles.listItem}>
-            <View style={styles.profilePicture} />
             <View>
-              <Text style={styles.nameStyle}>
-                {e.name} {e.surname}
+              <Text style={styles.nameStyle}>Улсын дугаар: {e.carNumber}</Text>
+              <Text style={styles.jobStyle}>
+                Чиргүүлийн дугаар: {e.trailerNumber} | {e.trailerNumber2}
               </Text>
-              <Text style={styles.jobStyle}>{getJobTitle(e.job)}</Text>
             </View>
           </View>
         ),
@@ -85,7 +65,7 @@ export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
             index={i}
             deleteData={deleteData}
             navigation={navigation}
-            navigateScreen='AddWorker'
+            navigateScreen='AddCar'
           />
         ),
       }
@@ -139,12 +119,6 @@ export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
       fontFamily: theme.nunito800,
       fontSize: 14,
     },
-    profilePicture: {
-      backgroundColor: theme.text,
-      borderRadius: 18,
-      height: 36,
-      width: 36,
-    },
   })
 
   return (
@@ -156,20 +130,15 @@ export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
         <View style={styles.inputContainer}>
           <SearchInput value={searchValue} setValue={setSearchValue} />
           <TouchableOpacity
-            onPress={() => navigation.navigate('AddWorker')}
+            onPress={() => navigation.navigate('AddCar')}
             style={styles.addButton}
           >
             <Text style={styles.addButtonText}>+ Add new</Text>
           </TouchableOpacity>
         </View>
-        <Tab
-          allTabs={['Жолооч', 'ХАБЭА', 'Механикч']}
-          tab={tab}
-          setTab={setTab}
-        />
         <ListContainer
           style={styles.listContainerStyle}
-          itemOptions={{ allDisabled: true }}
+          itemOptions={{ allDisabled: true, maxWidth: '75%' }}
           items={showItems()}
         />
       </ScrollView>

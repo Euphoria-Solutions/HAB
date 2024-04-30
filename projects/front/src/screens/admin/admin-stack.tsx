@@ -7,6 +7,9 @@ import { AdminWorkers } from './admin-workers'
 import { AdminAddWorkers } from './admin-add-worker'
 import { AdminCars } from './admin-cars'
 import { AdminAddCar } from './admin-add-car'
+import { AdminSchedules } from './admin-schedules'
+import { AdminAddSchedule } from './admin-add-schedule'
+import { AdminProblem } from './admin-problem'
 
 const Stack = createStackNavigator<RootAdminStackParamList>()
 
@@ -59,17 +62,17 @@ export const AdminStack = () => {
       <Stack.Screen
         options={{ headerTitle: 'Админ' }}
         name='Schedule'
-        component={AdminHome}
+        component={AdminSchedules}
       />
       <Stack.Screen
         options={{ headerTitle: 'Хүргэлт нэмэх' }}
         name='AddSchedule'
-        component={AdminHome}
+        component={AdminAddSchedule}
       />
       <Stack.Screen
         options={{ headerTitle: 'Асуудалтай хүргэлт' }}
         name='Problems'
-        component={AdminHome}
+        component={AdminProblem}
       />
     </Stack.Navigator>
   )

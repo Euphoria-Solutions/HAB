@@ -13,6 +13,7 @@ import { RightArrowIcon } from '../../assets/icons'
 interface DropdownOption {
   value: string
   label: string
+  icon?: React.ReactNode
 }
 
 interface DropdownProps {
@@ -22,6 +23,7 @@ interface DropdownProps {
   label?: string
   onSelect: (_v: DropdownOption) => void
   position?: 'above' | 'below'
+  zIndex?: number
 }
 
 export const CustomDropdown: React.FC<DropdownProps> = ({
@@ -31,6 +33,7 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
   label,
   onSelect,
   position = 'below',
+  zIndex,
 }) => {
   const { theme } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
@@ -92,9 +95,9 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
 
   const styles = StyleSheet.create({
     divider: {
-      backgroundColor: theme.border,
+      backgroundColor: theme.lightBg,
       height: 1,
-      width: '100%',
+      marginHorizontal: 16,
     },
     dropDownText: {
       color: theme.text,
@@ -124,16 +127,17 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       fontSize: 14,
       height: 20,
       marginBottom: 10,
+      zIndex: -1,
     },
     optionItem: {
+      flexDirection: 'row',
+      gap: 10,
       marginTop: -1,
       padding: 16,
     },
     optionsContainer: {
-      backgroundColor: theme.lightBg,
-      borderColor: theme.border,
+      backgroundColor: theme.darkBg,
       borderRadius: 10,
-      borderWidth: 1,
       bottom: position != 'below' ? 60 : null,
       flex: 1,
       left: 0,
@@ -142,10 +146,13 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
       top: position == 'below' ? (label ? 86 : 60) : null,
       zIndex: 100,
     },
+    zIndexStyle: {
+      zIndex: zIndex,
+    },
   })
 
   return (
-    <View>
+    <View style={styles.zIndexStyle}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TouchableOpacity onPress={toggleDropdown} style={styles.dropdownHeader}>
         {value == null || value.value == '' ? (
@@ -172,6 +179,7 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
                 onPress={() => handleOptionPress(item)}
                 style={styles.optionItem}
               >
+                {item.icon ?? null}
                 <Text style={styles.dropDownText}>{item.label}</Text>
               </TouchableOpacity>
               {i < options.length - 1 && (

@@ -53,3 +53,21 @@ export type WorkerType = {
   username: string
   id: number | string
 }
+export type ScheduleType = {
+  license: string
+  date: Date
+  id: number | string
+  pickupPoint: string
+  location: string
+  deliveryLocation: string
+  companyName: string
+  exitDate: Date
+  driver: {
+    name: string
+    profile?: string | undefined
+  }
+  carNumber: string
+  trailerNumber1: string
+  trailerNumber2: string
+  state: 'failed' | 'success'
+}

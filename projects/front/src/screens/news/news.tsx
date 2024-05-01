@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { SearchInput, Weather } from '../../components/common'
 import { NewsCard } from '../../components/content'
 import { newsData, NewsType } from '../../utils/'
+import { EventProvider } from 'react-native-outside-press'
 
 type NewsScreenProps = {
   navigation: BottomTabNavigationProp<RootManagerStackParamList, 'Home'>
@@ -85,34 +86,36 @@ export const NewsScreen: React.FC<NewsScreenProps> = () => {
   })
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollStyle}>
-        <View style={styles.searchContainer}>
-          <SearchInput
-            focused={searchFocused}
-            setFocused={setSearchFocused}
-            style={styles.inputStyle}
-            value={searchValue}
-            setValue={setSearchValue}
-          />
-          <View style={styles.tabContainer}>
-            <TouchableOpacity>
-              <Text style={styles.tabText}>Мэдээлэл</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.tabTextInactive}>Заавар</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.tabTextInactive}>Тусламж</Text>
-            </TouchableOpacity>
+    <EventProvider>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollStyle}>
+          <View style={styles.searchContainer}>
+            <SearchInput
+              focused={searchFocused}
+              setFocused={setSearchFocused}
+              style={styles.inputStyle}
+              value={searchValue}
+              setValue={setSearchValue}
+            />
+            <View style={styles.tabContainer}>
+              <TouchableOpacity>
+                <Text style={styles.tabText}>Мэдээлэл</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.tabTextInactive}>Заавар</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.tabTextInactive}>Тусламж</Text>
+              </TouchableOpacity>
+            </View>
+            <Weather />
           </View>
-          <Weather />
-        </View>
-        {dataToShow &&
-          dataToShow.map((e, i) => (
-            <NewsCard deleteData={() => deleteData(i)} key={i} data={e} />
-          ))}
-      </ScrollView>
-    </View>
+          {dataToShow &&
+            dataToShow.map((e, i) => (
+              <NewsCard deleteData={() => deleteData(i)} key={i} data={e} />
+            ))}
+        </ScrollView>
+      </View>
+    </EventProvider>
   )
 }

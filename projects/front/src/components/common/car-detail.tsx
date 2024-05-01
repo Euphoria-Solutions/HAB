@@ -3,26 +3,16 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { LocationIcon } from '../../assets/icons/'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { DataType } from '../../utils'
 
 type CarDetailType = {
-  carNumber: string
-  state: 'waiting' | 'being processed' | 'finished'
-  date: Date
-  progress: string
-  id: string
-  location: string
-  driver: string
   profilePicture?: string
   onPress: () => void
+  data: DataType
 }
 
 export const CarDetail: React.FC<CarDetailType> = ({
-  carNumber,
-  state: preState,
-  date,
-  progress,
-  location,
-  driver,
+  data,
   onPress,
   profilePicture,
 }) => {
@@ -33,26 +23,24 @@ export const CarDetail: React.FC<CarDetailType> = ({
   useEffect(() => {
     let tempDate = ''
 
-    tempDate += date.getFullYear()
+    tempDate += data.date.getFullYear()
     tempDate += ' оны '
-    tempDate += date.getMonth() + 1
+    tempDate += data.date.getMonth() + 1
     tempDate += ' сарын '
-    tempDate += date.getDate()
+    tempDate += data.date.getDate()
     tempDate += 'нд '
-    tempDate += date.getHours()
+    tempDate += data.date.getHours()
     tempDate += ':'
-    tempDate += date.getMinutes()
+    tempDate += data.date.getMinutes()
 
     setDateString(tempDate)
-  }, [date])
 
-  useEffect(() => {
-    if (preState) {
-      if (preState == 'finished') setState('Дууссан')
-      if (preState == 'being processed') setState('Хийгдэж Байна')
-      if (preState == 'waiting') setState('Хүлээгдэж Байна')
+    if (data.state) {
+      if (data.state == 'finished') setState('Дууссан')
+      if (data.state == 'being processed') setState('Хийгдэж Байна')
+      if (data.state == 'waiting') setState('Хүлээгдэж Байна')
     }
-  }, [preState])
+  }, [data])
 
   const styles = StyleSheet.create({
     carNumberStyle: {
@@ -126,9 +114,9 @@ export const CarDetail: React.FC<CarDetailType> = ({
     },
     stateContainer: {
       backgroundColor:
-        preState == 'finished'
+        data.state == 'finished'
           ? theme.green
-          : preState == 'being processed'
+          : data.state == 'being processed'
             ? theme.yellow
             : theme.red,
       borderRadius: 4,
@@ -168,16 +156,21 @@ export const CarDetail: React.FC<CarDetailType> = ({
         <View style={styles.topSectionStyle}>
           <Text style={styles.carTextStyle}>
             Машины дугаар:{' '}
-            <Text style={styles.carNumberStyle}>{carNumber}</Text>
+            <Text style={styles.carNumberStyle}>{data.carNumber}</Text>
           </Text>
           <View style={styles.stateAndProgress}>
             <View style={styles.stateContainer}>
               <Text style={styles.stateText}>{state}</Text>
             </View>
-            <Text style={styles.progressStyle}>{progress} хийсэн</Text>
+            <Text style={styles.progressStyle}>{data.progress} хийсэн</Text>
           </View>
         </View>
         <View style={styles.divider} />
+        <View style={styles.textContainer}>
+          <Text style={styles.driverText}>
+            Чиргүүлийн дугаар: {data.trailerNumber} | {data.trailerNumber2}
+          </Text>
+        </View>
         <View style={styles.textContainer}>
           <View style={styles.iconContainer}>
             <Text style={styles.icon}>Э</Text>
@@ -188,7 +181,7 @@ export const CarDetail: React.FC<CarDetailType> = ({
           <View style={styles.iconContainer}>
             <LocationIcon style={styles.icon} />
           </View>
-          <Text style={styles.textStyles}>{location}</Text>
+          <Text style={styles.textStyles}>{data.location}</Text>
         </View>
       </View>
       <View style={styles.driverContainer}>
@@ -196,7 +189,7 @@ export const CarDetail: React.FC<CarDetailType> = ({
           <Image src={profilePicture} />
         </View>
         <Text style={styles.driverText}>
-          {driver ? driver : 'Жолооч тодорхой бус'}
+          {data.driver ? data.driver : 'Жолооч тодорхой бус'}
         </Text>
       </View>
     </TouchableOpacity>

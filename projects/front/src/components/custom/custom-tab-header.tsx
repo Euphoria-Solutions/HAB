@@ -9,6 +9,7 @@ import {
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { HeaderElements } from '../common'
 
 type CustomHeaderProps = {
   route: Route<string>
@@ -61,12 +62,6 @@ export const CustomTabHeader: React.FC<CustomHeaderProps> = ({
       fontFamily: theme.nunito800,
       fontSize: 15,
     },
-    profile: {
-      backgroundColor: theme.text,
-      borderRadius: 16,
-      height: 32,
-      width: 32,
-    },
   })
 
   return (
@@ -79,7 +74,7 @@ export const CustomTabHeader: React.FC<CustomHeaderProps> = ({
         )}
         <Text style={styles.headerText}>{title}</Text>
       </View>
-      {rightElement ? rightElement : <View style={styles.profile} />}
+      {rightElement ? rightElement : <HeaderElements navigation={navigation} />}
     </SafeAreaView>
   )
 }

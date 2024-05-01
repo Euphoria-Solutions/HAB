@@ -174,7 +174,12 @@ export const AdminAddSchedule: React.FC<IAdminAddSchedule> = ({
             setValue={setCompanyName}
           />
           <DatePick label='Он сар' value={date} setValue={setDate} />
-          <DatePick label='Гарах цаг' value={exitDate} setValue={setExitDate} />
+          <DatePick
+            mode='datetime'
+            label='Гарах цаг'
+            value={exitDate}
+            setValue={setExitDate}
+          />
           <View style={styles.titleContainer}>
             <TruckOutlinedIcon style={styles.iconStyle} />
             <Text style={styles.title}>Тээврийн хэрэгсэл болон жолооч</Text>

@@ -11,6 +11,7 @@ import { RootStackParamList } from '../../navigation/types'
 import CheckBox from '@react-native-community/checkbox'
 import { useTheme } from '../../theme/theme-provider'
 import { LoginInput, SubmitButton } from '../../components/common'
+import { useAuth } from '../../auth/auth-provider'
 
 type LoginScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Login'>
@@ -18,6 +19,7 @@ type LoginScreenProps = {
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const { theme } = useTheme()
+  const { signIn, user } = useAuth()
   const [rememberPass, setRememberPass] = useState(false)
   const [emailConfirm, setEmailConfirm] = useState(false)
   const [email, setEmail] = useState('')
@@ -47,12 +49,26 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       return
     }
     setLoading(true)
+    signIn(email, pass, 'Насанжаргал', 'Төмөрцог')
     setTimeout(() => {
       setLoading(false)
     }, 3000)
   }
   const handleCheckbox = () => {
     setRememberPass(prev => !prev)
+  }
+  const handleNavigate = () => {
+    if (user?.job == 'manager') {
+      navigation.reset({
+        index: 1,
+        routes: [{ name: 'TransportManager' }],
+      })
+    } else {
+      navigation.reset({
+        index: 1,
+        routes: [{ name: 'MechanicEngineer' }],
+      })
+    }
   }
 
   const styles = StyleSheet.create({
@@ -116,15 +132,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     <View style={styles.body}>
       <View style={styles.container}>
         <View style={styles.formAndLogo}>
-          {/* Logo */}
           <View style={styles.logoContainer}>
             <View style={styles.logo}>
               <Text>Zedude is cool</Text>
             </View>
           </View>
-          {/* Form */}
           <View style={styles.form}>
-            {/* Inputs */}
             <LoginInput
               value={email}
               setValue={setEmail}
@@ -173,9 +186,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             </View>
           </View>
         </View>
-        {/* Login button */}
         <SubmitButton
-          onSubmit={() => navigation.goBack()}
+          onSubmit={handleNavigate}
           onPress={submitInfo}
           loading={loading}
           title='Нэвтрэх'

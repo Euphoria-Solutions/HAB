@@ -121,14 +121,8 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
         {(searchObject || !searchFocus) &&
           data.map((e, i) => (
             <CarDetail
+              data={e}
               key={i}
-              carNumber={e.carNumber}
-              state={e.state}
-              progress={e.progress}
-              date={e.date}
-              id={e.id}
-              driver={e.driver}
-              location={e.location}
               onPress={() => navigation.navigate('Info', { id: e.id })}
             />
           ))}

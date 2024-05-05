@@ -9,6 +9,7 @@ import { useTheme } from '../../theme/theme-provider'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LeftArrowIcon } from '../../assets/icons/'
 import { ParamListBase, Route } from '@react-navigation/native'
+import { HeaderElements } from '../common'
 
 type CustomHeaderProps = {
   route: Route<string>
@@ -67,7 +68,7 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
       justifyContent: centerTitle ? 'center' : 'flex-start',
       paddingHorizontal: 20,
       position: 'absolute',
-      width: '100%',
+      width: centerTitle ? '100%' : undefined,
       zIndex: !centerTitle ? 100 : 20,
     },
     header: {
@@ -81,12 +82,8 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
       fontFamily: theme.nunito800,
       fontSize: 15,
     },
-    hiddenIcon: {
-      display: back ? 'flex' : 'none',
-      opacity: 0,
-      padding: 10,
-    },
     subContainer: {
+      alignItems: 'center',
       flexDirection: 'row',
       justifyContent: centerTitle ? 'space-between' : 'flex-end',
       paddingHorizontal: 20,
@@ -107,7 +104,7 @@ export const CustomStackHeader: React.FC<CustomHeaderProps> = ({
         {options.headerRight ? (
           options.headerRight({})
         ) : (
-          <LeftArrowIcon style={styles.hiddenIcon} />
+          <HeaderElements navigation={navigation} />
         )}
       </View>
     </SafeAreaView>

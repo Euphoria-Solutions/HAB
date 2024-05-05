@@ -51,8 +51,10 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
 
   const styles = StyleSheet.create({
     activatorContainer: {
+      alignItems: 'flex-end',
       alignSelf: 'flex-end',
       elevation: -1,
+      flex: 1,
       justifyContent: 'center',
       zIndex: -110,
     },

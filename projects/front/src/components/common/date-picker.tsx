@@ -10,12 +10,14 @@ type DatePickType = {
   value: Date | undefined
   setValue: React.Dispatch<React.SetStateAction<Date | undefined>>
   style?: object
+  mode?: 'date' | 'datetime' | 'time'
 }
 
 export const DatePick: React.FC<DatePickType> = ({
   label,
   value,
   setValue,
+  mode = 'date',
 }) => {
   const { theme } = useTheme()
   const [open, setOpen] = useState(false)
@@ -29,6 +31,13 @@ export const DatePick: React.FC<DatePickType> = ({
       tempDate += value.getMonth() + 1
       tempDate += ' сарын '
       tempDate += value.getDate()
+
+      if (mode.includes('time')) {
+        tempDate += ', '
+        tempDate += value.getHours()
+        tempDate += ':'
+        tempDate += value.getMinutes()
+      }
 
       return tempDate
     }
@@ -68,7 +77,7 @@ export const DatePick: React.FC<DatePickType> = ({
     <View style={styles.container}>
       <DatePicker
         modal
-        mode='date'
+        mode={mode}
         locale='mn'
         open={open}
         date={value ?? new Date()}

@@ -1,4 +1,4 @@
-import { typeDefs } from '../../graphql/types';
+import { typeDefs } from '../../graphql';
 import { allResolvers } from '../../resolvers';
 import { buildSubgraphSchema } from '@apollo/subgraph';
 import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
@@ -32,13 +32,14 @@ const uri =
   process.env[
     `MONGODB_URL_${process.env.CURRENT_ENV == 'PROD' ? 'PROD' : 'DEV'}`
   ] ?? '';
+console.log('a: ', uri);
 
 mongoose.connect(uri);
 const connection = mongoose.connection;
 
 connection.once('open', () => {
   console.log(
-    `MongoDB database connection established successfully with ENVIRONMENT: ${process.env.ENV}`
+    `MongoDB database connection established successfully with ENVIRONMENT: ${process.env.CURRENT_ENV == 'PROD' ? 'PROD' : 'DEV'}`
   );
 });
 

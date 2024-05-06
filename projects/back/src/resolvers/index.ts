@@ -1,17 +1,17 @@
 import { mapValues } from 'lodash';
-import { login, createUser } from './user';
-import { message, postMessage } from './message';
+import { login, createUser, editUser, deleteUser } from './user';
 
 export const resolversObjects = {
   Query: {
     helloQuery: () => 'Hello Query',
-    message,
   },
   Mutation: {
     helloMutation: () => 'Hello Mutation',
+    //* Auth
     login,
     createUser,
-    postMessage,
+    editUser,
+    deleteUser,
   },
 };
 

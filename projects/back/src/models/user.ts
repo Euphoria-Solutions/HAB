@@ -3,11 +3,17 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-  name: {
+  username: {
     type: String,
-    required: [true, 'Please provide your name'],
     unique: true,
   },
+  firstname: String,
+  lastname: String,
+  role: {
+    type: String,
+    enum: ['driver', 'engineer', 'manager', 'mechanic'],
+  },
+  phone: String,
   password: String,
 });
 

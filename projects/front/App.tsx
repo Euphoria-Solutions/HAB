@@ -18,6 +18,7 @@ import {
   HomeScreen,
   LoginScreen,
   MechanicEngineer,
+  NotificationScreen,
   ProfileScreen,
   RequestScreen,
   TransportManager,
@@ -93,6 +94,11 @@ const App = () => {
                   options={{ title: 'Пост оруулах' }}
                   name='AddPost'
                   component={AddPostScreen}
+                />
+                <Stack.Screen
+                  options={{ title: 'Мэдэгдэл' }}
+                  name='Notification'
+                  component={NotificationScreen}
                 />
               </Stack.Navigator>
             </NavigationContainer>

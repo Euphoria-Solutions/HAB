@@ -14,6 +14,7 @@ import {
 } from '../../components/content'
 import { ScrollView } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useAuth } from '../../auth/auth-provider'
 
 type CarInfoProps = {
   navigation: BottomTabNavigationProp<RootWorkStackParamList, 'Info'>
@@ -21,12 +22,13 @@ type CarInfoProps = {
 
 export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const route = useRoute()
   const { id } = route.params as { id: string }
   const [data, setData] = useState<DataType>()
   const [page, setPage] = useState(0)
   const [count, setCount] = useState({ all: 0, finished: 0 })
-  const pages = [
+  const [pages, setPages] = useState([
     <CarGeneralInfo key={0} data={data} />,
     <CarInfoList type='engine' key={1} />,
     <CarInfoList type='disk' key={2} />,
@@ -40,7 +42,7 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
       key={5}
     />,
     <CarConfirm key={6} data={data} />,
-  ]
+  ])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', clearData)
@@ -60,15 +62,30 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   useEffect(() => {
     if (id) {
       setData(carTempData.find(e => e.id == id))
+      setPage(0)
     }
   }, [id])
   useEffect(() => {
-    if (page == 0) {
-      getData()
-    } else {
-      saveData()
-    }
+    saveData()
   }, [page])
+  useEffect(() => {
+    getData()
+  })
+  useEffect(() => {
+    if (user?.job == 'manager' && data) {
+      setPages([
+        <CarGeneralInfo key={0} data={data} />,
+        <CarInfoList
+          count={count}
+          setCount={setCount}
+          showCount
+          type='all'
+          key={1}
+        />,
+        <CarConfirm key={2} data={data} />,
+      ])
+    }
+  }, [user, data])
 
   const saveData = async () => {
     try {

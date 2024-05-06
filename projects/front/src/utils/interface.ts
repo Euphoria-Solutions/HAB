@@ -14,6 +14,14 @@ export type DataType = {
   driver: string
   trailerNumber: string
   trailerNumber2?: string
+  managerState?:
+    | 'delivered'
+    | 'confirmed'
+    | 'problem'
+    | 'engineer'
+    | 'manager'
+    | 'mechanic'
+    | 'time'
 }
 export type IconType = {
   style?: object
@@ -32,6 +40,10 @@ export type CarProblemType = {
   title: string
   reason: string
   parts: { value: string; label: string }[]
+}
+export type CarReasonType = {
+  title: string
+  problems: CarProblemType[]
 }
 export type EngineType = 'engine' | 'disk' | 'transmission' | 'other'
 export type QualityType = 'normal' | 'repair' | 'swap' | 'charge' | 'clean' | ''
@@ -70,4 +82,27 @@ export type ScheduleType = {
   trailerNumber1: string
   trailerNumber2: string
   state: 'failed' | 'success'
+}
+export type NotificationType = {
+  request: 'userChange' | 'problem'
+  title: string
+  userRequested: string
+  change?: {
+    reason?: string
+    id?: string
+    username?: string
+    phoneNumber?: string
+    job?: 'mechanic' | 'engineer' | 'manager' | 'driver'
+    firstname?: string
+    lastname?: string
+  }
+}
+export type UserType = {
+  id: string
+  username: string
+  phoneNumber: string
+  job: 'mechanic' | 'engineer' | 'manager' | 'driver'
+  firstname: string
+  lastname: string
+  notifications?: NotificationType[]
 }

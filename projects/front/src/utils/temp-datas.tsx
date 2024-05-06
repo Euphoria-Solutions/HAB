@@ -1,9 +1,11 @@
 import {
   CarInfoType,
   CarProblemType,
+  CarReasonType,
   DataType,
   NewsType,
   ScheduleType,
+  UserType,
   WorkerType,
 } from './interface'
 
@@ -11,35 +13,38 @@ export const carTempData: DataType[] = [
   {
     carNumber: '4327 УНА',
     state: 'finished',
-    progress: '3/3',
+    progress: '2/3',
     date: new Date(2024, 1, 21, 12, 40),
     id: '45379876',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
+    managerState: 'delivered',
   },
   {
     carNumber: '4327 УНА',
     state: 'being processed',
-    progress: '2/3',
+    progress: '1/3',
     date: new Date(2024, 2, 21, 12, 40),
     id: '45379875',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
+    managerState: 'engineer',
   },
   {
     carNumber: '5050 УНА',
     state: 'being processed',
-    progress: '2/3',
+    progress: '1/3',
     date: new Date(2024, 2, 21, 12, 40),
     id: '45379874',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
+    managerState: 'manager',
   },
   {
     carNumber: '3030 УБА',
@@ -51,21 +56,23 @@ export const carTempData: DataType[] = [
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
+    managerState: 'time',
   },
   {
     carNumber: '5050 УНА',
-    state: 'being processed',
-    progress: '2/3',
+    state: 'waiting',
+    progress: '1/3',
     date: new Date(2024, 1, 21, 12, 40),
     id: '45379872',
     driver: 'Эрдэнэхүү Нэхийбаатар',
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
+    managerState: 'problem',
   },
   {
     carNumber: '4444 УНА',
-    state: 'being processed',
+    state: 'finished',
     progress: '2/3',
     date: new Date(2024, 2, 21, 12, 40),
     id: '45379871',
@@ -73,6 +80,7 @@ export const carTempData: DataType[] = [
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
+    managerState: 'confirmed',
   },
 ]
 
@@ -211,6 +219,12 @@ export const carProblemData: CarProblemType[] = [
     ],
   },
 ]
+
+export const carReasonData: CarReasonType = {
+  title:
+    'Curabitur maximus commodo dui, at ultricies est vulputate id. Pellentesque eu accumsan sapien, non commodo enim. Curabitur cursus faucibus nisl, sit ',
+  problems: carProblemData,
+}
 
 export const newsData: NewsType[] = [
   {
@@ -540,3 +554,71 @@ export const scheduleData: ScheduleType[] = [
     state: 'failed',
   },
 ]
+
+export const users: UserType[] = [
+  {
+    id: '1',
+    username: 'Zedude',
+    job: 'manager',
+    firstname: 'Төмөрцог',
+    lastname: 'Насанжаргал',
+    phoneNumber: '99038827',
+  },
+  {
+    id: '2',
+    username: 'nas',
+    job: 'driver',
+    firstname: 'Төмөрцог',
+    lastname: 'Насжаргал',
+    phoneNumber: '99038827',
+  },
+  {
+    id: '3',
+    username: 'tomor',
+    job: 'engineer',
+    firstname: 'Төмөрцог',
+    lastname: 'Насанжаргал',
+    phoneNumber: '99038827',
+  },
+]
+
+export const dummyUser: UserType = {
+  id: '1',
+  username: 'Zedude',
+  job: 'manager',
+  firstname: 'Төмөрцог',
+  lastname: 'Насанжаргал',
+  phoneNumber: '99038827',
+  notifications: [
+    {
+      request: 'userChange',
+      title: 'Хэрэглэгчийн мэдээлэл засах хүсэлт',
+      userRequested: 'Жолооч Насжаргал Төмөрцог',
+      change: {
+        id: '2',
+        lastname: 'Насанжаргал',
+        reason: 'Миний нэрийг буруу бичсэн байна',
+      },
+    },
+    {
+      request: 'userChange',
+      title: 'Хэрэглэгчийн мэдээлэл засах хүсэлт',
+      userRequested: 'Жолооч Насанжаргал Төмөрцог',
+      change: {
+        id: '3',
+        lastname: 'Tomortsog',
+        phoneNumber: '99999999',
+        username: 'Hello',
+        reason: 'Миний нэрийг буруу бичсэн байна',
+      },
+    },
+    {
+      request: 'problem',
+      title: 'Асуудал гарлаа',
+      userRequested: 'Механик инженер...',
+      change: {
+        id: '45379875',
+      },
+    },
+  ],
+}

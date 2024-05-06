@@ -10,6 +10,7 @@ export type RootStackParamList = {
   MechanicEngineer: undefined
   TransportManager: undefined
   AddPost: undefined | { postId: string | null }
+  Notification: undefined
 }
 
 export type RootBottomTabParamList = {
@@ -30,6 +31,7 @@ export type RootWorkStackParamList = {
   Info: undefined | { id: string }
   Reason: undefined | { data: CarProblemType[] }
   DetailedInfo: undefined | { id: number }
+  Parts: undefined
 }
 
 export type RootManagerStackParamList = {

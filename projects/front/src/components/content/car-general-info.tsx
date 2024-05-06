@@ -3,13 +3,15 @@ import { DataType } from '../../utils/interface'
 import { ListContainer, SignatureCard, Tab } from '../common'
 import { StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
+import { useAuth } from '../../auth/auth-provider'
 
 type CarGeneralInfoProps = {
-  data?: DataType
+  data: DataType | undefined
 }
 
 export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const [tab, setTab] = useState(0)
 
   const styles = StyleSheet.create({
@@ -65,15 +67,15 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
     },
     title: {
       color: theme.text,
+      fontFamily: theme.nunito800,
       fontSize: 18,
-      fontWeight: '700',
       textAlign: 'center',
     },
   })
 
   return (
     <>
-      <Text style={styles.title}>Нэг: Техникийн Тодорхойлолт</Text>
+      <Text style={styles.title}>Хүргэлтийн мэдээлэл</Text>
       <Tab allTabs={['Машин', 'Хүргэлт']} tab={tab} setTab={setTab} />
       {tab == 0 ? (
         <View style={styles.tabContainer}>
@@ -82,9 +84,15 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
             <ListContainer
               itemOptions={{ allDisabled: true }}
               items={[
-                { content: 'Zembab', title: 'Улсын дугаар' },
-                { content: 'Zembab', title: 'Чиргүүлийн дугаар №1' },
-                { content: 'Zembab', title: 'Чиргүүлийн дугаар №2' },
+                { content: data?.carNumber, title: 'Улсын дугаар' },
+                {
+                  content: data?.trailerNumber,
+                  title: 'Чиргүүлийн дугаар №1',
+                },
+                {
+                  content: data?.trailerNumber2,
+                  title: 'Чиргүүлийн дугаар №2',
+                },
                 { content: 'Zembab', title: 'Чиргүүлийн дугаар №3' },
                 { content: 'Zembab', title: 'Чиргүүлийн дугаар №4' },
               ]}
@@ -99,7 +107,6 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
                 { content: 'Zembab', title: 'Он, сар' },
                 { content: 'Zembab', title: 'Хөдөлгүүр №' },
                 { content: 'Zembab', title: 'Рамны №' },
-                { content: 'Zembab', title: 'Улсын дугаар' },
               ]}
             />
           </View>
@@ -165,10 +172,20 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
             <Text style={styles.listTitle}>Хүргэлтийн мэдээлэл</Text>
             <ListContainer
               itemOptions={{ allDisabled: true }}
-              items={[
-                { content: 'Zembab', title: 'Гэрээний дугаар' },
-                { content: 'Zembab', title: 'Он, сар' },
-              ]}
+              items={
+                user?.job == 'manager'
+                  ? [
+                      { content: 'Zembab', title: 'Гэрээний дугаар' },
+                      { content: 'Zembab', title: 'Он, сар' },
+                      { content: 'Zembab', title: 'Чингэлэг авах байршил' },
+                      { content: 'Zembab', title: 'Амны байршил' },
+                      { content: 'Zembab', title: 'Боомтны байршил' },
+                    ]
+                  : [
+                      { content: 'Zembab', title: 'Гэрээний дугаар' },
+                      { content: 'Zembab', title: 'Он, сар' },
+                    ]
+              }
             />
           </View>
           <SignatureCard

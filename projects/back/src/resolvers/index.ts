@@ -1,5 +1,6 @@
 import { mapValues } from 'lodash';
 import { login, createUser, editUser, deleteUser } from './user';
+import { createPost, deletePost, editPost } from './post';
 
 export const resolversObjects = {
   Query: {
@@ -12,6 +13,10 @@ export const resolversObjects = {
     createUser,
     editUser,
     deleteUser,
+    //* Post
+    createPost,
+    editPost,
+    deletePost,
   },
 };
 

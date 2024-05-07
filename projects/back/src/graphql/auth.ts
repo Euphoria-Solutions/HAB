@@ -28,6 +28,6 @@ export const authTypes = gql`
       phone: String!
       role: String!
     ): Boolean!
-    deleteUser(_id: ID, username: String!): Boolean!
+    deleteUser(_id: ID, username: String): Boolean!
   }
 `;

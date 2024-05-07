@@ -1,5 +1,5 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
-import { ParamListBase } from '@react-navigation/native'
+import { ParamListBase, useRoute } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
@@ -19,6 +19,7 @@ export const HeaderElements: React.FC<HeaderElementsType> = ({
 }) => {
   const { user } = useAuth()
   const { theme } = useTheme()
+  const route = useRoute()
 
   const styles = StyleSheet.create({
     container: {
@@ -55,11 +56,20 @@ export const HeaderElements: React.FC<HeaderElementsType> = ({
     },
   })
 
+  if (
+    route.name == 'Profile' ||
+    route.name == 'Request' ||
+    route.name == 'Notification' ||
+    route.name == 'DetailedInfo'
+  ) {
+    return null
+  }
+
   return (
     user && (
       <View style={styles.container}>
         {user?.job == 'manager' && (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
             <BellOutlinedIcon style={styles.iconStyle} />
             {user.notifications && user.notifications.length > 0 && (
               <View style={styles.notificationStyle}>

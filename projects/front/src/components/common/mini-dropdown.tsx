@@ -16,6 +16,7 @@ type MiniDropdownProps = {
   activator: React.ReactNode
   visible: boolean
   setVisible: Dispatch<SetStateAction<boolean>>
+  position?: object
 }
 
 export const MiniDropdown: React.FC<MiniDropdownProps> = ({
@@ -23,6 +24,7 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
   activator,
   visible,
   setVisible,
+  position,
 }) => {
   const { theme } = useTheme()
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -54,8 +56,8 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
       alignItems: 'flex-end',
       alignSelf: 'flex-end',
       elevation: -1,
-      flex: 1,
       justifyContent: 'center',
+      position: 'relative',
       zIndex: -110,
     },
     divider: {
@@ -77,13 +79,13 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
       fontSize: 13,
     },
     optionItem: {
+      alignSelf: 'flex-start',
       flexDirection: 'row',
       gap: 10,
       marginTop: -1,
       padding: 16,
     },
     optionsContainer: {
-      alignSelf: 'flex-start',
       backgroundColor: theme.darkBg,
       borderRadius: 10,
       elevation: 10,
@@ -93,43 +95,43 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
       top: 36,
       transform: [{ translateY: translateYAnim }],
       zIndex: 60,
+      ...position,
     },
   })
 
   return (
     <>
+      {visible && (
+        <Animated.View style={styles.optionsContainer}>
+          <OutsidePressHandler
+            onOutsidePress={() => setTimeout(() => setVisible(false), 100)}
+          >
+            {options.map((item, i) => (
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    item.function()
+                    setTimeout(() => {
+                      toggleDropdown()
+                    }, 30)
+                  }}
+                  style={styles.optionItem}
+                >
+                  {item.icon && item.icon}
+                  {item.label && (
+                    <Text style={[styles.dropdownText, item.style]}>
+                      {item.label}
+                    </Text>
+                  )}
+                  {item.element && item.element}
+                </TouchableOpacity>
+                {i < options.length - 1 && <View style={styles.divider} />}
+              </>
+            ))}
+          </OutsidePressHandler>
+        </Animated.View>
+      )}
       <View style={styles.activatorContainer}>
-        {visible && (
-          <Animated.View style={styles.optionsContainer}>
-            <OutsidePressHandler
-              onOutsidePress={() => setTimeout(() => setVisible(false), 100)}
-            >
-              {options.map((item, i) => (
-                <View key={i}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      item.function()
-                      setTimeout(() => {
-                        toggleDropdown()
-                      }, 50)
-                    }}
-                    style={styles.optionItem}
-                  >
-                    {item.icon && item.icon}
-                    {item.label && (
-                      <Text style={[styles.dropdownText, item.style]}>
-                        {item.label}
-                      </Text>
-                    )}
-                    {item.element && item.element}
-                  </TouchableOpacity>
-                  {i < options.length - 1 && <View style={styles.divider} />}
-                </View>
-              ))}
-            </OutsidePressHandler>
-          </Animated.View>
-        )}
-
         <TouchableOpacity
           onPress={() => toggleDropdown()}
           style={styles.dropdownHeader}

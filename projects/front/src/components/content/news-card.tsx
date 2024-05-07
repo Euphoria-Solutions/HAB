@@ -117,6 +117,10 @@ export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
           </View>
         </View>
         <MiniDropdown
+          position={{
+            top: 40,
+            right: 20,
+          }}
           visible={visible}
           setVisible={setVisible}
           options={[

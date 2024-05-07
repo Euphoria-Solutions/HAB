@@ -4,6 +4,7 @@ import { useTheme } from '../../theme/theme-provider'
 import { LocationIcon } from '../../assets/icons/'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { DataType } from '../../utils'
+import { useAuth } from '../../auth/auth-provider'
 
 type CarDetailType = {
   profilePicture?: string
@@ -17,6 +18,7 @@ export const CarDetail: React.FC<CarDetailType> = ({
   profilePicture,
 }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const [state, setState] = useState('')
   const [dateString, setDateString] = useState('')
 
@@ -34,11 +36,38 @@ export const CarDetail: React.FC<CarDetailType> = ({
     tempDate += data.date.getMinutes()
 
     setDateString(tempDate)
-
-    if (data.state) {
-      if (data.state == 'finished') setState('Дууссан')
-      if (data.state == 'being processed') setState('Хийгдэж Байна')
-      if (data.state == 'waiting') setState('Хүлээгдэж Байна')
+    if (user?.job == 'manager') {
+      if (data.managerState) {
+        switch (data.managerState) {
+          case 'confirmed':
+            setState('Баталгаажсан')
+            break
+          case 'delivered':
+            setState('Хүргэгдсэн')
+            break
+          case 'engineer':
+            setState('ХАБ-н мэдээлэл')
+            break
+          case 'manager':
+            setState('Та шалгана уу')
+            break
+          case 'problem':
+            setState('Асуудал гарсан')
+            break
+          case 'mechanic':
+            setState('Шалгагдаж байна')
+            break
+          case 'time':
+            setState('Хугацаа болоогүй')
+            break
+        }
+      }
+    } else {
+      if (data.state) {
+        if (data.state == 'finished') setState('Дууссан')
+        if (data.state == 'being processed') setState('Хийгдэж Байна')
+        if (data.state == 'waiting') setState('Хүлээгдэж Байна')
+      }
     }
   }, [data])
 

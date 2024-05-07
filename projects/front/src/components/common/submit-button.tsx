@@ -48,7 +48,7 @@ export const SubmitButton: React.FC<ButtonProps> = ({
     button: {
       alignItems: 'center',
       backgroundColor: disabled ? theme.primaryDisabled : theme.primary,
-      borderRadius: 24,
+      borderRadius: 100,
       padding: 15,
     },
     buttonText: {

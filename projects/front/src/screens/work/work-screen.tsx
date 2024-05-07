@@ -17,6 +17,7 @@ import {
   WorkSearch,
 } from '../../components/common'
 import { carTempData } from '../../utils/temp-datas'
+import { useAuth } from '../../auth/auth-provider'
 
 type WorkScreenProps = {
   navigation: BottomTabNavigationProp<RootWorkStackParamList, 'Main'>
@@ -24,6 +25,7 @@ type WorkScreenProps = {
 
 export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const [tab, setTab] = useState(0)
   const [searchValue, setSearchValue] = useState('')
   const [searchFocus, setSearchFocus] = useState(false)
@@ -47,17 +49,25 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
 
   const getData = (): DataType[] => {
     const result: DataType[] = []
-    let day: Date
 
-    if (tab == 0) {
-      day = new Date(Date.now())
-      day.setDate(day.getDate() + 1)
-    } else {
-      day = new Date(2024, 5, 21)
+    const getStatement = (val: DataType) => {
+      if (user?.job == 'manager') {
+        return (
+          (tab == 0 && val.state == 'finished') ||
+          (tab == 1 && val.state != 'finished')
+        )
+      } else {
+        return (
+          (tab == 0 && val.date < new Date()) ||
+          (tab == 1 && val.date < new Date(2024, 5, 21))
+        )
+      }
     }
+
     carTempData.map(e => {
-      if (e.date <= day) {
+      if (getStatement(e)) {
         if (searchObject) {
+          console.log('what')
           if (searchObject.name == 'date' && e.date <= searchObject.title) {
             result.push(e)
           } else if (
@@ -75,7 +85,14 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
     return result
   }
   const handleTabChange = (t: number) => {
-    setSearchTags({ ...searchTags, timeFrame: t == 0 ? 'Өдрөөр' : 'Улирал' })
+    if (user?.job == 'manager') {
+      setSearchTags({
+        ...searchTags,
+        timeFrame: t == 0 ? 'Баталгаажсан' : 'Хүлээгдэж байгаа',
+      })
+    } else {
+      setSearchTags({ ...searchTags, timeFrame: t == 0 ? 'Өдрөөр' : 'Улирал' })
+    }
   }
 
   const styles = StyleSheet.create({
@@ -96,7 +113,11 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
     <View style={styles.container}>
       <Tab
         onTabChange={e => handleTabChange(e)}
-        allTabs={['Өдрөөр', 'Улирал']}
+        allTabs={
+          user?.job == 'manager'
+            ? ['Баталгаажсан', 'Хүлээгдэж байгаа']
+            : ['Өдрөөр', 'Улирал']
+        }
         tab={tab}
         setTab={setTab}
       />

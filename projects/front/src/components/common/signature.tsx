@@ -32,7 +32,7 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
     },
     cardName: {
       color: theme.text,
-      fontFamily: theme.commi800,
+      fontFamily: theme.nunito800,
       fontSize: 14,
     },
     cardSignature: {
@@ -90,16 +90,15 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
         </View>
         <View style={styles.aboutSignature}>
           <Text style={styles.signatureSubTitle}>Албан тушаал, нэр:</Text>
-          <Text style={styles.signatureName}>
-            {name} /{job}/
-          </Text>
+          <Text style={styles.signatureName}>{name}</Text>
+          <Text style={styles.signatureName}>/{job}/</Text>
         </View>
       </View>
     </View>
   ) : (
     <View style={styles.cardContainer}>
       <View style={styles.cardTitleContainer}>
-        <Text style={styles.cardSubtitle}>Гүйцэтгэсэн {job.toLowerCase()}</Text>
+        <Text style={styles.cardSubtitle}>{job}</Text>
         <Text style={styles.cardName}>{name}</Text>
       </View>
       <View style={styles.cardSignature} />

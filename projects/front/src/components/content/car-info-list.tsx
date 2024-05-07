@@ -5,13 +5,14 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { Indicator, ListContainer } from '../common'
+import { Indicator, ListContainer, SignatureCard } from '../common'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { CameraIcon, EditIcon, PlusIcon } from '../../assets/icons'
 import { useTheme } from '../../theme/theme-provider'
 import { carInfoTempData } from '../../utils/temp-datas'
 import { CarInfoType, EngineType } from '../../utils/interface'
 import { CarFixInfo } from './car-fix-info'
+import { useAuth } from '../../auth/auth-provider'
 
 type CarInfoListProps = {
   type: EngineType | 'all'
@@ -27,6 +28,7 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
   count,
 }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const [typeToShow, setTypeToShow] = useState<EngineType[]>([])
   const [qualityData, setQualityData] = useState<CarInfoType>()
   const [modalVisible, setModalVisible] = useState(false)
@@ -136,6 +138,12 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
       fontSize: 13,
       fontWeight: '600',
     },
+    header: {
+      color: theme.text,
+      fontFamily: theme.nunito800,
+      fontSize: 18,
+      textAlign: 'center',
+    },
     listIcon: {
       color: theme.darktext,
       width: 14,
@@ -159,7 +167,7 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
     },
     title: {
       color: theme.text,
-      fontFamily: theme.nunito700,
+      fontFamily: theme.nunito800,
       fontSize: 18,
     },
     titleContainer: {
@@ -177,6 +185,9 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
 
   return (
     <View style={styles.container}>
+      {user?.job == 'manager' && (
+        <Text style={styles.header}>Авто машины үзлэгийн тайлан</Text>
+      )}
       <View style={styles.showInfo}>
         {type == 'all' && (
           <View style={styles.container}>
@@ -232,6 +243,13 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
       <ListContainer
         items={[{ title: 'Хавсарсан зурагнууд: 0', content: 'default' }]}
       />
+      {user?.job == 'manager' && (
+        <SignatureCard
+          job='механик инженер'
+          name='Доржсүрэн Энхриймаа'
+          title='Тээврийн хэрэгсэл шалгасан'
+        />
+      )}
       <CarFixInfo
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

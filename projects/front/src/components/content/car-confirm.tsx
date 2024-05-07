@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import { RootWorkStackParamList } from '../../navigation/types'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { carProblemData } from '../../utils/temp-datas'
+import { useAuth } from '../../auth/auth-provider'
 
 type CarConfirmProps = {
   data?: DataType
@@ -19,6 +20,7 @@ type CarConfirmProps = {
 
 export const CarConfirm: React.FC<CarConfirmProps> = ({ data }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const navigation =
     useNavigation<BottomTabNavigationProp<RootWorkStackParamList, 'Info'>>()
   const [loading, setLoading] = useState(false)
@@ -41,6 +43,18 @@ export const CarConfirm: React.FC<CarConfirmProps> = ({ data }) => {
   }
   const handleSubmit = () => {
     navigation.navigate('Main')
+  }
+  const getJob = () => {
+    if (user) {
+      switch (user.job) {
+        case 'manager':
+          return 'Хянсан тээвэр зохицуулагч:'
+        case 'mechanic':
+          return 'Гүйцэтгэсэн механик инженер:'
+        default:
+          return ''
+      }
+    }
   }
 
   const styles = StyleSheet.create({
@@ -68,28 +82,55 @@ export const CarConfirm: React.FC<CarConfirmProps> = ({ data }) => {
         <Text style={styles.title}>
           {state == 'finished' ? 'Баталгаажуулалт:' : 'Асуудал гарсан'}
         </Text>
-        <SignatureCard
-          cardView
-          name='Нарантуяа Алдарсүх'
-          job='Mеханик инженер:'
-        />
-        <Indicator
-          title='Мэдээлэл бүрэн, зөв'
-          size={18}
-          state={state == 'finished' ? 'finished' : 'empty'}
-        />
-        <Indicator title='Гарын үсэг зурсан' size={18} state='empty' />
-        {state != 'finished' && (
-          <ListContainer
-            style={styles.listStyle}
-            items={[
-              {
-                title: 'Шалтгаан бөглөх',
-                content: 'default',
-                onPress: handleNavigateReason,
-              },
-            ]}
+        {user && (
+          <SignatureCard
+            cardView
+            name={user?.lastname + ' ' + user?.firstname}
+            job={getJob() ?? ''}
           />
+        )}
+        {user?.job == 'manager' ? (
+          state != 'finished' && (
+            <>
+              <Indicator
+                title='Мэдээлэл бүрэн, зөв'
+                size={18}
+                state={state == 'finished' ? 'finished' : 'empty'}
+              />
+              <Indicator title='Гарын үсэг зурсан' size={18} state='empty' />
+              <ListContainer
+                style={styles.listStyle}
+                items={[
+                  {
+                    title: 'Шалтгаан үзэх',
+                    content: 'default',
+                    onPress: handleNavigateReason,
+                  },
+                ]}
+              />
+            </>
+          )
+        ) : (
+          <>
+            <Indicator
+              title='Мэдээлэл бүрэн, зөв'
+              size={18}
+              state={state == 'finished' ? 'finished' : 'empty'}
+            />
+            <Indicator title='Гарын үсэг зурсан' size={18} state='empty' />
+            {state != 'finished' && (
+              <ListContainer
+                style={styles.listStyle}
+                items={[
+                  {
+                    title: 'Шалтгаан бөглөх',
+                    content: 'default',
+                    onPress: handleNavigateReason,
+                  },
+                ]}
+              />
+            )}
+          </>
         )}
       </View>
       <SubmitButton

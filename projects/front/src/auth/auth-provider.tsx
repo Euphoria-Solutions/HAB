@@ -1,21 +1,8 @@
 import React, { createContext, useContext, useState } from 'react'
-
-type User = {
-  id: string
-  username: string
-  phoneNumber: string
-  job: 'mechanic' | 'engineer' | 'manager' | 'driver'
-  firstname: string
-  lastname: string
-  notifications?: {
-    request: string
-    title: string
-    userRequested?: User
-  }[]
-}
+import { UserType, dummyUser } from '../utils'
 
 type AuthContextType = {
-  user: User | null
+  user: UserType | null
   signIn: (_u: string, _p: string, _fn: string, _ln: string) => Promise<void>
   signOut: () => void
 }
@@ -35,22 +22,15 @@ export const useAuth = () => {
 }
 
 export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<UserType | null>(null)
 
   const signIn = async (
     username: string,
+    _p: string,
     firstname: string,
     lastname: string
   ) => {
-    const dummyUser: User = {
-      id: '1',
-      username: username,
-      job: 'manager',
-      firstname: firstname,
-      lastname: lastname,
-      phoneNumber: '',
-    }
-    setUser(dummyUser)
+    setUser({ ...dummyUser, username, firstname, lastname })
   }
 
   const signOut = () => {

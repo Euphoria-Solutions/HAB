@@ -28,6 +28,7 @@ import { RootStackParamList } from './src/navigation/types'
 import { NavigationProvider } from './src/navigation'
 import { AuthProvider } from './src/auth/auth-provider'
 import { EventProvider } from 'react-native-outside-press'
+import { EngineerStack } from './src/screens/hab-engineer/engineer-stack'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -105,6 +106,11 @@ const App = () => {
                   options={{ headerShown: false }}
                   name='Driver'
                   component={DriverStack}
+                />
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name='HABEngineer'
+                  component={EngineerStack}
                 />
               </Stack.Navigator>
             </NavigationContainer>

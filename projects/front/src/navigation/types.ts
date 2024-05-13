@@ -12,6 +12,7 @@ export type RootStackParamList = {
   AddPost: undefined | { postId: string | null }
   Notification: undefined
   Driver: undefined
+  HABEngineer: undefined
 }
 
 export type RootBottomTabParamList = {
@@ -38,6 +39,14 @@ export type RootWorkStackParamList = {
 export type RootManagerStackParamList = {
   Home: undefined
   Admin: undefined
+  AddPost: undefined
+  Work: undefined
+  Chat: undefined
+}
+
+export type RootEngineerStackParamList = {
+  Home: undefined
+  SOS: undefined
   AddPost: undefined
   Work: undefined
   Chat: undefined

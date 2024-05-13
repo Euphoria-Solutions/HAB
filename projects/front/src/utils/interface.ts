@@ -14,6 +14,7 @@ export type DataType = {
   driver: string
   trailerNumber: string
   trailerNumber2?: string
+  signature: boolean
   managerState?:
     | 'delivered'
     | 'confirmed'

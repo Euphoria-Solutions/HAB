@@ -51,8 +51,8 @@ export const CarConfirm: React.FC<CarConfirmProps> = ({ data }) => {
           return 'Хянсан тээвэр зохицуулагч:'
         case 'mechanic':
           return 'Гүйцэтгэсэн механик инженер:'
-        default:
-          return ''
+        case 'driver':
+          return 'Жолооч'
       }
     }
   }
@@ -89,28 +89,27 @@ export const CarConfirm: React.FC<CarConfirmProps> = ({ data }) => {
             job={getJob() ?? ''}
           />
         )}
-        {user?.job == 'manager' ? (
-          state != 'finished' && (
-            <>
-              <Indicator
-                title='Мэдээлэл бүрэн, зөв'
-                size={18}
-                state={state == 'finished' ? 'finished' : 'empty'}
-              />
-              <Indicator title='Гарын үсэг зурсан' size={18} state='empty' />
-              <ListContainer
-                style={styles.listStyle}
-                items={[
-                  {
-                    title: 'Шалтгаан үзэх',
-                    content: 'default',
-                    onPress: handleNavigateReason,
-                  },
-                ]}
-              />
-            </>
-          )
-        ) : (
+        {user?.job == 'manager' && state != 'finished' && (
+          <>
+            <Indicator
+              title='Мэдээлэл бүрэн, зөв'
+              size={18}
+              state={state == 'finished' ? 'finished' : 'empty'}
+            />
+            <Indicator title='Гарын үсэг зурсан' size={18} state='empty' />
+            <ListContainer
+              style={styles.listStyle}
+              items={[
+                {
+                  title: 'Шалтгаан үзэх',
+                  content: 'default',
+                  onPress: handleNavigateReason,
+                },
+              ]}
+            />
+          </>
+        )}
+        {user?.job == 'mechanic' && (
           <>
             <Indicator
               title='Мэдээлэл бүрэн, зөв'

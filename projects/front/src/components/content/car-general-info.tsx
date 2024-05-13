@@ -173,7 +173,7 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
             <ListContainer
               itemOptions={{ allDisabled: true }}
               items={
-                user?.job == 'manager'
+                user?.job != 'mechanic'
                   ? [
                       { content: 'Zembab', title: 'Гэрээний дугаар' },
                       { content: 'Zembab', title: 'Он, сар' },

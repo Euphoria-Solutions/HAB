@@ -104,6 +104,7 @@ export const SOSFixInfo: React.FC<SOSFixInfoProps> = ({ navigation }) => {
         <View style={styles.sectionTwo}>
           <Text style={styles.title}>1.2 Таны хувийн мэдээлэл</Text>
           <CustomDropdown
+            zIndex={100}
             label='Цусний бүлэг'
             value={bloodType}
             onSelect={e => setBloodType(e)}

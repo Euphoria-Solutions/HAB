@@ -15,6 +15,7 @@ import {
   AccountInfo,
   AddPostScreen,
   ChangePasswordScreen,
+  DriverStack,
   HomeScreen,
   LoginScreen,
   MechanicEngineer,
@@ -99,6 +100,11 @@ const App = () => {
                   options={{ title: 'Мэдэгдэл' }}
                   name='Notification'
                   component={NotificationScreen}
+                />
+                <Stack.Screen
+                  options={{ headerShown: false }}
+                  name='Driver'
+                  component={DriverStack}
                 />
               </Stack.Navigator>
             </NavigationContainer>

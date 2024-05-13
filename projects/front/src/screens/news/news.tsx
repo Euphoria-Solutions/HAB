@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { RootManagerStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
@@ -8,13 +8,15 @@ import { SearchInput, Weather } from '../../components/common'
 import { NewsCard } from '../../components/content'
 import { newsData, NewsType } from '../../utils/'
 import { EventProvider } from 'react-native-outside-press'
+import { useAuth } from '../../auth/auth-provider'
 
 type NewsScreenProps = {
   navigation: BottomTabNavigationProp<RootManagerStackParamList, 'Home'>
 }
 
-export const NewsScreen: React.FC<NewsScreenProps> = () => {
+export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const [searchValue, setSearchValue] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const [data, setData] = useState(newsData)
@@ -41,6 +43,11 @@ export const NewsScreen: React.FC<NewsScreenProps> = () => {
       )
     }
   }, [searchValue, data])
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Өглөөний мэнд, ' + user?.firstname,
+    })
+  }, [navigation])
 
   const deleteData = (index: number) => {
     setData(prev => {

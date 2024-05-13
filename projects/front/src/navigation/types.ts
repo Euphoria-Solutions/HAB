@@ -11,6 +11,7 @@ export type RootStackParamList = {
   TransportManager: undefined
   AddPost: undefined | { postId: string | null }
   Notification: undefined
+  Driver: undefined
 }
 
 export type RootBottomTabParamList = {

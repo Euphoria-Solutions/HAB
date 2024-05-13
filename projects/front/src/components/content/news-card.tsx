@@ -8,6 +8,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { RootManagerStackParamList } from '../../navigation/types'
 import { useNav } from '../../navigation'
 import { NewsType } from '../../utils'
+import { useAuth } from '../../auth/auth-provider'
 
 type NewsCardProps = {
   data: NewsType
@@ -16,6 +17,7 @@ type NewsCardProps = {
 
 export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const { setId } = useNav()
   const [visible, setVisible] = useState(false)
   const navigation =
@@ -116,33 +118,35 @@ export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
             </Text>
           </View>
         </View>
-        <MiniDropdown
-          position={{
-            top: 40,
-            right: 20,
-          }}
-          visible={visible}
-          setVisible={setVisible}
-          options={[
-            {
-              icon: <TrashIcon style={styles.deleteIcon} />,
-              label: 'Устгах',
-              function: () => {
-                deleteData()
+        {user?.job == 'manager' && (
+          <MiniDropdown
+            position={{
+              top: 40,
+              right: 20,
+            }}
+            visible={visible}
+            setVisible={setVisible}
+            options={[
+              {
+                icon: <TrashIcon style={styles.deleteIcon} />,
+                label: 'Устгах',
+                function: () => {
+                  deleteData()
+                },
+                style: styles.deleteIcon,
               },
-              style: styles.deleteIcon,
-            },
-            {
-              icon: <PenIcon style={styles.editIcon} />,
-              label: 'Засах',
-              function: () => {
-                setId(data.id)
-                navigation.navigate('AddPost')
+              {
+                icon: <PenIcon style={styles.editIcon} />,
+                label: 'Засах',
+                function: () => {
+                  setId(data.id)
+                  navigation.navigate('AddPost')
+                },
               },
-            },
-          ]}
-          activator={<MoreIcon style={styles.activatorStyle} />}
-        />
+            ]}
+            activator={<MoreIcon style={styles.activatorStyle} />}
+          />
+        )}
       </View>
       {data.text && <Text style={styles.mainTextStyle}>{data.text}</Text>}
       {data.imageLinks && <ImageLoader images={data.imageLinks} />}

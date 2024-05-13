@@ -72,7 +72,7 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
     getData()
   })
   useEffect(() => {
-    if (user?.job == 'manager' && data) {
+    if (user?.job != 'mechanic' && data) {
       setPages([
         <CarGeneralInfo key={0} data={data} />,
         <CarInfoList

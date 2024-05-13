@@ -63,10 +63,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         index: 1,
         routes: [{ name: 'TransportManager' }],
       })
-    } else {
+    } else if (user?.job == 'mechanic') {
       navigation.reset({
         index: 1,
         routes: [{ name: 'MechanicEngineer' }],
+      })
+    } else if (user?.job == 'driver') {
+      navigation.reset({
+        index: 1,
+        routes: [{ name: 'Driver' }],
       })
     }
   }

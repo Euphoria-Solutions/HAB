@@ -585,7 +585,7 @@ export const users: UserType[] = [
 export const dummyUser: UserType = {
   id: '1',
   username: 'Zedude',
-  job: 'manager',
+  job: 'driver',
   firstname: 'Төмөрцог',
   lastname: 'Насанжаргал',
   phoneNumber: '99038827',

@@ -37,9 +37,11 @@ export const CustomTabHeader: React.FC<CustomHeaderProps> = ({
 
   useLayoutEffect(() => {
     if (route) {
-      setTitle(getHeaderTitle(options, route.name))
+      setTitle(
+        options.headerTitle?.toString() ?? getHeaderTitle(options, route.name)
+      )
     }
-  }, [route])
+  }, [route.name, options])
 
   const styles = StyleSheet.create({
     backButtonIcon: {

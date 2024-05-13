@@ -51,7 +51,7 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
     const result: DataType[] = []
 
     const getStatement = (val: DataType) => {
-      if (user?.job == 'manager') {
+      if (user?.job != 'mechanic') {
         return (
           (tab == 0 && val.state == 'finished') ||
           (tab == 1 && val.state != 'finished')
@@ -67,7 +67,6 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
     carTempData.map(e => {
       if (getStatement(e)) {
         if (searchObject) {
-          console.log('what')
           if (searchObject.name == 'date' && e.date <= searchObject.title) {
             result.push(e)
           } else if (
@@ -85,7 +84,7 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
     return result
   }
   const handleTabChange = (t: number) => {
-    if (user?.job == 'manager') {
+    if (user?.job != 'mechanic') {
       setSearchTags({
         ...searchTags,
         timeFrame: t == 0 ? 'Баталгаажсан' : 'Хүлээгдэж байгаа',
@@ -114,7 +113,7 @@ export const WorkScreen: React.FC<WorkScreenProps> = ({ navigation }) => {
       <Tab
         onTabChange={e => handleTabChange(e)}
         allTabs={
-          user?.job == 'manager'
+          user?.job != 'mechanic'
             ? ['Баталгаажсан', 'Хүлээгдэж байгаа']
             : ['Өдрөөр', 'Улирал']
         }

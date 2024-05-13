@@ -53,6 +53,8 @@ export const CarConfirm: React.FC<CarConfirmProps> = ({ data }) => {
           return 'Гүйцэтгэсэн механик инженер:'
         case 'driver':
           return 'Жолооч'
+        case 'engineer':
+          return 'ХАБ Инженер'
       }
     }
   }

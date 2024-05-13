@@ -11,6 +11,7 @@ import {
   CarInfoList,
   CarGeneralInfo,
   CarConfirm,
+  CarReview,
 } from '../../components/content'
 import { ScrollView } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -73,17 +74,25 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   })
   useEffect(() => {
     if (user?.job != 'mechanic' && data) {
-      setPages([
-        <CarGeneralInfo key={0} data={data} />,
-        <CarInfoList
-          count={count}
-          setCount={setCount}
-          showCount
-          type='all'
-          key={1}
-        />,
-        <CarConfirm key={2} data={data} />,
-      ])
+      if (user?.job == 'engineer') {
+        setPages([
+          <CarGeneralInfo key={0} data={data} />,
+          <CarReview key={1} />,
+          <CarConfirm key={2} data={data} />,
+        ])
+      } else {
+        setPages([
+          <CarGeneralInfo key={0} data={data} />,
+          <CarInfoList
+            count={count}
+            setCount={setCount}
+            showCount
+            type='all'
+            key={1}
+          />,
+          <CarConfirm key={2} data={data} />,
+        ])
+      }
     }
   }, [user, data])
 

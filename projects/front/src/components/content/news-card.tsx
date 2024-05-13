@@ -118,35 +118,36 @@ export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
             </Text>
           </View>
         </View>
-        {user?.job == 'manager' && (
-          <MiniDropdown
-            position={{
-              top: 40,
-              right: 20,
-            }}
-            visible={visible}
-            setVisible={setVisible}
-            options={[
-              {
-                icon: <TrashIcon style={styles.deleteIcon} />,
-                label: 'Устгах',
-                function: () => {
-                  deleteData()
+        {user?.job == 'manager' ||
+          (user?.job == 'engineer' && (
+            <MiniDropdown
+              position={{
+                top: 40,
+                right: 20,
+              }}
+              visible={visible}
+              setVisible={setVisible}
+              options={[
+                {
+                  icon: <TrashIcon style={styles.deleteIcon} />,
+                  label: 'Устгах',
+                  function: () => {
+                    deleteData()
+                  },
+                  style: styles.deleteIcon,
                 },
-                style: styles.deleteIcon,
-              },
-              {
-                icon: <PenIcon style={styles.editIcon} />,
-                label: 'Засах',
-                function: () => {
-                  setId(data.id)
-                  navigation.navigate('AddPost')
+                {
+                  icon: <PenIcon style={styles.editIcon} />,
+                  label: 'Засах',
+                  function: () => {
+                    setId(data.id)
+                    navigation.navigate('AddPost')
+                  },
                 },
-              },
-            ]}
-            activator={<MoreIcon style={styles.activatorStyle} />}
-          />
-        )}
+              ]}
+              activator={<MoreIcon style={styles.activatorStyle} />}
+            />
+          ))}
       </View>
       {data.text && <Text style={styles.mainTextStyle}>{data.text}</Text>}
       {data.imageLinks && <ImageLoader images={data.imageLinks} />}

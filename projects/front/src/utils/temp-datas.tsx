@@ -21,6 +21,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'delivered',
+    signature: true,
   },
   {
     carNumber: '4327 УНА',
@@ -33,6 +34,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'engineer',
+    signature: true,
   },
   {
     carNumber: '5050 УНА',
@@ -45,6 +47,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'manager',
+    signature: true,
   },
   {
     carNumber: '3030 УБА',
@@ -57,6 +60,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'time',
+    signature: true,
   },
   {
     carNumber: '5050 УНА',
@@ -69,6 +73,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'problem',
+    signature: false,
   },
   {
     carNumber: '4444 УНА',
@@ -81,6 +86,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'confirmed',
+    signature: false,
   },
 ]
 
@@ -585,7 +591,7 @@ export const users: UserType[] = [
 export const dummyUser: UserType = {
   id: '1',
   username: 'Zedude',
-  job: 'driver',
+  job: 'engineer',
   firstname: 'Төмөрцог',
   lastname: 'Насанжаргал',
   phoneNumber: '99038827',

@@ -1,21 +1,34 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useNavigation } from '@react-navigation/native'
 import {
   WorkIcon,
   WorkFilledIcon,
   ChatFilledIcon,
   ChatIcon,
   HomeIcon,
+  HomeFilledIcon,
+  AddIcon,
   SOSFilledIcon,
   SOSIcon,
-  HomeFilledIcon,
 } from '../../assets/icons/'
 import { CustomBottomTabBar, CustomTabHeader } from '../../components/custom'
-import { NewsScreen, SOSStack, WorkScreen, WorkStack } from '../'
+import { NewsScreen } from '../news/news'
+import { WorkStack } from '../work/work-stack'
+import {
+  RootEngineerStackParamList,
+  RootStackParamList,
+} from '../../navigation/types'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { useNav } from '../../navigation'
+import { SOSStack } from '../sos/sos-stack'
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<RootEngineerStackParamList>()
 
-export const MechanicEngineer: React.FC = () => {
+export const EngineerStack: React.FC = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
+  const { id } = useNav()
+
   return (
     <Tab.Navigator
       tabBar={props => <CustomBottomTabBar {...props} />}
@@ -27,6 +40,7 @@ export const MechanicEngineer: React.FC = () => {
               navigation={navigation}
               route={route}
               options={options}
+              showBorder={false}
             />
           )
         },
@@ -36,6 +50,7 @@ export const MechanicEngineer: React.FC = () => {
         name='Home'
         component={NewsScreen}
         options={{
+          headerTitle: 'Өглөөний мэнд, Алдарсүх!',
           title: 'Нүүр',
           tabBarIcon: ({ focused, color, size }) =>
             focused ? (
@@ -64,8 +79,29 @@ export const MechanicEngineer: React.FC = () => {
         }}
       />
       <Tab.Screen
+        name='AddPost'
+        component={NewsScreen}
+        listeners={{
+          tabPress: e => {
+            e.preventDefault()
+            navigation.navigate('AddPost', { postId: null })
+          },
+          focus: () => {
+            navigation.goBack()
+            navigation.navigate('TransportManager')
+            navigation.navigate('AddPost', { postId: id })
+          },
+        }}
+        options={{
+          title: 'Пост',
+          tabBarIcon: ({ color, size }) => (
+            <AddIcon style={{ height: size, width: size, color: color }} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name='Chat'
-        component={WorkScreen}
+        component={NewsScreen}
         options={{
           title: 'Чат',
           tabBarIcon: ({ focused, color, size }) =>

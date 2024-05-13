@@ -14,7 +14,6 @@ export const postTypes = gql`
 
   extend type Mutation {
     createPost(
-      _id: ID
       username: String!
       photo: String!
       job: String!

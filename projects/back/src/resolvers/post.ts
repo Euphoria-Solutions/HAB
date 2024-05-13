@@ -24,7 +24,6 @@ export const createPost = async (
 
     return true;
   } catch (err) {
-    console.log(err);
     throw new Error((err as Error).message);
   }
 };

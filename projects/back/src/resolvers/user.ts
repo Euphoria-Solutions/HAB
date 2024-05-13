@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { UserModel } from '../models';
+import { UserModel } from '@/models';
 import {
   MutationLoginArgs,
   MutationCreateUserArgs,
@@ -52,7 +52,6 @@ export const createUser = async (
       ...params,
       password: token,
     });
-    console.log(user);
 
     await user.save();
 
@@ -67,7 +66,6 @@ export const createUser = async (
 
     return sessionToken;
   } catch (err) {
-    console.log(err);
     throw new Error((err as Error).message);
   }
 };

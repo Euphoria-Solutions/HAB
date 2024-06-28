@@ -32,7 +32,6 @@ const uri =
   process.env[
     `MONGODB_URL_${process.env.CURRENT_ENV == 'PROD' ? 'PROD' : 'DEV'}`
   ] ?? '';
-console.log('a: ', uri);
 
 mongoose.connect(uri);
 const connection = mongoose.connection;

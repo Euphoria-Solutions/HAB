@@ -4,11 +4,12 @@ const { Schema } = mongoose;
 
 const PostSchema = new Schema({
   username: String,
-  photo: String,
   job: String,
+  photo: String,
+  title: String,
   date: String,
   text: String,
-  imageLinks: String,
+  imageLinks: [String],
   viewer: String,
 });
 

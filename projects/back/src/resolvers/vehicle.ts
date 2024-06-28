@@ -3,6 +3,7 @@ import {
   MutationCreateVehicleArgs,
   MutationEditVehicleArgs,
   MutationDeleteVehicleArgs,
+  QueryGetVehicleArgs,
 } from '@/generated/generated';
 import { VehicleModel } from '@/models';
 
@@ -44,5 +45,16 @@ export const deleteVehicle = async (
     return true;
   } catch (err) {
     throw new Error((err as Error).message);
+  }
+};
+
+export const getVehicle = async (
+  _: ResolversParentTypes,
+  params: QueryGetVehicleArgs
+) => {
+  try {
+    return await VehicleModel.find(params);
+  } catch (err) {
+    return [];
   }
 };

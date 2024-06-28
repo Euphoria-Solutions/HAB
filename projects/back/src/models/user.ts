@@ -9,11 +9,8 @@ const UserSchema = new Schema({
   },
   firstname: String,
   lastname: String,
-  role: {
-    type: String,
-    enum: ['driver', 'engineer', 'manager', 'mechanic'],
-  },
-  phone: String,
+  job: String,
+  phoneNumber: String,
   password: String,
 });
 

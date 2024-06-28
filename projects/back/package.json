@@ -11,8 +11,8 @@
     "start": "next start",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "deploy:dev": "npx dotenv -v VERCEL_ORG_ID=QYSSG1MAh2kwkGim8YI6eYOQ -v VERCEL_PROJECT_ID=prj_CTkf3GocrAAjaxZXG02YiQjEMykk -- bash -c 'vercel --prod --token=$VERCEL_TOKEN'",
-    "deploy:prod": "npx dotenv -v VERCEL_ORG_ID=QYSSG1MAh2kwkGim8YI6eYOQ -v VERCEL_PROJECT_ID=prj_y6WTm5LXXMMKFYJqwgZ7W4X84Xfx -- bash -c 'vercel --prod --token=$VERCEL_TOKEN'"
+    "deploy:dev": "npx dotenv -v VERCEL_ORG_ID=yOZPBek1NVOB0XPl5galbdEl -v VERCEL_PROJECT_ID=prj_6SAoBH2Z1BSesqdW90cpEq4dKo8f -- bash -c 'vercel --prod --token=$VERCEL_TOKEN'",
+    "deploy:prod": "npx dotenv -v VERCEL_ORG_ID=yOZPBek1NVOB0XPl5galbdEl -v VERCEL_PROJECT_ID=prj_y6WTm5LXXMMKFYJqwgZ7W4X84Xfx -- bash -c 'vercel --prod --token=$VERCEL_TOKEN'"
   },
   "dependencies": {
     "@apollo/client": "^3.8.7",
@@ -23,6 +23,8 @@
     "express": "^4.18.2",
     "firebase": "^10.11.1",
     "graphql": "^16.8.1",
+    "graphql-middleware": "^6.1.35",
+    "graphql-shield": "^7.6.5",
     "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",

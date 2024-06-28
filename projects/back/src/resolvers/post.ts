@@ -3,6 +3,7 @@ import {
   MutationCreatePostArgs,
   MutationEditPostArgs,
   MutationDeletePostArgs,
+  QueryGetPostsArgs,
 } from '@/generated/generated';
 import { PostModel, UserModel } from '@/models';
 
@@ -57,5 +58,16 @@ export const deletePost = async (
     return true;
   } catch (err) {
     throw new Error((err as Error).message);
+  }
+};
+
+export const getPosts = async (
+  _: ResolversParentTypes,
+  params: QueryGetPostsArgs
+) => {
+  try {
+    return await PostModel.find(params);
+  } catch (err) {
+    return [];
   }
 };

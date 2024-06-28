@@ -3,15 +3,21 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const VehicleSchema = new Schema({
-  carNumber: String,
-  state: String,
-  progress: String,
-  date: String,
-  driver: String,
-  location: String,
-  trailerNumber: String,
+  license: String,
+  trailerNumber1: String,
   trailerNumber2: String,
-  managerState: String,
+  manufacturedCountry: String,
+  date: String,
+  engineNumber: String,
+  ramNumber: String,
+  tonnage: String,
+  dateOfArrival: String,
+  certificate: String,
+  dateOfUse: String,
+  price: String,
+  durability: String,
+  fuel: String,
+  enginePower: String,
 });
 
 export const VehicleModel =

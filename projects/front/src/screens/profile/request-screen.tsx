@@ -4,6 +4,8 @@ import { NavigationProp } from '@react-navigation/native'
 import { RootStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
 import { LoginInput, SubmitButton } from '../../components/common'
+import { useMutation } from '@apollo/client'
+import { CREATE_FEEDBACK } from '../../graphql/mutations/feedback'
 
 type RequestProps = {
   navigation: NavigationProp<RootStackParamList, 'Request'>
@@ -15,8 +17,17 @@ export const RequestScreen: React.FC<RequestProps> = ({ navigation }) => {
   const [position, setPosition] = useState('')
   const [requestText, setRequestText] = useState('')
   const [loading, setLoading] = useState(false)
+  const [createFeedBack] = useMutation(CREATE_FEEDBACK)
 
-  const handlePress = () => {
+  const handlePress = async () => {
+    const { data: feedbackData } = await createFeedBack({
+      variables: {
+        name: username,
+        job: position,
+        feedback: requestText,
+      },
+    })
+    console.log('feedback:', feedbackData)
     setLoading(true)
     setTimeout(() => {
       setLoading(false)

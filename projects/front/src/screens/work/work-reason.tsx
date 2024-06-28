@@ -195,7 +195,7 @@ export const WorkReason: React.FC<ReasonProps> = ({ navigation }) => {
             />
           </>
         )}
-        <ListContainer
+        {/* <ListContainer
           style={styles.listStyle}
           items={[
             {
@@ -203,7 +203,7 @@ export const WorkReason: React.FC<ReasonProps> = ({ navigation }) => {
               content: 'default',
             },
           ]}
-        />
+        /> */}
         {user?.job == 'manager' && (
           <ListContainer
             itemOptions={{ maxWidth: '100%' }}

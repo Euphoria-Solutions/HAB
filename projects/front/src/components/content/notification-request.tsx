@@ -25,7 +25,7 @@ export const NotificationRequest: React.FC<NotificationRequestProps> = ({
   useEffect(() => {
     if (users && request?.change) {
       users.map(e => {
-        if (e.id == request?.change?.id) {
+        if (e._id == request?.change?.id) {
           setUser(e)
         }
       })

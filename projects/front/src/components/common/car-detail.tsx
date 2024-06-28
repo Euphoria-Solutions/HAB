@@ -185,7 +185,7 @@ export const CarDetail: React.FC<CarDetailType> = ({
         <View style={styles.topSectionStyle}>
           <Text style={styles.carTextStyle}>
             Машины дугаар:{' '}
-            <Text style={styles.carNumberStyle}>{data.carNumber}</Text>
+            <Text style={styles.carNumberStyle}>{data.license}</Text>
           </Text>
           <View style={styles.stateAndProgress}>
             <View style={styles.stateContainer}>

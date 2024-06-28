@@ -5,6 +5,9 @@ import { RootStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
 import { ConfirmIcon } from '../../assets/icons/'
 import { LoginInput, SubmitButton } from '../../components/common'
+import { useMutation } from '@apollo/client'
+import { CHANGE_PASSWORD } from '../../graphql'
+import { useAuth } from '../../auth/auth-provider'
 
 type ChangeProps = {
   navigation: NavigationProp<RootStackParamList, 'ChangePassword'>
@@ -21,8 +24,10 @@ export const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
   const [charMinMet, setCharMinMet] = useState(false)
   const [capitalMet, setCapitalMet] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [changePassword] = useMutation(CHANGE_PASSWORD)
+  const { user } = useAuth()
 
-  const handlePress = () => {
+  const handlePress = async () => {
     if (!oldPass) {
       setOldPassError('Нууц үгээ оруулна уу')
       return
@@ -35,25 +40,41 @@ export const ChangePasswordScreen: React.FC<ChangeProps> = ({ navigation }) => {
       setConfirmPassError('Нууц үгээ оруулна уу')
       return
     }
-    if (oldPass != '123') {
-      setOldPassError('Нууц үг таарахгүй байна / Нууц үгээ оруулна уу')
+    if (newPass !== confirmPass) {
+      setConfirmPassError('Нууц үг таарахгүй байна')
       return
     }
     if (!charMinMet || !capitalMet) {
       setNewPassError('Тэмдэгт холилдсон')
       return
     }
-    if (confirmPass != newPass) {
-      setConfirmPassError('Нууц үг таарахгүй байна')
-      return
-    }
+
     setLoading(true)
-    setTimeout(() => {
+    try {
+      const { data } = await changePassword({
+        variables: {
+          id: user?._id,
+          oldPassword: oldPass,
+          newPassword: newPass,
+        },
+      })
+      console.log('password changed status:', data.changePassword)
+      console.log('data:', data)
+
+      if (data.changePassword == true) {
+        navigation.goBack()
+      } else {
+        setOldPassError('Нууц үг таарахгүй байна / Нууц үгээ оруулна уу')
+      }
+    } catch (error) {
+      setOldPassError('Нууц үг таарахгүй байна / Нууц үгээ оруулна уу')
+    } finally {
       setLoading(false)
-    }, 3000)
+    }
   }
   const handleSubmit = () => {
-    navigation.goBack()
+    // navigation.goBack()
+    console.log('something went wrong')
   }
 
   useEffect(() => {

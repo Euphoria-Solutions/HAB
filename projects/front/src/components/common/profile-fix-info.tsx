@@ -4,6 +4,8 @@ import { useTheme } from '../../theme/theme-provider'
 import { CustomDropdown, CustomModal } from '../custom'
 import { LoginInput } from './login-input'
 import { SubmitButton } from './submit-button'
+// import { useMutation } from '@apollo/client'
+// import { CHANGE_REQUEST, CREATE_NOTIFICATION } from '../../graphql'
 
 type jobType = {
   value: string
@@ -13,10 +15,10 @@ type jobType = {
 type ProfileFixInfoProps = {
   modalVisible: boolean
   setModalVisible: (_v: boolean) => void
-  surname: string
-  setSurname: (_v: string) => void
-  name: string
-  setName: (_v: string) => void
+  lastname: string
+  setLastname: (_v: string) => void
+  firstname: string
+  setFirstname: (_v: string) => void
   number: string
   setNumber: (_v: string) => void
   job: jobType
@@ -28,10 +30,10 @@ type ProfileFixInfoProps = {
 export const ProfileFixInfo: React.FC<ProfileFixInfoProps> = ({
   modalVisible,
   setModalVisible,
-  surname,
-  setSurname,
-  name,
-  setName,
+  lastname,
+  setLastname,
+  firstname,
+  setFirstname,
   number,
   setNumber,
   job = { value: '', label: '' },
@@ -42,9 +44,15 @@ export const ProfileFixInfo: React.FC<ProfileFixInfoProps> = ({
   const { theme } = useTheme()
   const [loading, setLoading] = useState(false)
   const [keyboardAvoid, setKeyboardAvoid] = useState(0)
+  // const { sendNotification } = useMutation(CREATE_NOTIFICATION)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true)
+    // const { data: requestData } = requestToChange({
+    //   variables: {
+    //     request
+    //   }
+    // })
     setTimeout(() => {
       setLoading(false)
     }, 3000)
@@ -81,14 +89,14 @@ export const ProfileFixInfo: React.FC<ProfileFixInfoProps> = ({
         <LoginInput
           onFocus={() => setKeyboardAvoid(-340)}
           label='Таны овог'
-          value={surname}
-          setValue={setSurname}
+          value={lastname}
+          setValue={setLastname}
         />
         <LoginInput
           onFocus={() => setKeyboardAvoid(-240)}
           label='Таны нэр'
-          value={name}
-          setValue={setName}
+          value={firstname}
+          setValue={setFirstname}
         />
         <LoginInput
           onFocus={() => setKeyboardAvoid(-140)}

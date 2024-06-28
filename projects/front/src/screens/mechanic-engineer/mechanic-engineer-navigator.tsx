@@ -11,7 +11,8 @@ import {
   HomeFilledIcon,
 } from '../../assets/icons/'
 import { CustomBottomTabBar, CustomTabHeader } from '../../components/custom'
-import { NewsScreen, SOSStack, WorkScreen, WorkStack } from '../'
+import { NewsScreen, SOSStack, WorkStack } from '../'
+import { ComingSoon } from '../test-screen/coming-soon'
 
 const Tab = createBottomTabNavigator()
 
@@ -64,8 +65,8 @@ export const MechanicEngineer: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name='Chat'
-        component={WorkScreen}
+        name='ComingSoon'
+        component={ComingSoon}
         options={{
           title: 'Чат',
           tabBarIcon: ({ focused, color, size }) =>

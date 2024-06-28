@@ -219,11 +219,11 @@ export const WorkSearch: React.FC<WorkSearchProps> = ({
 const queryNames: QueryNameType[] = [
   {
     title: 'Машины улсын дугаар',
-    name: 'carNumber',
+    name: 'license',
   },
   {
     title: 'Гэрээний дугаар',
-    name: 'id',
+    name: '_id',
   },
   {
     title: 'Жолооч',

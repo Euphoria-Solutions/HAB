@@ -7,6 +7,7 @@ import {
   ScheduleType,
   UserType,
   WorkerType,
+  // WorkerType,
 } from './interface'
 
 export const carTempData: DataType[] = [
@@ -21,7 +22,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'delivered',
-    signature: true,
+    signature: '',
   },
   {
     carNumber: '4327 УНА',
@@ -34,7 +35,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'engineer',
-    signature: true,
+    signature: '',
   },
   {
     carNumber: '5050 УНА',
@@ -47,7 +48,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'manager',
-    signature: true,
+    signature: '',
   },
   {
     carNumber: '3030 УБА',
@@ -59,8 +60,8 @@ export const carTempData: DataType[] = [
     location: 'Дундговь, нэг газрын хаяг, Дундговь, нэг газрын хаяг',
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
-    managerState: 'time',
-    signature: true,
+    managerState: 'manager',
+    signature: '',
   },
   {
     carNumber: '5050 УНА',
@@ -73,7 +74,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'problem',
-    signature: false,
+    signature: '',
   },
   {
     carNumber: '4444 УНА',
@@ -86,7 +87,7 @@ export const carTempData: DataType[] = [
     trailerNumber: '2230 УНА',
     trailerNumber2: '3349 ХАБ',
     managerState: 'confirmed',
-    signature: false,
+    signature: '',
   },
 ]
 
@@ -239,7 +240,7 @@ export const newsData: NewsType[] = [
     text: 'What',
     name: 'Temporary',
     job: 'Тээвэр зохицуулагч',
-    time: new Date('2024-04-15T00:00:00'),
+    date: new Date('2024-04-15T00:00:00'),
     imageLinks: [
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
@@ -254,7 +255,7 @@ export const newsData: NewsType[] = [
     text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
     name: 'Энхжин Алтансүх',
     job: 'Тээвэр зохицуулагч',
-    time: new Date('2024-04-15T00:00:00'),
+    date: new Date('2024-04-15T00:00:00'),
     imageLinks: [
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
@@ -268,7 +269,7 @@ export const newsData: NewsType[] = [
     text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
     name: 'Энхжин Алтансүх',
     job: 'Тээвэр зохицуулагч',
-    time: new Date('2024-04-15T00:00:00'),
+    date: new Date('2024-04-15T00:00:00'),
     imageLinks: [
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
@@ -281,7 +282,7 @@ export const newsData: NewsType[] = [
     text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
     name: 'Энхжин Алтансүх',
     job: 'Тээвэр зохицуулагч',
-    time: new Date('2024-04-15T00:00:00'),
+    date: new Date('2024-04-15T00:00:00'),
     imageLinks: [
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
@@ -293,7 +294,7 @@ export const newsData: NewsType[] = [
     text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
     name: 'Энхжин Алтансүх',
     job: 'Тээвэр зохицуулагч',
-    time: new Date('2024-04-15T00:00:00'),
+    date: new Date('2024-04-15T00:00:00'),
     imageLinks: [
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
     ],
@@ -304,14 +305,14 @@ export const newsData: NewsType[] = [
     text: 'Эрт урьд цагт энэ дэлхийд долоон нар гараад, ган гачиг болоод, газрын хөрс улайдаад, ус мөрөн ширгээд, ',
     name: 'Энхжин Алтансүх',
     job: 'Тээвэр зохицуулагч',
-    time: new Date('2024-04-15T00:00:00'),
+    date: new Date('2024-04-15T00:00:00'),
   },
   {
     viewer: 'everyone',
     id: '7',
     name: 'Энхжин Алтансүх',
     job: 'Тээвэр зохицуулагч',
-    time: new Date('2024-04-15T00:00:00'),
+    date: new Date('2024-04-15T00:00:00'),
     imageLinks: [
       'https://blueprintdigital.com/wp-content/uploads/2014/11/stock-photo-happy-man-giving-okay-sign-portrait-on-white-background-141327337.jpg',
     ],
@@ -320,48 +321,48 @@ export const newsData: NewsType[] = [
 
 export const workerData: WorkerType[] = [
   {
-    name: 'Энхжин',
-    surname: 'Алтансүх',
+    firstname: 'Энхжин',
+    lastname: 'Алтансүх',
     job: 'driver',
     mobileNumber: 99999999,
     username: 'kellokitty',
     id: 0,
   },
   {
-    name: 'Энхжин1',
-    surname: 'Алтансүх',
+    firstname: 'Энхжин1',
+    lastname: 'Алтансүх',
     job: 'engineer',
     mobileNumber: 99999999,
     username: 'kellokitty',
     id: 1,
   },
   {
-    name: 'Энхжи2',
-    surname: 'Алтансүх',
+    firstname: 'Энхжи2',
+    lastname: 'Алтансүх',
     job: 'driver',
     mobileNumber: 99999999,
     username: 'kellokitty',
     id: 2,
   },
   {
-    name: 'Энхжи3',
-    surname: 'Алтансүх',
+    firstname: 'Энхжи3',
+    lastname: 'Алтансүх',
     job: 'driver',
     mobileNumber: 99999999,
     username: 'kellokitty',
     id: 3,
   },
   {
-    name: 'Энхжин4',
-    surname: 'Алтансүх',
+    firstname: 'Энхжин4',
+    lastname: 'Алтансүх',
     job: 'mechanic',
     mobileNumber: 99999999,
     username: 'kellokitty',
     id: 4,
   },
   {
-    name: 'Энхжин5',
-    surname: 'Алтансүх',
+    firstname: 'Энхжин5',
+    lastname: 'Алтансүх',
     job: 'mechanic',
     mobileNumber: 99999999,
     username: 'kellokitty',
@@ -369,8 +370,8 @@ export const workerData: WorkerType[] = [
   },
 
   {
-    name: 'Энхжин6',
-    surname: 'Алтансүх',
+    firstname: 'Энхжин6',
+    lastname: 'Алтансүх',
     job: 'driver',
     mobileNumber: 99999999,
     username: 'kellokitty',

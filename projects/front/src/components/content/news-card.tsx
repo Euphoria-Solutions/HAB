@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { ImageLoader, MiniDropdown } from '../common'
-import { MoreIcon, PenIcon, TrashIcon } from '../../assets/icons'
-import { useNavigation } from '@react-navigation/native'
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
-import { RootManagerStackParamList } from '../../navigation/types'
-import { useNav } from '../../navigation'
+import { MoreIcon, TrashIcon } from '../../assets/icons'
+// import { useNavigation } from '@react-navigation/native'
+// import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
+// import { RootManagerStackParamList } from '../../navigation/types'
+// import { useNav } from '../../navigation'
 import { NewsType } from '../../utils'
 import { useAuth } from '../../auth/auth-provider'
 
@@ -18,13 +18,14 @@ type NewsCardProps = {
 export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
   const { theme } = useTheme()
   const { user } = useAuth()
-  const { setId } = useNav()
+  // const { setId } = useNav()
   const [visible, setVisible] = useState(false)
-  const navigation =
-    useNavigation<BottomTabNavigationProp<RootManagerStackParamList>>()
+  // const navigation =
+  // eslint-disable-next-line no-secrets/no-secrets
+  //   useNavigation<BottomTabNavigationProp<RootManagerStackParamList>>()
 
   const getTime = () => {
-    let difference = new Date().getTime() - data.time.getTime()
+    let difference = new Date().getTime() - new Date(data.date).getTime()
     difference /= 60000
     if (difference < 60) {
       return Math.floor(difference) + 'мин'
@@ -56,9 +57,9 @@ export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
     deleteIcon: {
       color: theme.red,
     },
-    editIcon: {
-      color: theme.text,
-    },
+    // editIcon: {
+    //   color: theme.text,
+    // },
     jobText: {
       color: theme.darktext,
       fontFamily: theme.commi700,
@@ -76,7 +77,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
       backgroundColor: theme.text,
       borderRadius: 18,
       height: 36,
-      objectFit: 'cover',
+      resizeMode: 'cover',
       width: 36,
     },
     seperator: {
@@ -112,7 +113,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
             <View style={styles.profilePicture} />
           )}
           <View>
-            <Text style={styles.userNameText}>{data.name}</Text>
+            <Text style={styles.userNameText}>{data.username}</Text>
             <Text style={styles.jobText}>
               {data.job} <View style={styles.seperator} /> {getTime()}
             </Text>
@@ -136,21 +137,23 @@ export const NewsCard: React.FC<NewsCardProps> = ({ data, deleteData }) => {
                   },
                   style: styles.deleteIcon,
                 },
-                {
-                  icon: <PenIcon style={styles.editIcon} />,
-                  label: 'Засах',
-                  function: () => {
-                    setId(data.id)
-                    navigation.navigate('AddPost')
-                  },
-                },
+                // {
+                //   icon: <PenIcon style={styles.editIcon} />,
+                //   label: 'Засах',
+                //   function: () => {
+                //     setId(data.id)
+                //     navigation.navigate('AddPost')
+                //   },
+                // },
               ]}
               activator={<MoreIcon style={styles.activatorStyle} />}
             />
           ))}
       </View>
       {data.text && <Text style={styles.mainTextStyle}>{data.text}</Text>}
-      {data.imageLinks && <ImageLoader images={data.imageLinks} />}
+      {data.imageLinks && data.imageLinks.length > 0 && (
+        <ImageLoader images={data.imageLinks} />
+      )}
     </View>
   )
 }

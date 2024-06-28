@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import CheckBox from '@react-native-community/checkbox'
 import { useTheme } from '../../theme/theme-provider'
 import { LoginInput, SubmitButton } from '../../components/common'
 import { useAuth } from '../../auth/auth-provider'
+import { UserType } from '../../utils'
 
 type LoginScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Login'>
@@ -28,9 +29,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [passError, setPassError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const submitInfo = () => {
+  const submitInfo = async () => {
     setEmailError('')
     setPassError('')
+
     if (!email) {
       setEmailError('Нэвтрэх нэрээ оруулна уу')
       return
@@ -39,36 +41,38 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       setPassError('Нууц үгээ оруулна уу')
       return
     }
-    if (email != 'Zedude') {
-      setEmailError('Нэвтрэх нэр буруу байна')
-      return
-    }
-    if (pass != '123') {
-      setEmailConfirm(true)
-      setPassError('Нууц үг буруу байна')
-      return
-    }
+
     setLoading(true)
-    signIn(email, pass, 'Насанжаргал', 'Төмөрцог')
-    setTimeout(() => {
+    const result = await signIn(email, pass)
+
+    if (result?.success) {
       setLoading(false)
-    }, 3000)
+      handleNavigate(result.user)
+      return
+    } else {
+      setLoading(false)
+      setEmailError('Нэвтрэх нэр эсвэл нууц үг буруу байна')
+      setPassError('Нэвтрэх нэр эсвэл нууц үг буруу байна')
+      return
+    }
   }
+
   const handleCheckbox = () => {
     setRememberPass(prev => !prev)
   }
-  const handleNavigate = () => {
-    if (user?.job == 'manager') {
+
+  const handleNavigate = (user: UserType | null) => {
+    if (user?.job === 'manager') {
       navigation.reset({
         index: 1,
         routes: [{ name: 'TransportManager' }],
       })
-    } else if (user?.job == 'mechanic') {
+    } else if (user?.job === 'mechanic') {
       navigation.reset({
         index: 1,
         routes: [{ name: 'MechanicEngineer' }],
       })
-    } else if (user?.job == 'driver') {
+    } else if (user?.job === 'driver') {
       navigation.reset({
         index: 1,
         routes: [{ name: 'Driver' }],
@@ -80,6 +84,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       })
     }
   }
+
+  useEffect(() => {
+    if (user) {
+      handleNavigate(user)
+    }
+  }, [user])
 
   const styles = StyleSheet.create({
     body: {
@@ -144,7 +154,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <View style={styles.formAndLogo}>
           <View style={styles.logoContainer}>
             <View style={styles.logo}>
-              <Text>Zedude is cool</Text>
+              <Text>some logo here: HAB</Text>
             </View>
           </View>
           <View style={styles.form}>
@@ -167,7 +177,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               editable={!loading}
               password
             />
-            {/* More Buttons */}
             <View style={styles.moreAboutPassword}>
               <View style={styles.checkboxContainer}>
                 <TouchableOpacity
@@ -197,7 +206,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </View>
         </View>
         <SubmitButton
-          onSubmit={handleNavigate}
+          onSubmit={() => console.log()}
           onPress={submitInfo}
           loading={loading}
           title='Нэвтрэх'

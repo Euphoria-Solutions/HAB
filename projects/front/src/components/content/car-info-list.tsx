@@ -7,12 +7,17 @@ import React, {
 } from 'react'
 import { Indicator, ListContainer, SignatureCard } from '../common'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { CameraIcon, EditIcon, PlusIcon } from '../../assets/icons'
+import { EditIcon, PlusIcon } from '../../assets/icons'
 import { useTheme } from '../../theme/theme-provider'
-import { carInfoTempData } from '../../utils/temp-datas'
-import { CarInfoType, EngineType } from '../../utils/interface'
+import {
+  CarInfoType,
+  DataType,
+  EngineType,
+  Problems,
+} from '../../utils/interface'
 import { CarFixInfo } from './car-fix-info'
 import { useAuth } from '../../auth/auth-provider'
+import { useWork } from '../../services/work-provder'
 
 type CarInfoListProps = {
   type: EngineType | 'all'
@@ -20,6 +25,8 @@ type CarInfoListProps = {
   count?: { all: number; finished: number }
   setCount?: Dispatch<SetStateAction<{ all: number; finished: number }>>
 }
+
+const qualityTypes = ['normal', 'repair', 'swap', 'charge', 'clean']
 
 export const CarInfoList: React.FC<CarInfoListProps> = ({
   type,
@@ -32,13 +39,37 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
   const [typeToShow, setTypeToShow] = useState<EngineType[]>([])
   const [qualityData, setQualityData] = useState<CarInfoType>()
   const [modalVisible, setModalVisible] = useState(false)
+  const { workData, workId, setMechanic, mechanic } = useWork()
+  const [data, setData] = useState<DataType>()
+  const [checkList, setCheckList] = useState<CarInfoType[]>()
+  const [quality, setQuality] = useState({
+    value: -1,
+    name: '',
+    state: 'waiting',
+  })
+  const [problems, setProblems] = useState<Problems[]>()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (workData) {
+        setData(workData.find(work => work._id === workId))
+      }
+    }
+    fetchData()
+  }, [workData, workId])
+
+  useEffect(() => {
+    if (mechanic?.data) {
+      setCheckList(mechanic.data)
+    }
+  }, [mechanic])
 
   useEffect(() => {
     if (type == 'all') {
       setTypeToShow(['engine', 'disk', 'transmission', 'other'])
       setCount && setCount({ all: 0, finished: 0 })
       if (setCount && count) {
-        carInfoTempData.map(e => {
+        checkList?.map(e => {
           setCount(prev => {
             return { all: prev?.all + 1, finished: prev?.finished }
           })
@@ -52,6 +83,37 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
       setTypeToShow([type])
     }
   }, [type])
+
+  useEffect(() => {
+    if (quality.name !== '') {
+      setMechanic({
+        ...mechanic,
+        _id: mechanic?._id,
+        data: checkList?.map(work => {
+          if (work.name == quality.name) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const workQuality:
+              | 'charge'
+              | 'swap'
+              | 'clean'
+              | 'normal'
+              | 'repair' = qualityTypes[quality.value]
+            return {
+              ...work,
+              state: quality.state,
+              quality: workQuality,
+            }
+          }
+          return work
+        }),
+        problem: mechanic?.problem,
+        vehicle: mechanic?.vehicle,
+        mechanicEngineer: mechanic?.mechanicEngineer,
+      })
+    }
+    setCheckList(mechanic?.data)
+  }, [quality, setMechanic])
 
   const handleFixInfo = (data: CarInfoType) => {
     setQualityData(data)
@@ -71,7 +133,7 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
   }
   const findTypes = (engineInfo: EngineType, showAll: boolean): number => {
     let number = 0
-    carInfoTempData.map(e => {
+    checkList?.map(e => {
       if (engineInfo == e.type) {
         if (showAll || e.state == 'finished') {
           number++
@@ -93,7 +155,7 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
   }
   const showItems = (t: EngineType) => {
     const cur: { content: ReactNode; title: string | ReactNode }[] = []
-    carInfoTempData.forEach(e => {
+    checkList?.forEach(e => {
       if (t == e.type) {
         cur.push({
           content:
@@ -113,9 +175,11 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
                   <Text style={styles.listTitleStyle}>{e.name}</Text>
                   {type != 'all' && <Indicator state={e.state} />}
                 </View>
-                <TouchableOpacity onPress={() => handleFixInfo(e)}>
-                  <Text style={styles.fixButtonText}>Засварлах</Text>
-                </TouchableOpacity>
+                {user?.job == 'mechanic' && (
+                  <TouchableOpacity onPress={() => handleFixInfo(e)}>
+                    <Text style={styles.fixButtonText}>Засварлах</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             ),
         })
@@ -176,11 +240,11 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
       justifyContent: 'space-between',
       paddingHorizontal: 10,
     },
-    titleIcon: {
-      color: theme.darktext,
-      height: 20,
-      width: 23,
-    },
+    // titleIcon: {
+    //   color: theme.darktext,
+    //   height: 20,
+    //   width: 23,
+    // },
   })
 
   return (
@@ -197,23 +261,23 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
               items={[
                 {
                   title: 'Гэрээний дугаар',
-                  content: '123456789',
+                  content: data?.contractNumber,
                 },
                 {
                   title: 'Он, сар',
-                  content: '123456789',
+                  content: data?.date.toString(),
                 },
                 {
                   title: 'Улсын дугаар',
-                  content: '123456789',
+                  content: data?.license,
                 },
                 {
                   title: 'Тээврийн хэрэгслийн марк',
-                  content: '123456789',
+                  content: 'DAF',
                 },
                 {
                   title: 'Байгууллагийн нэр',
-                  content: '123456789',
+                  content: 'IRU',
                 },
               ]}
             />
@@ -229,7 +293,7 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
                 </Text>
               ) : (
                 <TouchableOpacity>
-                  <CameraIcon style={styles.titleIcon} />
+                  {/* <CameraIcon style={styles.titleIcon} /> */}
                 </TouchableOpacity>
               )}
             </View>
@@ -253,7 +317,11 @@ export const CarInfoList: React.FC<CarInfoListProps> = ({
       <CarFixInfo
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        quality={quality}
+        setQuality={setQuality}
         data={qualityData && qualityData}
+        problems={problems}
+        setProblems={setProblems}
       />
     </View>
   )

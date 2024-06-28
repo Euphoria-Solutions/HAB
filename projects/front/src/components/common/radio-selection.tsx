@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useTheme } from '../../theme/theme-provider'
@@ -14,7 +14,7 @@ type RadioSelectionTypes = {
   title: string
   values: SelectionType[]
   selected: number
-  setSelected: Dispatch<SetStateAction<number>>
+  setSelected: (_value: number) => void
 }
 
 export const RadioSelection: React.FC<RadioSelectionTypes> = ({

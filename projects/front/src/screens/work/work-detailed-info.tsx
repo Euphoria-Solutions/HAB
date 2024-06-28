@@ -118,7 +118,7 @@ export const WorkDetailedInfo: React.FC = () => {
           }}
           items={showItems()}
         />
-        <ListContainer
+        {/* <ListContainer
           style={styles.listStyle}
           items={[
             {
@@ -126,7 +126,7 @@ export const WorkDetailedInfo: React.FC = () => {
               content: 'default',
             },
           ]}
-        />
+        /> */}
       </ScrollView>
     </View>
   )

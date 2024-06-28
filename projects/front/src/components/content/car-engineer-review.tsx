@@ -1,15 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { LoginInput } from '../common'
 import { useTheme } from '../../theme/theme-provider'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { PlusIcon } from '../../assets/icons'
+import { useWork } from '../../services/work-provder'
 
 export const CarReview: React.FC = () => {
   const { theme } = useTheme()
   const [requirements, setRequirements] = useState<string[]>([])
   const [instructions, setInstructions] = useState<string[]>([])
   const [value, setValue] = useState('')
+  const { setPrescription } = useWork()
+
+  useEffect(() => {
+    setPrescription({
+      intructions: instructions,
+      responsibilities: requirements,
+    })
+  }, [requirements, instructions])
 
   const styles = StyleSheet.create({
     button: {

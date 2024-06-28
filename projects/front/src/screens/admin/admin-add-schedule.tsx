@@ -8,7 +8,158 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { CustomDropdown } from '../../components/custom'
 import { PackageIcon, TruckOutlinedIcon } from '../../assets/icons'
 import { useNav } from '../../navigation'
-import { carTempData, scheduleData, workerData } from '../../utils'
+import { CarInfoType, DataType, ScheduleType, WorkerType } from '../../utils'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import {
+  ADD_MECHNIC_CHECK_LIST,
+  ADD_PRESCRIPTION,
+  CREATE_DELIVERY,
+  CREATE_WORK,
+  EDIT_DELIVERY,
+  GET_DELIVERIES,
+  GET_USERS,
+  GET_VEHICLES,
+} from '../../graphql'
+import { useAuth } from '../../auth/auth-provider'
+
+export const carEmptyInfo: CarInfoType[] = [
+  {
+    name: 'Хөргөлтийн радиатор, термостат, жалюз, юүлэх цоргоны бэхэлгээг шалгах',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Нүүрэвч, сэнсний хүрээ, сэнс, усны насос, духны тагны бэхэлгээг шалгах',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Дамжуулгын оосор, гинжин дамжуулгын голын тулгуурыг бэхэлгээг шалгах',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Клапангийн дулааны завсарыг шалгах тохируулах',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Тосны тэвшний бэхэлгээг шалгах',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Хөдөлгүүрийн ажиллагааны дууг электрон мэдрэгч бүхий чагнуураар чагнаж оношлох',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Хөдөлгүүрийн тос болон шатахуун зарцуулалтыг шалгаж гэмтлийн шалтгааныг илрүүлэх',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Цилиндрийн даралтыг цилиндр бүр дээр компрессорметрээр шалгах',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Тосны шүүлтүүрийг шалгаж солих',
+    state: 'waiting',
+    type: 'engine',
+    quality: '',
+  },
+  {
+    name: 'Хөдөлгүүрийн блок, хурдны хайрцагт бэхлэгдсэн дискэн холбооны арьсны бэхэлгээг шалгах',
+    state: 'waiting',
+    type: 'disk',
+    quality: '',
+  },
+  {
+    name: 'Дискэн холбооны дөрөөний сул явалт, хөтлөгдөх, хөтлөх дискний элэгдэл, тотго муфтний элэгдэлийг шалгах, тохируулах',
+    state: 'waiting',
+    type: 'disk',
+    quality: '',
+  },
+  {
+    name: 'Хурдны хайрцагны тосны түвшин, тос бохирдлыг шалгах',
+    state: 'waiting',
+    type: 'transmission',
+    quality: '',
+  },
+  {
+    name: 'Хурдны хайрцагны тосны түвшин, тос бохирдлыг шалгах',
+    state: 'waiting',
+    type: 'transmission',
+    quality: '',
+  },
+  {
+    name: 'Хурдны хайрцагны араа залгах, салгах, механизмын ажиллагааг шалгах',
+    state: 'waiting',
+    type: 'transmission',
+    quality: '',
+  },
+  {
+    name: 'Хойд тэнхлэгийн тосны түвшин, битүүмжийг шалгах',
+    state: 'waiting',
+    type: 'other',
+    quality: '',
+  },
+  {
+    name: 'Ерөнхий дамжуулгын хөтлөх, хөтлөгдөх арааны харьцааг шалгах, редукторын ажиллагааг дуу чимээ, халаалтаар оношлох',
+    state: 'waiting',
+    type: 'other',
+    quality: '',
+  },
+  {
+    name: 'Хүч дамжуулах ангийн чадлын алдагдлыг тодорхойлох',
+    state: 'waiting',
+    type: 'other',
+    quality: '',
+  },
+  {
+    name: 'Хагас гол, дугуйн бэхэлгээ, булны тохиргоог шалгах',
+    state: 'waiting',
+    type: 'other',
+    quality: '',
+  },
+  {
+    name: 'Тосны тэвшний бэхэлгээг шалгах',
+    state: 'waiting',
+    type: 'other',
+    quality: '',
+  },
+]
+
+export const mechanicCheckList = {
+  data: carEmptyInfo,
+  problem: {
+    title: '',
+    reason: '',
+    parts: [
+      {
+        value: '',
+        label: '',
+      },
+    ],
+    images: '',
+  },
+  vehicle: '',
+  mechanicEngineer: '',
+}
+
+export const prescription = {
+  intructions: [''],
+  responsibilities: [''],
+}
 
 interface IAdminAddSchedule {
   navigation: StackNavigationProp<RootAdminStackParamList, 'AddSchedule'>
@@ -21,19 +172,35 @@ export const AdminAddSchedule: React.FC<IAdminAddSchedule> = ({
   const { id, setId } = useNav()
   const [curId, setCurId] = useState('')
   const [loading, setLoading] = useState(false)
-  const [license, setLicense] = useState('')
+  const [contractNumber, setContractNumber] = useState('')
   const [location, setLocation] = useState('')
   const [date, setDate] = useState<Date>()
   const [pickupPoint, setPickupPoint] = useState('')
   const [deliveryLocation, setDeliveryLocation] = useState('')
   const [exitDate, setExitDate] = useState<Date>()
   const [companyName, setCompanyName] = useState('')
-  const [driver, setDriver] = useState({
-    name: '',
-  })
-  const [carNumber, setCarNumber] = useState('')
+  const [driver, setDriver] = useState({ username: '' })
+  const [license, setLicense] = useState('')
   const [trailerNumber1, setTrailerNumber1] = useState('')
   const [trailerNumber2, setTrailerNumber2] = useState('')
+  const { user } = useAuth()
+
+  const [addDelivery] = useMutation(CREATE_DELIVERY)
+  const [editDelivery] = useMutation(EDIT_DELIVERY)
+  const [getDeliveries] = useLazyQuery(GET_DELIVERIES)
+  const [addMechanicCheckList] = useMutation(ADD_MECHNIC_CHECK_LIST)
+  const [addPrescription] = useMutation(ADD_PRESCRIPTION)
+  const {
+    data: workerDatas,
+    loading: workerLoading,
+    error: workerError,
+  } = useQuery(GET_USERS)
+  const {
+    data: vehicleDatas,
+    loading: vehicleLoading,
+    error: vehicleError,
+  } = useQuery(GET_VEHICLES)
+  const [generateWork] = useMutation(CREATE_WORK)
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -41,61 +208,146 @@ export const AdminAddSchedule: React.FC<IAdminAddSchedule> = ({
     })
     return unsubscribe
   }, [navigation])
+
   useEffect(() => {
     if (id) {
-      setCurId(id)
-      const temp = scheduleData.find(e => e.id == id)
-      setLicense(temp?.license ?? '')
-      setLocation(temp?.location ?? '')
-      setDate(temp?.date ?? undefined)
-      setPickupPoint(temp?.pickupPoint ?? '')
-      setDeliveryLocation(temp?.deliveryLocation ?? '')
-      setExitDate(temp?.exitDate ?? undefined)
-      setDriver(temp?.driver ?? { name: '' })
-      setCarNumber(temp?.carNumber ?? '')
-      setTrailerNumber1(temp?.trailerNumber1 ?? '')
-      setTrailerNumber2(temp?.trailerNumber2 ?? '')
-      setCompanyName(temp?.companyName ?? '')
-
-      navigation.setOptions({
-        title: 'Засах',
-      })
+      const fetchDeliveries = async () => {
+        setCurId(id)
+        try {
+          const { data } = await getDeliveries({ variables: { _id: id } })
+          let temp = data?.getDeliveries.find(
+            (delivery: ScheduleType) => delivery._id === id
+          )
+          temp = temp[0]
+          if (temp) {
+            setContractNumber(temp.contractNumber ?? '')
+            setLocation(temp.location ?? '')
+            setDate(temp.date ? new Date(temp.date) : undefined)
+            setPickupPoint(temp.pickupPoint ?? '')
+            setDeliveryLocation(temp.deliveryLocation ?? '')
+            setExitDate(temp.exitDate ? new Date(temp.exitDate) : undefined)
+            setDriver(temp.driver ?? { name: '' })
+            setLicense(temp.license ?? '')
+            setTrailerNumber1(temp.trailerNumber1 ?? '')
+            setTrailerNumber2(temp.trailerNumber2 ?? '')
+            setCompanyName(temp.companyName ?? '')
+            navigation.setOptions({ title: 'Засах' })
+          }
+        } catch (error) {
+          console.error('Error fetching delivery data:', error)
+        }
+      }
+      fetchDeliveries()
     }
   }, [id])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true)
-    setTimeout(() => {
+    try {
+      const variables = {
+        contractNumber: contractNumber,
+        containerLocation: pickupPoint,
+        location: location,
+        deliveryLocation: deliveryLocation,
+        organization: companyName,
+        date: date?.toISOString() || '',
+        departTime: exitDate?.toISOString() || '',
+        addedBy: user ? user?._id : '',
+        driver: driver.username,
+        vehicle: license,
+        trailerNumber1: trailerNumber1,
+        trailerNumber2: trailerNumber2,
+      }
+
+      if (curId) {
+        editDelivery({
+          variables: { ...variables, id: curId },
+        })
+      } else {
+        const { data: deliveryData } = await addDelivery({
+          variables: variables,
+        })
+
+        const { data: mechanicListData } = await addMechanicCheckList({
+          variables: {
+            data: carEmptyInfo,
+            problem: {
+              name: '',
+              title: '',
+              reason: '',
+              parts: [
+                {
+                  value: '',
+                  label: '',
+                },
+              ],
+              images: '',
+            },
+            vehicle: license,
+            mechanicEngineer: '',
+          },
+        })
+
+        const { data: prescriptionsListData } = await addPrescription({
+          variables: {
+            prescription,
+          },
+        })
+
+        const workInput = {
+          vehicle: license,
+          delivery: variables.contractNumber,
+          pickupPoint,
+          mechanicCheckList: mechanicListData.createMechanicalCheckList,
+          prescription: prescriptionsListData.addPrescription,
+          mechanicEngineerConfirmation: '',
+          habEngineerConfirmation: '',
+          driverConfirmation: '',
+          progress: '0/3',
+          managerState: 'manager',
+          state: 'waiting',
+        }
+
+        const { data: workData } = await generateWork({ variables: workInput })
+
+        if (
+          deliveryData &&
+          workData &&
+          mechanicListData &&
+          prescriptionsListData
+        ) {
+          navigation.goBack()
+        }
+      }
+    } catch (error) {
+      console.error('Error creating delivery or work:', error)
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
+
   const getDriverOptions = () => {
-    const drivers: [{ value: string; label: string; icon?: React.ReactNode }] =
-      [{ value: '', label: '' }]
-    drivers.pop()
-    workerData.map(e => {
-      drivers.push({
-        value: e.name + ' ' + e.surname,
-        label: e.name + ' ' + e.surname,
+    if (workerDatas && workerDatas.getUsers) {
+      const workerData = workerDatas.getUsers.filter(
+        (user: WorkerType) => user.job == 'driver'
+      )
+      return workerData.map((worker: WorkerType) => ({
+        value: worker.username,
+        label: `${worker.firstname} ${worker.lastname}`,
         icon: <View style={styles.profile} />,
-      })
-    })
-
-    return drivers
+      }))
+    }
+    return []
   }
-  const getCarNumberOptions = () => {
-    const carNumbers: [{ value: string; label: string }] = [
-      { value: '', label: '' },
-    ]
-    carNumbers.pop()
-    carTempData.map(e => {
-      carNumbers.push({
-        value: e.carNumber,
-        label: e.carNumber,
-      })
-    })
 
-    return carNumbers
+  const getCarNumberOptions = () => {
+    if (vehicleDatas && vehicleDatas.getVehicle) {
+      return vehicleDatas.getVehicle.map((vehicle: DataType) => ({
+        value: vehicle.license,
+        label: vehicle.license,
+      }))
+    }
+    return []
   }
 
   const styles = StyleSheet.create({
@@ -135,6 +387,10 @@ export const AdminAddSchedule: React.FC<IAdminAddSchedule> = ({
     },
   })
 
+  if (workerLoading || vehicleLoading) return <Text>loading ...</Text>
+  if (workerError || vehicleError)
+    return <Text>error occurred while taking datas</Text>
+
   return (
     <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={100}>
       <ScrollView style={styles.container}>
@@ -144,31 +400,31 @@ export const AdminAddSchedule: React.FC<IAdminAddSchedule> = ({
             <Text style={styles.title}>Хүргэлтийн мэдээлэл</Text>
           </View>
           <LoginInput
-            clearButton={curId ? true : false}
+            clearButton={!!curId}
             label='Гэрээний дугаар'
-            value={license}
-            setValue={setLocation}
+            value={contractNumber}
+            setValue={setContractNumber}
           />
           <LoginInput
-            clearButton={curId ? true : false}
+            clearButton={!!curId}
             label='Чингэлэг авах газар'
             value={pickupPoint}
             setValue={setPickupPoint}
           />
           <LoginInput
-            clearButton={curId ? true : false}
+            clearButton={!!curId}
             label='Амны байршил'
             value={location}
             setValue={setLocation}
           />
           <LoginInput
-            clearButton={curId ? true : false}
+            clearButton={!!curId}
             label='Хүргэж өгөх боомтны байршил'
             value={deliveryLocation}
             setValue={setDeliveryLocation}
           />
           <LoginInput
-            clearButton={curId ? true : false}
+            clearButton={!!curId}
             label='Байгууллагийн нэр'
             value={companyName}
             setValue={setCompanyName}
@@ -184,31 +440,47 @@ export const AdminAddSchedule: React.FC<IAdminAddSchedule> = ({
             <TruckOutlinedIcon style={styles.iconStyle} />
             <Text style={styles.title}>Тээврийн хэрэгсэл болон жолооч</Text>
           </View>
-
           <CustomDropdown
             zIndex={1}
             position='above'
-            value={driver.name}
+            value={driver.username}
             label='Жолооч'
             options={getDriverOptions()}
-            onSelect={e => setDriver({ name: e.value })}
+            onSelect={e => setDriver({ username: e.value })}
           />
           <CustomDropdown
             zIndex={2}
             position='above'
-            value={carNumber}
+            value={license}
             label='Машины дугаар'
             options={getCarNumberOptions()}
-            onSelect={e => setCarNumber(e.value)}
+            onSelect={e => {
+              setLicense(e.value)
+              if (vehicleDatas && vehicleDatas.getVehicle) {
+                const vehicle = vehicleDatas.getVehicle.filter(
+                  (vehicle: DataType) => {
+                    return vehicle.license === e.value
+                  }
+                )[0]
+                if (vehicle) {
+                  if (vehicle.trailerNumber1) {
+                    setTrailerNumber1(vehicle.trailerNumber1)
+                  }
+                  if (vehicle.trailerNumber2) {
+                    setTrailerNumber2(vehicle.trailerNumber2)
+                  }
+                }
+              }
+            }}
           />
           <LoginInput
-            clearButton={curId ? true : false}
+            clearButton={!!curId}
             label='Чиргүүлийн дугаар №1'
             value={trailerNumber1}
             setValue={setTrailerNumber1}
           />
           <LoginInput
-            clearButton={curId ? true : false}
+            clearButton={!!curId}
             label='Чиргүүлийн дугаар №2'
             value={trailerNumber2}
             setValue={setTrailerNumber2}

@@ -49,7 +49,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({
       {items &&
         items.map((e, i) => {
           return (
-            <>
+            <React.Fragment key={i}>
               <ListItem
                 index={i}
                 key={i}
@@ -76,7 +76,7 @@ export const ListContainer: React.FC<ListContainerProps> = ({
                 contentMaxWidth={itemOptions?.maxWidth && itemOptions.maxWidth}
               />
               {items && i + 1 < items.length && <View style={styles.divider} />}
-            </>
+            </React.Fragment>
           )
         })}
     </View>

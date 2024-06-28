@@ -4,11 +4,14 @@ import { RootManagerStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { ScrollView } from 'react-native-gesture-handler'
-import { SearchInput, Weather } from '../../components/common'
-import { NewsCard } from '../../components/content'
-import { newsData, NewsType } from '../../utils/'
+import { NewsType } from '../../utils/'
 import { EventProvider } from 'react-native-outside-press'
 import { useAuth } from '../../auth/auth-provider'
+import { GET_POSTS, REMOVE_POST } from '../../graphql'
+import { useMutation, useQuery } from '@apollo/client'
+import { SearchInput } from '../../components/common'
+import { Weather } from '../../components/common/weather'
+import { NewsCard } from '../../components/content'
 
 type NewsScreenProps = {
   navigation: BottomTabNavigationProp<RootManagerStackParamList, 'Home'>
@@ -19,20 +22,33 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
   const { user } = useAuth()
   const [searchValue, setSearchValue] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
-  const [data, setData] = useState(newsData)
+  const [data, setData] = useState<NewsType[]>()
   const [dataToShow, setDataToShow] = useState<NewsType[]>()
+  const { loading, error, data: queryData, refetch } = useQuery(GET_POSTS)
+  const [deletePosts] = useMutation(REMOVE_POST)
+
+  useEffect(() => {
+    if (queryData && queryData.getPosts) {
+      setData(queryData.getPosts)
+      setDataToShow(queryData.getPosts)
+    }
+  }, [queryData])
+
+  useEffect(() => {
+    refetch()
+  }, [navigation])
 
   useEffect(() => {
     if (!searchValue) {
       setDataToShow(data)
     } else {
       setDataToShow(
-        data.filter(e => {
+        data?.filter(e => {
           const translated = searchValue.toLowerCase()
           if (e.job.toLowerCase().includes(translated)) {
             return true
           }
-          if (e.name.toLowerCase().includes(translated)) {
+          if (e.username.toLowerCase().includes(translated)) {
             return true
           }
           if (e.text?.toLowerCase().includes(translated)) {
@@ -43,18 +59,20 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
       )
     }
   }, [searchValue, data])
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Өглөөний мэнд, ' + user?.firstname,
     })
-  }, [navigation])
+  }, [navigation, user])
 
-  const deleteData = (index: number) => {
-    setData(prev => {
-      const temp = [...prev]
-      temp.splice(index, 1)
-      return temp
+  const deleteData = (_id: string) => {
+    deletePosts({
+      variables: {
+        id: _id,
+      },
     })
+    refetch()
   }
 
   const styles = StyleSheet.create({
@@ -64,9 +82,23 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
       height: '100%',
       paddingBottom: 0,
     },
+    empty: {
+      alignItems: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+    },
+    emptyText: {
+      color: theme.text,
+    },
     inputStyle: {
       width: '100%',
     },
+    news: {
+      paddingHorizontal: 20,
+      width: '100%',
+    },
+
     scrollStyle: {
       gap: 20,
       paddingBottom: 20,
@@ -91,6 +123,9 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
       fontSize: 14,
     },
   })
+
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>Error: {error.message}</Text>
 
   return (
     <EventProvider>
@@ -117,10 +152,23 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
             </View>
             <Weather />
           </View>
-          {dataToShow &&
-            dataToShow.map((e, i) => (
-              <NewsCard deleteData={() => deleteData(i)} key={i} data={e} />
-            ))}
+          {dataToShow?.length != 0 ? (
+            dataToShow?.map((e, i) => (
+              <View style={styles.news} key={i}>
+                <NewsCard
+                  deleteData={() => deleteData(e.id)}
+                  key={i}
+                  data={e}
+                />
+              </View>
+            ))
+          ) : (
+            <View style={styles.empty}>
+              <Text style={styles.emptyText}>
+                Одоогоор харуулах пост байхгүй байна
+              </Text>
+            </View>
+          )}
         </ScrollView>
       </View>
     </EventProvider>

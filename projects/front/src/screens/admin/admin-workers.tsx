@@ -5,9 +5,11 @@ import { RootAdminStackParamList } from '../../navigation/types'
 import { ListContainer, SearchInput, Tab } from '../../components/common'
 import { useTheme } from '../../theme/theme-provider'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { WorkerType, workerData } from '../../utils'
 import { AdminListDropdown } from '../../components/content'
 import { EventProvider } from 'react-native-outside-press'
+import { useMutation, useQuery } from '@apollo/client'
+import { DELETE_USER, GET_USERS } from '../../graphql'
+import { UserType, WorkerType } from '../../utils'
 
 interface IAdminWorkers {
   navigation: StackNavigationProp<RootAdminStackParamList, 'Workers'>
@@ -17,38 +19,46 @@ export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
   const { theme } = useTheme()
   const [searchValue, setSearchValue] = useState('')
   const [tab, setTab] = useState(0)
-  const [data, setData] = useState<WorkerType[]>([])
+  const [filteredData, setFilteredData] = useState<any[]>([])
+
+  const { data, loading, error, refetch } = useQuery(GET_USERS)
+  const [deleteUser] = useMutation(DELETE_USER)
 
   useEffect(() => {
-    if (workerData) {
+    refetch()
+  }, [navigation])
+
+  useEffect(() => {
+    if (data && data.getUsers) {
+      const allUsers = data.getUsers
+
+      let filteredUsers = allUsers
+
       if (searchValue) {
-        const tempVal = searchValue.toLowerCase()
-        setData(
-          workerData.filter(e => {
-            if ((e.name + ' ' + e.surname).toLowerCase().includes(tempVal)) {
-              return true
-            }
-            return false
-          })
-        )
-      } else {
-        setData(workerData)
-      }
-      setData(prev =>
-        prev.filter(e => {
-          if (tab == 0 && e.job == 'driver') {
-            return true
-          }
-          if (tab == 1 && e.job == 'engineer') {
-            return true
-          }
-          if (tab == 2 && e.job == 'mechanic') {
-            return true
-          }
+        const searchValueLower = searchValue.toLowerCase()
+        filteredUsers = allUsers.filter((user: WorkerType) => {
+          const fullName = `${user.firstname} ${user.lastname}`.toLowerCase()
+          return fullName.includes(searchValueLower)
         })
-      )
+      }
+
+      if (tab === 0) {
+        filteredUsers = filteredUsers.filter(
+          (user: UserType) => user.job === 'driver'
+        )
+      } else if (tab === 1) {
+        filteredUsers = filteredUsers.filter(
+          (user: UserType) => user.job === 'engineer'
+        )
+      } else if (tab === 2) {
+        filteredUsers = filteredUsers.filter(
+          (user: UserType) => user.job === 'mechanic'
+        )
+      }
+
+      setFilteredData(filteredUsers)
     }
-  }, [workerData, searchValue, tab])
+  }, [data, searchValue, tab])
 
   const getJobTitle = (job: 'driver' | 'mechanic' | 'engineer' | 'manager') => {
     switch (job) {
@@ -58,38 +68,23 @@ export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
         return 'Механикч'
       case 'engineer':
         return 'ХАБЭА'
+      case 'manager':
+        return 'Менежер'
+      default:
+        return 'Ажилтан'
     }
   }
 
-  const deleteData = (id: number | string) => {
-    setData(prev => prev.filter(e => e.id != id))
-  }
-
-  const showItems = () => {
-    return data.map((e, i) => {
-      return {
-        title: (
-          <View style={styles.listItem}>
-            <View style={styles.profilePicture} />
-            <View>
-              <Text style={styles.nameStyle}>
-                {e.name} {e.surname}
-              </Text>
-              <Text style={styles.jobStyle}>{getJobTitle(e.job)}</Text>
-            </View>
-          </View>
-        ),
-        content: (
-          <AdminListDropdown
-            data={e}
-            index={i}
-            deleteData={deleteData}
-            navigation={navigation}
-            navigateScreen='AddWorker'
-          />
-        ),
-      }
-    })
+  const deleteData = async (_id: string) => {
+    try {
+      await deleteUser({
+        variables: { _id },
+      })
+      setFilteredData(filteredData.filter(user => user._id !== _id))
+      refetch()
+    } catch (error) {
+      console.error('Error deleting user:', error)
+    }
   }
 
   const styles = StyleSheet.create({
@@ -146,6 +141,34 @@ export const AdminWorkers: React.FC<IAdminWorkers> = ({ navigation }) => {
       width: 36,
     },
   })
+
+  const showItems = () => {
+    return filteredData.map((user, index) => ({
+      title: (
+        <View style={styles.listItem} key={user.id}>
+          <View style={styles.profilePicture} />
+          <View>
+            <Text style={styles.nameStyle}>
+              {user.firstname} {user.lastname}
+            </Text>
+            <Text style={styles.jobStyle}>{getJobTitle(user.job)}</Text>
+          </View>
+        </View>
+      ),
+      content: (
+        <AdminListDropdown
+          data={user}
+          index={index}
+          deleteData={deleteData}
+          navigation={navigation}
+          navigateScreen='AddWorker'
+        />
+      ),
+    }))
+  }
+
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>Error loading workers</Text>
 
   return (
     <EventProvider>

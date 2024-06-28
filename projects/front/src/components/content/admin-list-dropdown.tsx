@@ -7,8 +7,8 @@ import { RootAdminStackParamList, useNav } from '../../navigation'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 type AdminListDropdownType = {
-  data: { id: string | number }
-  deleteData: (_i: number | string) => void
+  data: { _id: string }
+  deleteData: (_id: string) => void
   navigation: StackNavigationProp<
     RootAdminStackParamList,
     'Workers' | 'Cars' | 'Schedule'
@@ -51,7 +51,7 @@ export const AdminListDropdown: React.FC<AdminListDropdownType> = ({
             icon: <TrashIcon style={styles.deleteIcon} />,
             label: 'Устгах',
             function: () => {
-              deleteData(data.id)
+              deleteData(data._id)
             },
             style: styles.deleteIcon,
           },
@@ -59,7 +59,7 @@ export const AdminListDropdown: React.FC<AdminListDropdownType> = ({
             icon: <PenIcon style={styles.editIcon} />,
             label: 'Засах',
             function: () => {
-              setId(typeof data.id == 'string' ? data.id : data.id.toString())
+              setId(data._id)
               navigation.navigate(navigateScreen)
             },
           },

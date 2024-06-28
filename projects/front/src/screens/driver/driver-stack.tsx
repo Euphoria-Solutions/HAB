@@ -15,6 +15,7 @@ import { NewsScreen } from '../news/news'
 import { WorkStack } from '../work/work-stack'
 import { RootBottomTabParamList } from '../../navigation/types'
 import { SOSStack } from '../sos/sos-stack'
+import { ComingSoon } from '../test-screen/coming-soon'
 
 const Tab = createBottomTabNavigator<RootBottomTabParamList>()
 
@@ -69,8 +70,8 @@ export const DriverStack: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name='Chat'
-        component={NewsScreen}
+        name='ComingSoon'
+        component={ComingSoon}
         options={{
           title: 'Чат',
           tabBarIcon: ({ focused, color, size }) =>

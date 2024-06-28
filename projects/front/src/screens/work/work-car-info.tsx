@@ -5,7 +5,6 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useTheme } from '../../theme/theme-provider'
 import { LeftArrowIcon, RightArrowIcon } from '../../assets/icons'
 import { useRoute } from '@react-navigation/native'
-import { carTempData } from '../../utils/temp-datas'
 import { DataType } from '../../utils/interface'
 import {
   CarInfoList,
@@ -16,6 +15,9 @@ import {
 import { ScrollView } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useAuth } from '../../auth/auth-provider'
+import { useWork } from '../../services/work-provder'
+import { GET_MECHANIC_CHECK_LIST } from '../../graphql'
+import { useLazyQuery } from '@apollo/client'
 
 type CarInfoProps = {
   navigation: BottomTabNavigationProp<RootWorkStackParamList, 'Info'>
@@ -44,6 +46,46 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
     />,
     <CarConfirm key={6} data={data} />,
   ])
+  const { workData, setWorkId, setMechanic, mechanic } = useWork()
+  const [getCheckList, { refetch }] = useLazyQuery(GET_MECHANIC_CHECK_LIST)
+
+  useEffect(() => {
+    const foundData = workData.find(e => e._id === id)
+    refetch({
+      _id: foundData?._id,
+    })
+  }, [mechanic, navigation])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (workData) {
+        const foundData = workData.find(e => e._id === id)
+
+        if (foundData?.mechanicCheckList) {
+          try {
+            const { data: mechanicCheckList } = await getCheckList({
+              variables: {
+                _id: foundData.mechanicCheckList,
+              },
+            })
+
+            setMechanic({
+              ...mechanic,
+              _id: foundData?.mechanicCheckList,
+              data: mechanicCheckList.getMechanicalCheckList?.data,
+              problem: mechanicCheckList.getMechanicalCheckList?.problem,
+              vehicle: mechanicCheckList.getMechanicalCheckList?.vehicle,
+              mechanicEngineer:
+                mechanicCheckList.getMechanicalCheckList?.mechanicEngineer,
+            })
+          } catch (error) {
+            console.error('Error fetching mechanic checklist:', error)
+          }
+        }
+      }
+    }
+    fetchData()
+  }, [workData, id])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', clearData)
@@ -62,7 +104,8 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   })
   useEffect(() => {
     if (id) {
-      setData(carTempData.find(e => e.id == id))
+      setWorkId(id)
+      setData(workData.find(e => e._id == id))
       setPage(0)
     }
   }, [id])
@@ -72,6 +115,7 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   useEffect(() => {
     getData()
   })
+
   useEffect(() => {
     if (user?.job != 'mechanic' && data) {
       if (user?.job == 'engineer') {
@@ -126,7 +170,10 @@ export const WorkCarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   const handlePreviousPage = () => {
     setPage(page - 1)
   }
-  const translateState = (): { text: string; color: string } => {
+  const translateState = (): {
+    text: string
+    color: string
+  } => {
     if (!data) {
       return { text: '', color: '' }
     }

@@ -1,3 +1,5 @@
+//TODO seperate it for ios and android & write a function that gets weather information from weather service
+
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
@@ -38,8 +40,7 @@ export const Weather: React.FC<WeatherProps> = () => {
     }
     text +=
       ' гариг, ' +
-      currentDate.getMonth() +
-      1 +
+      (currentDate.getMonth() + 1) +
       ' сарын ' +
       currentDate.getDate() +
       ' ' +

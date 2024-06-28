@@ -7,10 +7,30 @@ import { DatePick, LoginInput, SubmitButton } from '../../components/common'
 import { ScrollView } from 'react-native-gesture-handler'
 import { CarInfoIcon, CarRepairIcon, InfoIcon } from '../../assets/icons'
 import { useNav } from '../../navigation'
-import { carTempData } from '../../utils'
+import { ADD_VEHICLE, EDIT_VEHICLE, GET_VEHICLES } from '../../graphql'
+import { useLazyQuery, useMutation } from '@apollo/client'
 
 interface IAdminAddCar {
   navigation: StackNavigationProp<RootAdminStackParamList, 'AddCar'>
+}
+
+interface IVehicle {
+  _id: string
+  license: string
+  trailerNumber1: string
+  trailerNumber2: string
+  manufacturedCountry: string
+  date: string
+  engineNumber: string
+  ramNumber: string
+  tonnage: string
+  dateOfArrival: string
+  certificate: string
+  dateOfUse: string
+  price: string
+  durability: string
+  fuel: string
+  enginePower: string
 }
 
 export const AdminAddCar: React.FC<IAdminAddCar> = ({ navigation }) => {
@@ -18,7 +38,7 @@ export const AdminAddCar: React.FC<IAdminAddCar> = ({ navigation }) => {
   const { id, setId } = useNav()
   const [curId, setCurId] = useState('')
   const [loading, setLoading] = useState(false)
-  const [carNumber, setCarNumber] = useState('')
+  const [license, setLicense] = useState('')
   const [trailerNumber1, setTrailerNumber1] = useState('')
   const [trailerNumber2, setTrailerNumber2] = useState('')
   const [country, setCountry] = useState('')
@@ -33,6 +53,9 @@ export const AdminAddCar: React.FC<IAdminAddCar> = ({ navigation }) => {
   const [durability, setDurability] = useState('')
   const [fuel, setFuel] = useState('')
   const [enginePower, setEnginePower] = useState('')
+  const [addCar] = useMutation(ADD_VEHICLE)
+  const [editCar] = useMutation(EDIT_VEHICLE)
+  const [getCars] = useLazyQuery(GET_VEHICLES)
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -40,25 +63,75 @@ export const AdminAddCar: React.FC<IAdminAddCar> = ({ navigation }) => {
     })
     return unsubscribe
   }, [navigation])
+
   useEffect(() => {
-    if (id) {
-      setCurId(id)
-      const temp = carTempData.find(e => e.id == id)
-      setCarNumber(temp?.carNumber ?? '')
-      setTrailerNumber1(temp?.trailerNumber ?? '')
-      setTrailerNumber2(temp?.trailerNumber2 ?? '')
-      setDate(temp?.date ?? undefined)
-      navigation.setOptions({
-        title: 'Засах',
-      })
+    const fetchCarData = async () => {
+      if (id) {
+        setCurId(id)
+        try {
+          const { data } = await getCars({
+            variables: { _id: id },
+          })
+          const temp = data?.getVehicle.filter(
+            (vehicle: IVehicle) => vehicle._id == id
+          )[0]
+          setLicense(temp?.license ?? '')
+          setTrailerNumber1(temp?.trailerNumber1 ?? '')
+          setTrailerNumber2(temp?.trailerNumber2 ?? '')
+          setCountry(temp?.manufacturedCountry ?? '')
+          setDate(temp?.date ? new Date(temp.date) : undefined)
+          setEngineNumber(temp?.engineNumber ?? '')
+          setRamNumber(temp?.ramNumber ?? '')
+          setTonnage(temp?.tonnage ?? '')
+          setDateOfArrival(
+            temp?.dateOfArrival ? new Date(temp.dateOfArrival) : undefined
+          )
+          setCertificate(temp?.certificate ?? '')
+          setDateOfUse(temp?.dateOfUse ? new Date(temp.dateOfUse) : undefined)
+          setPrice(temp?.price ?? '')
+          setDurability(temp?.durability ?? '')
+          setFuel(temp?.fuel ?? '')
+          setEnginePower(temp?.enginePower ?? '')
+          navigation.setOptions({ title: 'Edit Vehicle' })
+        } catch (error) {
+          console.log('Error fetching vehicle data:', error)
+        }
+      }
     }
+    fetchCarData()
   }, [id])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true)
-    setTimeout(() => {
+    try {
+      const variables = {
+        license,
+        trailerNumber1,
+        trailerNumber2,
+        manufacturedCountry: country,
+        date: date?.toISOString() || '',
+        engineNumber,
+        ramNumber,
+        tonnage,
+        dateOfArrival: dateOfArrival?.toISOString() || '',
+        certificate,
+        dateOfUse: dateOfUse?.toISOString() || '',
+        price,
+        durability,
+        fuel,
+        enginePower,
+      }
+
+      if (curId) {
+        await editCar({ variables: { ...variables, id: curId } })
+      } else {
+        await addCar({ variables })
+      }
+    } catch (error) {
+      console.log('Error:', error)
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
 
   const styles = StyleSheet.create({
@@ -110,8 +183,8 @@ export const AdminAddCar: React.FC<IAdminAddCar> = ({ navigation }) => {
           <LoginInput
             clearButton={curId ? true : false}
             label='Улсын дугаар'
-            value={carNumber}
-            setValue={setCarNumber}
+            value={license}
+            setValue={setLicense}
           />
           <LoginInput
             clearButton={curId ? true : false}

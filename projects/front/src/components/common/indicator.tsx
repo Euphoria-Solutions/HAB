@@ -4,7 +4,7 @@ import { useTheme } from '../../theme/theme-provider'
 import { ConfirmIcon } from '../../assets/icons'
 
 type IndicatorTypes = {
-  state: 'waiting' | 'being processed' | 'finished' | 'empty'
+  state: string
   size?: DimensionValue
   style?: object
   title?: string

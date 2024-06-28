@@ -5,9 +5,11 @@ import { RootAdminStackParamList } from '../../navigation/types'
 import { ListContainer, SearchInput } from '../../components/common'
 import { useTheme } from '../../theme/theme-provider'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { DataType, carTempData } from '../../utils'
+import { DataType } from '../../utils'
 import { AdminListDropdown } from '../../components/content'
 import { EventProvider } from 'react-native-outside-press'
+import { useMutation, useQuery } from '@apollo/client'
+import { GET_VEHICLES, REMOVE_VEHICLE } from '../../graphql'
 
 interface IAdminCars {
   navigation: StackNavigationProp<RootAdminStackParamList, 'Cars'>
@@ -16,61 +18,84 @@ interface IAdminCars {
 export const AdminCars: React.FC<IAdminCars> = ({ navigation }) => {
   const { theme } = useTheme()
   const [searchValue, setSearchValue] = useState('')
-  const [data, setData] = useState<DataType[]>([])
+  const [filteredData, setFilteredData] = useState<DataType[]>([])
+
+  const { data, loading, error, refetch } = useQuery(GET_VEHICLES)
+  const [deleteVehicle] = useMutation(REMOVE_VEHICLE)
 
   useEffect(() => {
-    if (carTempData) {
+    refetch()
+  }, [navigation])
+
+  useEffect(() => {
+    if (data && data.getVehicle) {
+      const allVehicles = data.getVehicle
+
       if (searchValue) {
-        const tempVal = searchValue.toLowerCase()
-        setData(
-          carTempData.filter(e => {
-            if (e.carNumber.toLowerCase().includes(tempVal)) {
-              return true
-            }
-            if (e.trailerNumber.toLowerCase().includes(tempVal)) {
-              return true
-            }
-            if (e.trailerNumber2?.toLowerCase().includes(tempVal)) {
-              return true
-            }
-            return false
-          })
+        const searchValueLower = searchValue.toLowerCase()
+        const filtered = allVehicles.filter(
+          (vehicle: {
+            license: string
+            trailerNumber: string
+            trailerNumber2: string
+          }) => {
+            const { license, trailerNumber, trailerNumber2 } = vehicle
+            return (
+              license.toLowerCase().includes(searchValueLower) ||
+              trailerNumber.toLowerCase().includes(searchValueLower) ||
+              (trailerNumber2 &&
+                trailerNumber2.toLowerCase().includes(searchValueLower))
+            )
+          }
         )
+        setFilteredData(filtered)
       } else {
-        setData(carTempData)
+        setFilteredData(allVehicles)
       }
     }
-  }, [carTempData, searchValue])
+  }, [data, searchValue])
 
-  const deleteData = (id: number | string) => {
-    setData(prev => prev.filter(e => e.id != id))
+  const deleteData = async (_id: string) => {
+    try {
+      await deleteVehicle({
+        variables: { _id },
+      })
+      setFilteredData(filteredData.filter(user => user._id !== _id))
+      refetch()
+    } catch (error) {
+      console.error('Error deleting vehicle:', error)
+    }
   }
 
   const showItems = () => {
-    return data.map((e, i) => {
-      return {
-        title: (
-          <View style={styles.listItem}>
-            <View>
-              <Text style={styles.nameStyle}>Улсын дугаар: {e.carNumber}</Text>
-              <Text style={styles.jobStyle}>
-                Чиргүүлийн дугаар: {e.trailerNumber} | {e.trailerNumber2}
-              </Text>
-            </View>
+    return filteredData.map((vehicle, index) => ({
+      title: (
+        <View style={styles.listItem} key={vehicle._id}>
+          <View>
+            <Text style={styles.nameStyle}>
+              Улсын дугаар: {vehicle.license}
+            </Text>
+            <Text style={styles.jobStyle}>
+              Чиргүүлийн дугаар: {vehicle.trailerNumber} |{' '}
+              {vehicle.trailerNumber2}
+            </Text>
           </View>
-        ),
-        content: (
-          <AdminListDropdown
-            data={e}
-            index={i}
-            deleteData={deleteData}
-            navigation={navigation}
-            navigateScreen='AddCar'
-          />
-        ),
-      }
-    })
+        </View>
+      ),
+      content: (
+        <AdminListDropdown
+          data={vehicle}
+          index={index}
+          deleteData={deleteData}
+          navigation={navigation}
+          navigateScreen='AddCar'
+        />
+      ),
+    }))
   }
+
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>Error loading vehicles</Text>
 
   const styles = StyleSheet.create({
     addButton: {

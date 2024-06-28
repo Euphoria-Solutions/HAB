@@ -5,9 +5,10 @@ import { RootAdminStackParamList } from '../../navigation/types'
 import { ListContainer, SearchInput } from '../../components/common'
 import { useTheme } from '../../theme/theme-provider'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { ScheduleType, scheduleData } from '../../utils'
 import { AdminListDropdown } from '../../components/content'
 import { EventProvider } from 'react-native-outside-press'
+import { DELETE_DELIVERY, GET_DELIVERIES } from '../../graphql'
+import { useMutation, useQuery } from '@apollo/client'
 
 interface IAdminSchedules {
   navigation: StackNavigationProp<RootAdminStackParamList, 'Schedule'>
@@ -16,63 +17,47 @@ interface IAdminSchedules {
 export const AdminSchedules: React.FC<IAdminSchedules> = ({ navigation }) => {
   const { theme } = useTheme()
   const [searchValue, setSearchValue] = useState('')
-  const [data, setData] = useState<ScheduleType[]>([])
+  const [filteredData, setFilteredData] = useState<any[]>([])
+
+  const { data, loading, error, refetch } = useQuery(GET_DELIVERIES)
+  const [deleteDelivery] = useMutation(DELETE_DELIVERY)
 
   useEffect(() => {
-    if (scheduleData) {
+    refetch()
+  }, [navigation])
+
+  useEffect(() => {
+    if (data && data.getDeliveries) {
+      const allDeliveries = data.getDeliveries
+      let filteredDeliveries = allDeliveries
+
       if (searchValue) {
-        const tempVal = searchValue.toLowerCase()
-        setData(
-          scheduleData.filter(e => {
-            if (e.license.toLowerCase().includes(tempVal)) {
-              return true
-            }
-            return false
-          })
+        const searchValueLower = searchValue.toLowerCase()
+        filteredDeliveries = allDeliveries.filter(
+          (delivery: { contractNumber: string }) =>
+            delivery.contractNumber.toLowerCase().includes(searchValueLower)
         )
-      } else {
-        setData(scheduleData)
       }
+
+      setFilteredData(filteredDeliveries)
     }
-  }, [scheduleData, searchValue])
+  }, [data, searchValue])
 
-  const deleteData = (id: number | string) => {
-    setData(prev => prev.filter(e => e.id != id))
-  }
-  const displayDate = (date: Date) => {
-    let temp = ''
-
-    temp += date.getFullYear()
-    temp += '.'
-    temp += date.getMonth() + 1
-    temp += '.'
-    temp += date.getDate()
-
-    return temp
+  const deleteData = async (_id: string) => {
+    try {
+      await deleteDelivery({
+        variables: { _id },
+      })
+      setFilteredData(filteredData.filter(delivery => delivery._id !== _id))
+      refetch()
+    } catch (error) {
+      console.error('Error deleting delivery:', error)
+    }
   }
 
-  const showItems = () => {
-    return data.map((e, i) => {
-      return {
-        title: (
-          <View style={styles.listItem}>
-            <View>
-              <Text style={styles.nameStyle}>Гэрээний дугаар: {e.license}</Text>
-              <Text style={styles.jobStyle}>{displayDate(e.date)}</Text>
-            </View>
-          </View>
-        ),
-        content: (
-          <AdminListDropdown
-            data={e}
-            index={i}
-            deleteData={deleteData}
-            navigation={navigation}
-            navigateScreen='AddSchedule'
-          />
-        ),
-      }
-    })
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr)
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`
   }
 
   const styles = StyleSheet.create({
@@ -123,6 +108,33 @@ export const AdminSchedules: React.FC<IAdminSchedules> = ({ navigation }) => {
       fontSize: 14,
     },
   })
+
+  const showItems = () => {
+    return filteredData.map((delivery, index) => ({
+      title: (
+        <View style={styles.listItem} key={delivery.id}>
+          <View>
+            <Text style={styles.nameStyle}>
+              Гэрээний дугаар: {delivery.contractNumber}
+            </Text>
+            <Text style={styles.jobStyle}>{formatDate(delivery.date)}</Text>
+          </View>
+        </View>
+      ),
+      content: (
+        <AdminListDropdown
+          data={delivery}
+          index={index}
+          deleteData={deleteData}
+          navigation={navigation}
+          navigateScreen='AddSchedule'
+        />
+      ),
+    }))
+  }
+
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>Error loading schedules</Text>
 
   return (
     <EventProvider>

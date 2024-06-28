@@ -1,13 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import { DataType } from '../../utils/interface'
+import { DataType, VehicleType } from '../../utils/interface'
 import { ListContainer, SignatureCard, Tab } from '../common'
 import { StyleSheet, Text, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
 import { useAuth } from '../../auth/auth-provider'
 import { carInfoTempData } from '../../utils'
+import { GET_DELIVERIES, GET_VEHICLES } from '../../graphql'
+import { useLazyQuery } from '@apollo/client'
+import { useWork } from '../../services/work-provder'
 
 type CarGeneralInfoProps = {
   data: DataType | undefined
+}
+
+export type ScheduleType = {
+  contractNumber: string
+  date: string
+  _id: string
+  pickupPoint: string
+  location: string
+  deliveryLocation: string
+  companyName: string
+  exitDate: string
+  driver: string
+  license: string
+  trailerNumber1: string
+  trailerNumber2: string
+  state: 'failed' | 'success'
 }
 
 export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
@@ -15,6 +34,42 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
   const { user } = useAuth()
   const [tab, setTab] = useState(0)
   const [isCarFine, setIsCarFine] = useState(true)
+  const [delivery, setDelivery] = useState<ScheduleType>()
+  const [vehicle, setVehicle] = useState<VehicleType>()
+  const [getVehicle] = useLazyQuery(GET_VEHICLES)
+  const [getDeliveries] = useLazyQuery(GET_DELIVERIES)
+  const [statusData, setStatusData] = useState<DataType>()
+  const { workData, workId } = useWork()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (workData) {
+        const foundData = workData.find(work => work._id === workId)
+        setStatusData(foundData)
+      }
+    }
+    fetchData()
+  }, [workData, workId])
+
+  useEffect(() => {
+    const getVehicleData = async () => {
+      const { data: vehicelData } = await getVehicle({
+        variables: { license: data?.license },
+      })
+      setVehicle(vehicelData.getVehicle[0])
+    }
+    getVehicleData()
+  }, [vehicle])
+
+  useEffect(() => {
+    const getDeliveryData = async () => {
+      const { data: deliveryData } = await getDeliveries({
+        variables: { license: data?.license },
+      })
+      setDelivery(deliveryData.getDeliveries[0])
+    }
+    getDeliveryData()
+  }, [delivery])
 
   useEffect(() => {
     if (carInfoTempData) {
@@ -98,17 +153,19 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
                 <ListContainer
                   itemOptions={{ allDisabled: true }}
                   items={[
-                    { content: data?.carNumber, title: 'Улсын дугаар' },
+                    { content: data?.license, title: 'Улсын дугаар' },
                     {
-                      content: data?.trailerNumber,
+                      content: data?.trailerNumber
+                        ? data?.trailerNumber
+                        : 'чиргүүл байхгүй',
                       title: 'Чиргүүлийн дугаар №1',
                     },
                     {
-                      content: data?.trailerNumber2,
+                      content: data?.trailerNumber2
+                        ? data?.trailerNumber2
+                        : '2 дахь чиргүүл байхгүй',
                       title: 'Чиргүүлийн дугаар №2',
                     },
-                    { content: 'Zembab', title: 'Чиргүүлийн дугаар №3' },
-                    { content: 'Zembab', title: 'Чиргүүлийн дугаар №4' },
                   ]}
                 />
               </View>
@@ -117,10 +174,13 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
                 <ListContainer
                   itemOptions={{ allDisabled: true }}
                   items={[
-                    { content: 'Zembab', title: 'Улсын нэр' },
-                    { content: 'Zembab', title: 'Он, сар' },
-                    { content: 'Zembab', title: 'Хөдөлгүүр №' },
-                    { content: 'Zembab', title: 'Рамны №' },
+                    {
+                      content: vehicle?.manufacturedCountry,
+                      title: 'Улсын нэр',
+                    },
+                    { content: vehicle?.date, title: 'Он, сар' },
+                    { content: vehicle?.engineNumber, title: 'Хөдөлгүүр №' },
+                    { content: vehicle?.ramNumber, title: 'Рамны №' },
                   ]}
                 />
               </View>
@@ -129,29 +189,38 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
                 <ListContainer
                   itemOptions={{ allDisabled: true }}
                   items={[
-                    { content: 'Zembab', title: `Даац/тонн/ \nсуудлын тоо` },
-                    { content: 'Zembab', title: 'Монголд ирсэн он, сар, өдөр' },
                     {
-                      content: '.',
+                      content: vehicle?.tonnage,
+                      title: `Даац/тонн/ \nсуудлын тоо`,
+                    },
+                    {
+                      content: '',
+                      title: 'Монголд ирсэн он, сар, өдөр',
+                    },
+                    {
+                      content: vehicle?.certificate,
                       title: 'Улсын бүртгэлийн гэрчилгээний дугаар',
                     },
                     {
-                      content: 'Zembab',
+                      content: vehicle?.dateOfUse,
                       title: 'Ашиглалтанд орсон он, сар өдөр',
                     },
                     {
-                      content: 'Zembab',
+                      content: vehicle?.price,
                       title: 'Автомашины анхны үнэ /төгрөг/',
                     },
                     {
-                      content: 'Zembab',
+                      content: vehicle?.durability,
                       title: 'Эдэлгээний хугацааны норм /км/',
                     },
                     {
-                      content: 'Zembab',
+                      content: vehicle?.fuel,
                       title: 'Шатахууны үндсэн норм/100км-т/',
                     },
-                    { content: 'Zembab', title: 'Хөдөлгүүр хүч чадал' },
+                    {
+                      content: vehicle?.enginePower,
+                      title: 'Хөдөлгүүр хүч чадал',
+                    },
                   ]}
                 />
               </View>
@@ -163,7 +232,11 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
                 itemOptions={{ allDisabled: true }}
                 items={[
                   {
-                    content: isCarFine ? 'Хэвийн' : 'Хэвийн бус',
+                    content: isCarFine
+                      ? 'Хэвийн'
+                      : statusData?.mechanicCheckList != ''
+                        ? 'Хэвийн бус'
+                        : 'Хүлээгдэж байгаа',
                     title: 'Машины байдал',
                   },
                   {
@@ -176,7 +249,7 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
           )}
           <SignatureCard
             title='Хувийн хэрэг нээж бүртгэсэн:'
-            job='ХАБ'
+            job='Тээвэр зохицуулагч'
             name='Доржсүрэн Энхриймаа'
           />
           {user?.job != 'engineer' && (
@@ -232,27 +305,45 @@ export const CarGeneralInfo: React.FC<CarGeneralInfoProps> = ({ data }) => {
                 user?.job != 'mechanic'
                   ? user?.job == 'engineer'
                     ? [
-                        { content: 'Zembab', title: 'Гэрээний дугаар' },
-                        { content: 'Zembab', title: 'Он, сар' },
-                        { content: 'Zembab', title: 'Жолооч' },
+                        {
+                          content: delivery?.contractNumber,
+                          title: 'Гэрээний дугаар',
+                        },
+                        {
+                          content: delivery?.date,
+                          title: 'Он, сар',
+                        },
+                        { content: delivery?.driver, title: 'Жолооч' },
                       ]
                     : [
-                        { content: 'Zembab', title: 'Гэрээний дугаар' },
-                        { content: 'Zembab', title: 'Он, сар' },
-                        { content: 'Zembab', title: 'Чингэлэг авах байршил' },
-                        { content: 'Zembab', title: 'Амны байршил' },
-                        { content: 'Zembab', title: 'Боомтны байршил' },
+                        {
+                          content: delivery?.contractNumber,
+                          title: 'Гэрээний дугаар',
+                        },
+                        { content: delivery?.date, title: 'Он, сар' },
+                        {
+                          content: delivery?.pickupPoint,
+                          title: 'Чингэлэг авах байршил',
+                        },
+                        { content: delivery?.location, title: 'Амны байршил' },
+                        {
+                          content: delivery?.deliveryLocation,
+                          title: 'Боомтны байршил',
+                        },
                       ]
                   : [
-                      { content: 'Zembab', title: 'Гэрээний дугаар' },
-                      { content: 'Zembab', title: 'Он, сар' },
+                      {
+                        content: delivery?.contractNumber,
+                        title: 'Гэрээний дугаар',
+                      },
+                      { content: delivery?.date, title: 'Он, сар' },
                     ]
               }
             />
           </View>
           <SignatureCard
             title='Хүргэлтийг оруулсан'
-            job='ХАБ'
+            job='Тээвэр зохицуулагч'
             name='Доржсүрэн Энхриймаа'
           />
         </View>

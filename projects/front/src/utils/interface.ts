@@ -1,28 +1,24 @@
-export type QueryType = 'carNumber' | 'id' | 'driver' | 'date' | ''
+export type QueryType = 'license' | '_id' | 'driver' | 'date' | ''
 export type QueryNameType = {
   title: string | Date
   name: QueryType
 }
 export type StateType = 'waiting' | 'being processed' | 'finished'
 export type DataType = {
-  carNumber: string
-  state: StateType
+  license: string
+  state: string
   date: Date
   progress: string
-  id: string
+  _id: string
   location: string
   driver: string
   trailerNumber: string
   trailerNumber2?: string
-  signature: boolean
-  managerState?:
-    | 'delivered'
-    | 'confirmed'
-    | 'problem'
-    | 'engineer'
-    | 'manager'
-    | 'mechanic'
-    | 'time'
+  signature: string
+  managerState?: string
+  contractNumber?: string
+  mechanicCheckList: string
+  prescription: string
 }
 export type IconType = {
   style?: object
@@ -33,9 +29,9 @@ export type TagType = {
 }
 export type CarInfoType = {
   name: string
-  state: 'waiting' | 'finished' | 'being processed'
-  type: 'engine' | 'disk' | 'transmission' | 'other'
-  quality: QualityType
+  state: string
+  type: string
+  quality: string
 }
 export type CarProblemType = {
   title: string
@@ -47,29 +43,28 @@ export type CarReasonType = {
   problems: CarProblemType[]
 }
 export type EngineType = 'engine' | 'disk' | 'transmission' | 'other'
-export type QualityType = 'normal' | 'repair' | 'swap' | 'charge' | 'clean' | ''
 export type NewsType = {
-  name: string
+  username: string
   photo?: string
   job: string
-  time: Date
+  date: Date
   text?: string
   imageLinks?: string[]
   id: string
   viewer: 'everyone' | 'worker' | 'driver' | 'engineer'
 }
 export type WorkerType = {
-  name: string
-  surname: string
+  firstname: string
+  lastname: string
   job: 'driver' | 'engineer' | 'manager' | 'mechanic'
   mobileNumber: number
   username: string
-  id: number | string
+  _id: string
 }
 export type ScheduleType = {
-  license: string
+  contractNumber: string
   date: Date
-  id: number | string
+  _id: string
   pickupPoint: string
   location: string
   deliveryLocation: string
@@ -79,7 +74,7 @@ export type ScheduleType = {
     name: string
     profile?: string | undefined
   }
-  carNumber: string
+  license: string
   trailerNumber1: string
   trailerNumber2: string
   state: 'failed' | 'success'
@@ -99,11 +94,66 @@ export type NotificationType = {
   }
 }
 export type UserType = {
-  id: string
+  _id: string
   username: string
   phoneNumber: string
   job: 'mechanic' | 'engineer' | 'manager' | 'driver'
   firstname: string
   lastname: string
   notifications?: NotificationType[]
+}
+
+export type WorkContextType = {
+  workData: DataType[]
+  setWorkData: (_data: DataType[]) => void
+  workId: string | undefined
+  setWorkId: (_data: string | undefined) => void
+  mechanic: MechanicalCheckList | undefined
+  setMechanic: (_data: MechanicalCheckList | undefined) => void
+  prescription: Presciption | undefined
+  setPrescription: (_data: Presciption | undefined) => void
+}
+
+export type VehicleType = {
+  license: string
+  trailerNumber1: string
+  trailerNumber2: string
+  manufacturedCountry: string
+  date: string
+  engineNumber: string
+  ramNumber: string
+  tonnage: string
+  dateOfArrival: string
+  certificate: string
+  dateOfUse: string
+  price: string
+  durability: string
+  fuel: string
+  enginePower: string
+}
+
+type Parts = {
+  value: string
+  label: string
+}
+
+export type Problems = {
+  name: string
+  title: string
+  reason: string
+  parts: [Parts]
+  images: [string]
+}
+
+export type MechanicalCheckList = {
+  _id: string | undefined
+  data: CarInfoType[] | undefined
+  problem: Problems[] | undefined
+  vehicle: string | undefined
+  mechanicEngineer: string | undefined
+}
+
+export type Presciption = {
+  intructions: string[]
+  responsibilities: string[]
 }

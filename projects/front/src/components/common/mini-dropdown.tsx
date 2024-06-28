@@ -107,7 +107,7 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
             onOutsidePress={() => setTimeout(() => setVisible(false), 100)}
           >
             {options.map((item, i) => (
-              <>
+              <React.Fragment key={i}>
                 <TouchableOpacity
                   onPress={() => {
                     item.function()
@@ -116,6 +116,7 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
                     }, 30)
                   }}
                   style={styles.optionItem}
+                  key={i}
                 >
                   {item.icon && item.icon}
                   {item.label && (
@@ -126,7 +127,7 @@ export const MiniDropdown: React.FC<MiniDropdownProps> = ({
                   {item.element && item.element}
                 </TouchableOpacity>
                 {i < options.length - 1 && <View style={styles.divider} />}
-              </>
+              </React.Fragment>
             ))}
           </OutsidePressHandler>
         </Animated.View>

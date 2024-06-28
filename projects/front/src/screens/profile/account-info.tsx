@@ -10,6 +10,7 @@ import {
 } from '../../components/common'
 import { EditIcon, KeyIcon } from '../../assets/icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useAuth } from '../../auth/auth-provider'
 
 type AccountInfoProps = {
   navigation: NavigationProp<RootStackParamList, 'AccountInfo'>
@@ -18,11 +19,12 @@ type AccountInfoProps = {
 export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
   const { theme } = useTheme()
   const [modalVisible, setModalVisible] = useState(false)
-  const [surname, setSurname] = useState('')
-  const [name, setName] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [firstname, setFirstname] = useState('')
   const [number, setNumber] = useState('')
   const [job, setJob] = useState({ value: '', label: '' })
   const [reason, setReason] = useState('')
+  const { user } = useAuth()
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -70,9 +72,9 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
         <ListContainer
           itemOptions={{ allDisabled: true, allContentStyle: styles.listText }}
           items={[
-            { title: 'Таны овог', content: 'Насанжаргал' },
-            { title: 'Утасны дугаар', content: '+965 88889999' },
-            { title: 'Албан тушаал', content: 'Жолооч' },
+            { title: 'Таны овог', content: user?.lastname, index: 1 },
+            { title: 'Утасны дугаар', content: user?.phoneNumber, index: 2 },
+            { title: 'Албан тушаал', content: user?.job, index: 3 },
           ]}
         />
         <ListContainer
@@ -93,10 +95,10 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ navigation }) => {
         setJob={setJob}
         number={number}
         setNumber={setNumber}
-        setName={setName}
-        name={name}
-        surname={surname}
-        setSurname={setSurname}
+        setFirstname={setFirstname}
+        firstname={firstname}
+        lastname={lastname}
+        setLastname={setLastname}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />

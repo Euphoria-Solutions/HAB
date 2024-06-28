@@ -14,6 +14,7 @@ import {
 } from '../../assets/icons/'
 import { ListContainer } from '../../components/common'
 import { CustomSwitch } from '../../components/custom'
+import { useAuth } from '../../auth/auth-provider'
 
 type ProfileScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Profile'>
@@ -22,6 +23,7 @@ type ProfileScreenProps = {
 export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const { theme, isDarkMode, toggleTheme } = useTheme()
   const [notifications, setNotifications] = useState(false)
+  const { user } = useAuth()
 
   const navigateToRequest = () => {
     navigation.navigate('Request')
@@ -89,8 +91,11 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
         <View style={styles.userNameContainer}>
           <View style={styles.profilePictureStyle}></View>
           <View>
-            <Text style={styles.userNameStyle}>Мөрөнгуа Насанбаяр</Text>
-            <Text style={styles.roleText}>Тээвэр зохицуулагч</Text>
+            <Text style={styles.userNameStyle}>
+              {user?.lastname}
+              {user?.firstname}
+            </Text>
+            <Text style={styles.roleText}>{user?.job}</Text>
           </View>
         </View>
       </View>

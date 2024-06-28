@@ -29,95 +29,110 @@ import { NavigationProvider } from './src/navigation'
 import { AuthProvider } from './src/auth/auth-provider'
 import { EventProvider } from 'react-native-outside-press'
 import { EngineerStack } from './src/screens/hab-engineer/engineer-stack'
+import { ApolloProvider } from '@apollo/client'
+import { client } from './src/graphql'
+import { AdminAddSchedule } from './src/screens/admin/admin-add-schedule'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
 const App = () => {
   return (
-    <EventProvider>
-      <AuthProvider>
-        <ThemeProvider>
-          <NavigationProvider>
-            <NavigationContainer>
-              <Stack.Navigator
-                initialRouteName='Home'
-                screenOptions={{
-                  header: ({ navigation, route, options, back }) => {
-                    return (
-                      <CustomStackHeader
-                        navigation={navigation}
-                        route={route}
-                        options={options}
-                        back={back}
-                      />
-                    )
-                  },
-                }}
-              >
-                <Stack.Screen name='Home' component={HomeScreen} />
-                <Stack.Screen
-                  options={{ title: 'Профайл' }}
-                  name='Profile'
-                  component={ProfileScreen}
-                />
-                <Stack.Screen
-                  options={{ title: 'Нууц үг солих' }}
-                  name='ChangePassword'
-                  component={ChangePasswordScreen}
-                />
-                <Stack.Screen
-                  options={{ title: 'Санал хүсэлт' }}
-                  name='Request'
-                  component={RequestScreen}
-                />
-                <Stack.Screen
-                  options={{
-                    title: 'Миний мэдээлэл',
+    <ApolloProvider client={client}>
+      <EventProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <NavigationProvider>
+              <NavigationContainer>
+                <Stack.Navigator
+                  initialRouteName='Home'
+                  screenOptions={{
+                    header: ({ navigation, route, options, back }) => {
+                      return (
+                        <CustomStackHeader
+                          navigation={navigation}
+                          route={route}
+                          options={options}
+                          back={back}
+                        />
+                      )
+                    },
                   }}
-                  name='AccountInfo'
-                  component={AccountInfo}
-                />
-                <Stack.Screen
-                  options={{ headerShown: false }}
-                  name='Login'
-                  component={LoginScreen}
-                />
-                <Stack.Screen
-                  options={{ headerShown: false }}
-                  name='MechanicEngineer'
-                  component={MechanicEngineer}
-                />
-                <Stack.Screen
-                  options={{ headerShown: false }}
-                  name='TransportManager'
-                  component={TransportManager}
-                />
-                <Stack.Screen
-                  options={{ title: 'Пост оруулах' }}
-                  name='AddPost'
-                  component={AddPostScreen}
-                />
-                <Stack.Screen
-                  options={{ title: 'Мэдэгдэл' }}
-                  name='Notification'
-                  component={NotificationScreen}
-                />
-                <Stack.Screen
-                  options={{ headerShown: false }}
-                  name='Driver'
-                  component={DriverStack}
-                />
-                <Stack.Screen
-                  options={{ headerShown: false }}
-                  name='HABEngineer'
-                  component={EngineerStack}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </NavigationProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </EventProvider>
+                >
+                  <Stack.Screen name='Home' component={HomeScreen} />
+                  <Stack.Screen
+                    options={{ title: 'Профайл' }}
+                    name='Profile'
+                    component={ProfileScreen}
+                  />
+                  <Stack.Screen
+                    options={{ title: 'Нууц үг солих' }}
+                    name='ChangePassword'
+                    component={ChangePasswordScreen}
+                  />
+                  <Stack.Screen
+                    options={{ title: 'Санал хүсэлт' }}
+                    name='Request'
+                    component={RequestScreen}
+                  />
+                  <Stack.Screen
+                    options={{
+                      title: 'Миний мэдээлэл',
+                    }}
+                    name='AccountInfo'
+                    component={AccountInfo}
+                  />
+                  <Stack.Screen
+                    options={{ headerShown: false }}
+                    name='Login'
+                    component={LoginScreen}
+                  />
+                  <Stack.Screen
+                    options={{ headerShown: false }}
+                    name='MechanicEngineer'
+                    component={MechanicEngineer}
+                  />
+                  <Stack.Screen
+                    options={{ headerShown: false }}
+                    name='TransportManager'
+                    component={TransportManager}
+                  />
+                  <Stack.Screen
+                    options={{ title: 'Пост оруулах' }}
+                    name='AddPost'
+                    component={AddPostScreen}
+                  />
+                  <Stack.Screen
+                    options={{ title: 'Пост Засварлах' }}
+                    name='EditPost'
+                    component={AddPostScreen}
+                  />
+                  <Stack.Screen
+                    options={{ title: 'Мэдэгдэл' }}
+                    name='Notification'
+                    component={NotificationScreen}
+                  />
+                  <Stack.Screen
+                    options={{ headerShown: false }}
+                    name='Driver'
+                    component={DriverStack}
+                  />
+                  <Stack.Screen
+                    options={{ headerShown: false }}
+                    name='HABEngineer'
+                    component={EngineerStack}
+                  />
+                  <Stack.Screen
+                    options={{ headerShown: false }}
+                    name='AdminAddSchedule'
+                    component={AdminAddSchedule}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </NavigationProvider>
+          </ThemeProvider>
+        </AuthProvider>
+      </EventProvider>
+    </ApolloProvider>
   )
 }
 

@@ -1,13 +1,17 @@
-import React from 'react'
+//TODO seperate this code for android and ios
+
+import React, { useRef } from 'react'
 import { Text, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../theme/theme-provider'
+import SignatureScreen from 'react-native-signature-canvas'
 
-export interface SignatureTypes {
+interface SignatureTypes {
   cardView?: boolean
   job: string
   name: string
   title?: string
   signature?: unknown
+  onOK?: (_signature: string) => void
 }
 
 export const SignatureCard: React.FC<SignatureTypes> = ({
@@ -15,8 +19,38 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
   job,
   name,
   title,
+  onOK,
 }) => {
   const { theme } = useTheme()
+
+  const ref = useRef<{
+    readSignature: () => void
+    clearSignature: () => void
+    getData: () => Promise<string>
+  }>(null)
+
+  const handleOK = (signature: string) => {
+    console.log(signature)
+    if (onOK) {
+      onOK(signature)
+    }
+  }
+
+  const handleEnd = () => {
+    ref.current?.readSignature()
+  }
+
+  const handleEmpty = () => {
+    console.log('Empty')
+  }
+
+  const handleClear = () => {
+    console.log('Clear success!')
+  }
+
+  const handleData = (data: string) => {
+    console.log(data)
+  }
 
   const styles = StyleSheet.create({
     aboutSignature: {
@@ -85,7 +119,18 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
       {title && <Text style={styles.signatureTitle}>{title}</Text>}
       <View style={styles.signatureContainer}>
         <View style={styles.aboutSignature}>
-          <View style={styles.signature} />
+          <SignatureScreen
+            ref={ref as any} //TODO change it to specific type other than any
+            onEnd={handleEnd}
+            onOK={handleOK}
+            onEmpty={handleEmpty}
+            onClear={handleClear}
+            onGetData={handleData}
+            autoClear={false}
+            descriptionText='Sign here'
+            webStyle={`.m-signature-pad--footer .button { background-color: ${theme.text}; color: white; }`}
+            style={styles.signature}
+          />
           <Text style={styles.signatureSubTitle}>Гарын үсэг:</Text>
         </View>
         <View style={styles.aboutSignature}>
@@ -101,8 +146,21 @@ export const SignatureCard: React.FC<SignatureTypes> = ({
         <Text style={styles.cardSubtitle}>{job}</Text>
         <Text style={styles.cardName}>{name}</Text>
       </View>
-      <View style={styles.cardSignature} />
       <Text style={styles.cardSubtitle}>Гарын үсэг:</Text>
+      <View style={styles.cardSignature}>
+        <SignatureScreen
+          ref={ref as any} //TODO change it to specific type other than any
+          onEnd={handleEnd}
+          onOK={handleOK}
+          onEmpty={handleEmpty}
+          onClear={handleClear}
+          onGetData={handleData}
+          autoClear={false}
+          descriptionText='Sign here'
+          webStyle={`.m-signature-pad--footer .button { background-color: ${theme.text}; color: white; }`}
+          style={styles.cardSignature}
+        />
+      </View>
     </View>
   )
 }

@@ -22,6 +22,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useNav } from '../../navigation'
 import { AdminStack } from '../admin/admin-stack'
+import { ComingSoon } from '../test-screen/coming-soon'
 
 const Tab = createBottomTabNavigator<RootManagerStackParamList>()
 
@@ -100,8 +101,8 @@ export const TransportManager: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name='Chat'
-        component={NewsScreen}
+        name='ComingSoon'
+        component={ComingSoon}
         options={{
           title: 'Чат',
           tabBarIcon: ({ focused, color, size }) =>

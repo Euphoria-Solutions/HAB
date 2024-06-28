@@ -1,4 +1,6 @@
 import { CarProblemType } from '../utils/interface'
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 export type RootStackParamList = {
   Home: undefined
@@ -10,16 +12,18 @@ export type RootStackParamList = {
   MechanicEngineer: undefined
   TransportManager: undefined
   AddPost: undefined | { postId: string | null }
+  EditPost: undefined | { postId: string | null }
   Notification: undefined
   Driver: undefined
   HABEngineer: undefined
+  AdminAddSchedule: undefined
 }
 
 export type RootBottomTabParamList = {
   Home: undefined
   Work: undefined
   SOS: undefined
-  Chat: undefined
+  ComingSoon: undefined
 }
 
 export type RootSOSStackParamList = {
@@ -41,7 +45,7 @@ export type RootManagerStackParamList = {
   Admin: undefined
   AddPost: undefined
   Work: undefined
-  Chat: undefined
+  ComingSoon: undefined
 }
 
 export type RootEngineerStackParamList = {
@@ -49,12 +53,12 @@ export type RootEngineerStackParamList = {
   SOS: undefined
   AddPost: undefined
   Work: undefined
-  Chat: undefined
+  ComingSoon: undefined
 }
 
 export type RootAdminStackParamList = {
   Home: undefined
-  Workers: undefined
+  Workers: { reload: boolean } | undefined
   AddWorker: undefined
   Cars: undefined
   AddCar: undefined
@@ -62,3 +66,10 @@ export type RootAdminStackParamList = {
   AddSchedule: undefined
   Problems: undefined
 }
+
+export type WorkersNavigationProp = StackNavigationProp<
+  RootAdminStackParamList,
+  'Workers'
+>
+
+export type WorkersRouteProp = RouteProp<RootAdminStackParamList, 'Workers'>

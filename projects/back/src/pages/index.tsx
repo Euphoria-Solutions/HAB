@@ -1,7 +1,7 @@
 const Index = () => {
   return (
     <div>
-      Hello from forexplore backend API with
+      Hello from hab backend API with
       {process.env.CURRENT_ENV == 'PROD' ? 'PROD' : 'DEV'} Environment
     </div>
   );

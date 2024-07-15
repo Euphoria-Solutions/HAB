@@ -7,11 +7,10 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { onError } from '@apollo/client/link/error'
 import { setContext } from '@apollo/client/link/context'
+import { GRAPHQL_URI } from '@env'
 
-const uri =
-  process.env.CURRENT_ENV === 'PROD'
-    ? 'https://hab-back-zcznza3gq-euphoria-solutions-projects.vercel.app/api/graphql'
-    : 'https://hab-back-zcznza3gq-euphoria-solutions-projects.vercel.app/api/graphql'
+const uri = GRAPHQL_URI
+// const uri = 'http://192.168.2.2:3000/api/graphql'
 
 const httpLink = createHttpLink({
   uri,
@@ -20,7 +19,6 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem('token')
-
   return {
     headers: {
       ...headers,

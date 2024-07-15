@@ -13,6 +13,7 @@ import { useTheme } from '../../theme/theme-provider'
 import { LoginInput, SubmitButton } from '../../components/common'
 import { useAuth } from '../../auth/auth-provider'
 import { UserType } from '../../utils'
+import { GRAPHQL_URI } from '@env'
 
 type LoginScreenProps = {
   navigation: NavigationProp<RootStackParamList, 'Login'>
@@ -157,6 +158,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <Text>some logo here: HAB</Text>
             </View>
           </View>
+          <Text>{GRAPHQL_URI}</Text>
           <View style={styles.form}>
             <LoginInput
               value={email}

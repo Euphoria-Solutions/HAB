@@ -5,6 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "android:prod": "NODE_ENV=production react-native run-android",
+    "ios:prod": "NODE_ENV=production react-native run-ios",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "react-native start",
     "test": "jest",

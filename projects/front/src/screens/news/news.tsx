@@ -1,5 +1,11 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  RefreshControl,
+} from 'react-native'
 import { RootManagerStackParamList } from '../../navigation/types'
 import { useTheme } from '../../theme/theme-provider'
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
@@ -24,6 +30,7 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
   const [searchFocused, setSearchFocused] = useState(false)
   const [data, setData] = useState<NewsType[]>()
   const [dataToShow, setDataToShow] = useState<NewsType[]>()
+  const [refreshing, setRefreshing] = useState(false)
   const { loading, error, data: queryData, refetch } = useQuery(GET_POSTS)
   const [deletePosts] = useMutation(REMOVE_POST)
 
@@ -73,6 +80,11 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
       },
     })
     refetch()
+  }
+
+  const onRefresh = () => {
+    setRefreshing(true)
+    refetch().finally(() => setRefreshing(false))
   }
 
   const styles = StyleSheet.create({
@@ -130,7 +142,12 @@ export const NewsScreen: React.FC<NewsScreenProps> = ({ navigation }) => {
   return (
     <EventProvider>
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollStyle}>
+        <ScrollView
+          contentContainerStyle={styles.scrollStyle}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <View style={styles.searchContainer}>
             <SearchInput
               focused={searchFocused}

@@ -10,7 +10,8 @@
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "react-native start",
     "test": "jest",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "release": "npx react-native run-android --variant=release"
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",

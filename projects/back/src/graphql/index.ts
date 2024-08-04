@@ -2,11 +2,8 @@ import { gql } from '@apollo/client';
 import {
   authQueryTypes,
   deliveryQueryTypes,
-  driverJobQuery,
   feedbackQuery,
-  habEngineerJobQuery,
   mechanicCheckListQueryTypes,
-  mechanicEngineerJobQuery,
   notificationQuery,
   postQueryTypes,
   prescriptionQueryTypes,
@@ -16,11 +13,8 @@ import {
 import {
   authMutationTypes,
   deliveryMutationTypes,
-  driverJobMutation,
   feedbackMutation,
-  habEngineerJobMutation,
   mechanicCheckListMutationTypes,
-  mechanicEngineerJobMutation,
   notificationMutation,
   postMutationTypes,
   prescriptionMutationTypes,
@@ -36,9 +30,6 @@ export const typeDefs = gql`
   ${mechanicCheckListQueryTypes}
   ${prescriptionQueryTypes}
   ${vehicleQueryTypes}
-  ${driverJobMutation}
-  ${habEngineerJobMutation}
-  ${mechanicEngineerJobMutation}
   ${workQuery}
   ${notificationQuery}
   ${feedbackQuery}
@@ -50,9 +41,6 @@ export const typeDefs = gql`
   ${mechanicCheckListMutationTypes}
   ${prescriptionMutationTypes}
   ${vehicleMutationTypes}
-  ${driverJobQuery}
-  ${habEngineerJobQuery}
-  ${mechanicEngineerJobQuery}
   ${workMutation}
   ${notificationMutation}
   ${feedbackMutation}

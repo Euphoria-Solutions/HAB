@@ -1,5 +1,0 @@
-1. connect it to weather api and write the code for android and ios
-2. fix the types if they are "any"
-3. fix the signature screen for android and ios
-4. do all the things as eslint and prettier rules 
-5. write a specific explanation of your code as a comment

@@ -28,24 +28,6 @@ import {
   removePrescription,
 } from './prescription';
 import {
-  addDriverJob,
-  deleteDriverJob,
-  editDriverJob,
-  getDriverJob,
-} from './driver-job';
-import {
-  addMechanicEngineerJob,
-  deleteMechanicEngineerJob,
-  editMechanicEngineerJob,
-  getMechanicEngineerJob,
-} from './mechanic-engineer-job';
-import {
-  addHabEngineerJob,
-  deleteHabEngineerJob,
-  editHabEngineerJob,
-  getHabEngineerJob,
-} from './hab-engineer-job';
-import {
   createNotification,
   deleteNotification,
   editNotification,
@@ -69,9 +51,6 @@ export const resolversObjects = {
     getMechanicalCheckList,
     getPosts,
     getDeliveries,
-    getDriverJob,
-    getMechanicEngineerJob,
-    getHabEngineerJob,
     getWorks,
     getNotifications,
     getFeedbacks,
@@ -110,21 +89,6 @@ export const resolversObjects = {
     createMechanicalCheckList,
     editMechanicalCheckList,
     deleteMechanicalCheckList,
-
-    //* DriverJob
-    addDriverJob,
-    editDriverJob,
-    deleteDriverJob,
-
-    //* HabEngineerJob
-    addHabEngineerJob,
-    editHabEngineerJob,
-    deleteHabEngineerJob,
-
-    //* MechanicEngineerJob
-    addMechanicEngineerJob,
-    editMechanicEngineerJob,
-    deleteMechanicEngineerJob,
 
     //* Work
     createWork,
